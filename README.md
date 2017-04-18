@@ -1,4 +1,6 @@
-# Weacast
+![Weacast Logo](https://avatars3.githubusercontent.com/u/27728487?v=3&s=200)
+
+#  Weacast
 
 Weather prediction data are now available from the major meteorological agencies and institutions on a day-to-day basis. Current weather observations serve as input to numerical computer models, through a process known as data assimilation, to produce a forecast of the future state of weather. These models output hundreds of other meteorological elements from the oceans to the top of the atmosphere such as temperature, precipitation, icing conditions, etc. As an example, the following animated image represents a typical output of the [GFS weather forecast model](https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/global-forcast-system-gfs) from NOAA.
 
