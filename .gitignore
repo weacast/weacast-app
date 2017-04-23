@@ -1,7 +1,12 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-
-# Dependency directories
-node_modules
+.DS_Store
+node_modules/
+dist/
+npm-debug.log
+npm-debug.log.*
+selenium-debug.log
+test/unit/coverage
+test/e2e/reports
+cordova/platforms
+cordova/plugins
+thumbs.db
+!.gitkeep
