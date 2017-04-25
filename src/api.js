@@ -1,17 +1,12 @@
-import feathers from 'feathers'
+import feathers from 'feathers-client'
 import hooks from 'feathers-hooks'
-import socketio from 'feathers-socketio'
-import auth from 'feathers-authentication-client'
 import io from 'socket.io-client'
-
 const socket = io('http://localhost:8081', {transports: ['websocket']})
 
 const api = feathers()
   .configure(hooks())
-  .configure(socketio(socket))
-  .configure(auth({ storage: window.localStorage }))
-
-api.service('/users')
-api.service('/messages')
+  // .configure(feathers.rest('http://localhost:8080'))
+  .configure(feathers.socketio(socket))
+  .configure(feathers.authentication({ storage: window.localStorage }))
 
 export default api

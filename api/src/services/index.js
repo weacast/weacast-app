@@ -1,8 +1,12 @@
-import { Service } from '../service'
+import createService from '../service'
+import arpegePlugin from 'weacast-arpege'
 
 module.exports = function() {
-  const app = this; // eslint-disable-line no-unused-vars
+  const app = this
 
-  const users = new Service('users', app)
-  const forecasts = new Service('forecasts', app)
-};
+  const users = createService('users', app)
+  const forecasts = createService('forecasts', app)
+
+  // Set up our plugin services
+  app.configure(arpegePlugin)
+}

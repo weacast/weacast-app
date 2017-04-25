@@ -1,12 +1,19 @@
-const NeDB = require('nedb')
-const path = require('path')
-const levelup = require('levelup')
-const leveldown = require('leveldown')
-const sublevel = require('sublevelup')
+import NeDB from 'nedb'
+import path from 'path'
+import levelup from 'levelup'
+import leveldown from 'leveldown'
+import sublevel from 'sublevelup'
+import errors from 'feathers-errors'
 
 export class Database {
   constructor(app) {
-    this._adapter = app.get('db').adapter
+    try {
+      this._adapter = app.get('db').adapter
+    }
+    catch (error) {
+      throw new errors.GeneralError('Cannot find database adapter configuration in application')
+    }
+    this._collections = new Map
   }
 
   get adapter() {
@@ -27,30 +34,46 @@ export class Database {
 export class LevelupDatabase extends Database {
   constructor(app) {
     super(app)
-    this._db = sublevel(levelup(path, {
-      valueEncoding: 'json',
-      db: leveldown
-    }))
+    try {
+      this._db = sublevel(levelup(app.get('db').path, {
+        valueEncoding: 'json',
+        db: leveldown
+      }))
+    }
+    catch (error) {
+      throw new errors.GeneralError('Cannot find database path configuration in application')
+    }
   }
 
   collection(name) {
     // Initializes the `collection` on sublevel `collection`
-    return this._db.sublevel(name)
+    if (!this._collections.has(name)) {
+      this._collections.set(name, this._db.sublevel(name))
+    }
+    return this._collections.get(name)
   }
 }
 
 export class NeDatabase extends Database {
   constructor(app) {
     super(app)
-    this._path = app.get('db').path
+    try {
+      this._path = app.get('db').path
+    }
+    catch (error) {
+      throw new errors.GeneralError('Cannot find database path configuration in application')
+    }
   }
 
   collection(name) {
     // Initializes the `collection` on file `collection`
-    return new NeDB({
-      filename: path.join(this._path, name + '.db'),
-      autoload: true
-    })
+    if (!this._collections.has(name)) {
+      this._collections.set(name, new NeDB({
+        filename: path.join(this._path, name + '.db'),
+        autoload: true
+      }))
+    }
+    return this._collections.get(name)
   }
 }
 
