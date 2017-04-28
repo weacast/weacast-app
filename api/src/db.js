@@ -3,6 +3,7 @@ import path from 'path'
 import levelup from 'levelup'
 import leveldown from 'leveldown'
 import sublevel from 'sublevelup'
+import mongodb from 'mongodb'
 import errors from 'feathers-errors'
 
 export class Database {
@@ -20,10 +21,17 @@ export class Database {
     return this._adapter
   }
 
+  async connect() {
+    // Default implementation
+    return null
+  }
+
   static create(app) {
     switch (app.get('db').adapter) {
       case 'levelup':
         return new LevelupDatabase(app)
+      case 'mongodb':
+        return new MongoDatabase(app)
       case 'nedb':
       default:
         return new NeDatabase(app)
@@ -43,6 +51,10 @@ export class LevelupDatabase extends Database {
     catch (error) {
       throw new errors.GeneralError('Cannot find database path configuration in application')
     }
+  }
+
+  async connect() {
+    return this._db
   }
 
   collection(name) {
@@ -65,6 +77,10 @@ export class NeDatabase extends Database {
     }
   }
 
+  async connect() {
+    return null
+  }
+
   collection(name) {
     // Initializes the `collection` on file `collection`
     if (!this._collections.has(name)) {
@@ -77,3 +93,31 @@ export class NeDatabase extends Database {
   }
 }
 
+export class MongoDatabase extends Database {
+  constructor(app) {
+    super(app)
+    try {
+      this._dbUrl = app.get('db').url
+    }
+    catch (error) {
+      throw new errors.GeneralError('Cannot find database connection URL in application')
+    }
+  }
+
+  async connect() {
+    try {
+      this._db = await mongodb.connect(this._dbUrl)
+    }
+    catch (error) {
+      logger.error('Could not connect to ' + this.app.get('db').adapter + ' database, please check your configuration')
+    }
+  }
+
+  collection(name) {
+    // Initializes the `collection` on sublevel `collection`
+    if (!this._collections.has(name)) {
+      this._collections.set(name, this._db.collection(name))
+    }
+    return this._collections.get(name)
+  }
+}

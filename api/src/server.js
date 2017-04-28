@@ -1,4 +1,5 @@
 const path = require('path')
+const logger = require('winston')
 const compress = require('compression')
 const cors = require('cors')
 const helmet = require('helmet')
@@ -51,6 +52,13 @@ export class Server {
     this.app.use(compress())
     this.app.use(bodyParser.json())
     this.app.use(bodyParser.urlencoded({ extended: true }))
+  }
+
+  async run () {
+    // First try to connect to DB
+    await this.app.db.connect()
+    
+    const port = this.app.get('port')
     // Set up Plugins and providers
     this.app.configure(hooks())
     this.app.configure(rest())
@@ -63,22 +71,8 @@ export class Server {
     // Configure middleware (see `middleware/index.js`) - always has to be last
     this.app.configure(middleware)
     this.app.hooks(appHooks)
-  }
-
-  run () {
-    const port = this.app.get('port');
     
-    let promise = new Promise((resolve, reject) => {
-      this.app.listen(port, (err) => {
-        if (err) {
-          reject(err)
-        }
-        else {
-          resolve()
-        }
-      })
-    })
-
-    return promise
+    // Last lauch server
+    await this.app.listen(port)
   }
 }

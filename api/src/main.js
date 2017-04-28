@@ -1,4 +1,3 @@
-import 'module-alias/register'
 const logger = require('winston')
 const Server = require('./server').Server
 
