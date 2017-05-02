@@ -17,6 +17,10 @@ Currently supported plugins are the following:
 * [AROME](https://github.com/weacast/weacast-arome) model from [Meteo France](http://www.meteofrance.com/simulations-numeriques-meteorologiques/monde)
 * [GFS](https://github.com/weacast/weacast-gfs) model from [NOAA](https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/global-forcast-system-gfs)
 
+## Documentation
+
+The [Weacast docs](https://weacast.gitbooks.io/weacast-docs/) are loaded with awesome stuff and tell you every thing you need to know about using and configuring Weacast.
+
 ## What is inside ?
 
 Weacast is powered by the following stack:
