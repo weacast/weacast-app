@@ -1,8 +1,24 @@
 {
-  "name": "quasar-app",
-  "version": "0.0.1",
-  "description": "A Quasar App",
-  "author": "Your Name",
+  "name": "weacast-app",
+  "description": "Weacast Web App and Services",
+  "version": "0.1.0",
+  "homepage": "https://github.com/weacast/weacast",
+  "keywords": [
+    "weacast"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/weacast/weacast.git"
+  },
+  "author": {
+    "name": "Weacast contributors",
+    "url": "https://github.com/weacast"
+  },
+  "contributors": [],
+  "bugs": {
+    "url": "https://github.com/weacast/weacast/issues"
+  },
   "scripts": {
     "clean": "node build/script.clean.js",
     "dev": "node build/script.dev.js",
