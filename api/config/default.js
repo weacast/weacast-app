@@ -68,11 +68,11 @@ module.exports = {
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-GLOBAL-ARPEGE-01-EUROPE-WCS?SERVICE=WCS&version=2.0.1',
       resolution: 0.1,
-      runInterval: 6 * 3600,    // Produced every 6h
-      oldestRunInterval: 24 * 3600,   // Don't go back in time older than 1 day
-      interval: 1 * 3600,       // Steps of 1h
-      limit: 102 * 3600,        // Up to T0+102
-      updateInterval: 15 * 60,  // Check for update every 15 minutes
+      runInterval: 6 * 3600,            // Produced every 6h
+      oldestRunInterval: 24 * 3600,     // Don't go back in time older than 1 day
+      interval: 1 * 3600,               // Steps of 1h
+      limit: 102 * 3600,                  // Up to T0+102
+      updateInterval: 15 * 60,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
