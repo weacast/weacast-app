@@ -18,7 +18,7 @@ const appHooks = require('./main.hooks')
 
 const authentication = require('./authentication')
 
-import { Database } from './db'
+import { Database } from 'weacast-core'
 
 export class Server {
   constructor() {

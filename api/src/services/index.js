@@ -1,12 +1,12 @@
-import createService from '../service'
-import arpegePlugin from 'weacast-arpege'
+import path from 'path'
+import core, { createService } from 'weacast-core'
+import arpege from 'weacast-arpege'
 
 module.exports = function() {
   const app = this
-
-  const users = createService('users', app)
-  const forecasts = createService('forecasts', app)
-
+  // Setup app services
+  const users = createService('users', app, path.join(__dirname, '..', 'models'), path.join(__dirname, '..', 'services'))
   // Set up our plugin services
-  app.configure(arpegePlugin)
+  app.configure(core)
+  app.configure(arpege)
 }
