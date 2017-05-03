@@ -1,6 +1,7 @@
 import path from 'path'
 import core, { createService } from 'weacast-core'
 import arpege from 'weacast-arpege'
+import arome from 'weacast-arome'
 
 module.exports = function() {
   const app = this
@@ -9,4 +10,5 @@ module.exports = function() {
   // Set up our plugin services
   app.configure(core)
   app.configure(arpege)
+  app.configure(arome)
 }
