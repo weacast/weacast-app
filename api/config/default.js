@@ -71,7 +71,7 @@ module.exports = {
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-GLOBAL-ARPEGE-01-EUROPE-WCS?SERVICE=WCS&version=2.0.1',
       bounds: [-32, 20, 42, 72],
-      size: [741, 721],
+      size: [741, 521],
       resolution: [0.1, 0.1],
       runInterval: 6 * 3600,            // Produced every 6h
       oldestRunInterval: 24 * 3600,     // Don't go back in time older than 1 day
