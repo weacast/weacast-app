@@ -9,6 +9,9 @@
 <script>
 import config from 'config'
 import L from 'leaflet'
+// Required by leaflet-velocity
+import jquery from 'jquery'
+window.$ = jquery
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-measure/dist/leaflet-measure.js'
 import 'leaflet-measure/dist/leaflet-measure.css'
@@ -33,6 +36,7 @@ export default {
   props: ['forecastModel'],
   data () {
     return {
+      baseLayers: []
     }
   },
   watch: {
@@ -41,6 +45,11 @@ export default {
     }
   },
   methods: {
+    setupBaseLayers () {
+      config.baseLayers.forEach(baseLayer => {
+        this.baseLayers.push(L[baseLayer.type](...baseLayer.arguments))
+      })
+    },
     updateWind () {
       // Query wind for current time
       let query = {
@@ -84,18 +93,10 @@ export default {
     var map = L.map('map').setView([46.578992, -0.294869], 10)
     this.map = map
 
-    let osm = L.tileLayer(config.streetsUrl, {
-      maxZoom: 20,
-      label: 'Streets'
-    })
-
-    let sat = L.tileLayer(config.satelliteUrl, {
-      maxZoom: 20,
-      label: 'Satellite'
-    })
+    this.setupBaseLayers()
 
     this.wind = L.velocityLayer({
-      displayValues: false,
+      displayValues: true,
       displayOptions: {
         velocityType: 'Wind',
         position: 'bottomright',
@@ -110,13 +111,11 @@ export default {
     })
     map.addLayer(this.wind)
 
-    var basemaps = [ osm, sat ]
-
     var scaleControl = L.control.scale()
     scaleControl.addTo(map)
 
     this.basemapsControl = L.control.basemaps({
-      basemaps: basemaps,
+      basemaps: this.baseLayers,
       position: 'bottomleft',
       tileX: 0,  // tile X coordinate
       tileY: 0,  // tile Y coordinate
