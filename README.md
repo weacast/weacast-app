@@ -4,6 +4,10 @@
 
 **This is a WIP, not yet ready for production use**
 
+If you want some help or participate to the development of Weacast contact us on our Gitter rooms :
+* https://gitter.im/weacast/Lobby for general questions about using Weacast
+* https://gitter.im/weacast/Development to discuss about development and roadmap
+
 ## Documentation
 
 The [Weacast docs](https://weacast.gitbooks.io/weacast-docs/) are loaded with awesome stuff and tell you everything you need to know about using and configuring Weacast.
