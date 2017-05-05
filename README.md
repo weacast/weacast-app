@@ -10,6 +10,10 @@
 
 **This is a WIP, not yet ready for production use**
 
+This short video demonstrates how Weacast can be used to gather forecast data from different models to visualize and predict wind in different locations
+
+[![Weacast video](https://img.youtube.com/vi/JHU7WbETWjw/0.jpg)](https://www.youtube.com/watch?v=JHU7WbETWjw)
+
 If you want some help or participate to the development of Weacast contact us on our Gitter rooms :
 * https://gitter.im/weacast/Lobby for general questions about using Weacast
 * https://gitter.im/weacast/Development to discuss about development and roadmap
