@@ -47,8 +47,8 @@
               <q-radio v-model="selectedForecast" :val="forecast"></q-radio>
             </div>
             <div class="item-content">
-              <div>{{forecast.name}}</div>
-              <div>Description</div>
+              <div>{{forecast.label}}</div>
+              <div>{{forecast.description}}</div>
             </div>
           </label>
         </div>

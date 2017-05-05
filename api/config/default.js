@@ -36,6 +36,8 @@ module.exports = {
   forecasts: [
     {
       name: 'arpege-world',
+      label: 'ARPEGE - 0.5°',
+      description: 'World-wide',
       model: 'arpege',
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-GLOBAL-ARPEGE-05-GLOBE-WCS?SERVICE=WCS&version=2.0.1',
@@ -68,6 +70,8 @@ module.exports = {
     },
     {
       name: 'arpege-europe',
+      label: 'ARPEGE - 0.1°',
+      description: 'Europe',
       model: 'arpege',
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-GLOBAL-ARPEGE-01-EUROPE-WCS?SERVICE=WCS&version=2.0.1',
@@ -100,6 +104,8 @@ module.exports = {
     },
     {
       name: 'arome-france',
+      label: 'AROME - 0.025°',
+      description: 'France',
       model: 'arome',
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-HIGHRES-AROME-0025-FRANCE-WCS?SERVICE=WCS&version=2.0.1',
