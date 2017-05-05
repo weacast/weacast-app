@@ -9,4 +9,7 @@ const api = feathers()
   .configure(feathers.socketio(socket))
   .configure(feathers.authentication({ storage: window.localStorage }))
 
+api.service('/users')
+api.service('/forecasts')
+
 export default api

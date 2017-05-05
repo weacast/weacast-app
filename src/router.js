@@ -41,9 +41,9 @@ export default new VueRouter({
           component: load('SignIn')
         },
         {
-          path: '/chat',
-          name: 'chat',
-          component: load('Chat')
+          path: '/map',
+          name: 'map',
+          component: load('Map')
         }
       ]
     },

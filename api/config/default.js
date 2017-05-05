@@ -40,6 +40,7 @@ module.exports = {
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-GLOBAL-ARPEGE-05-GLOBE-WCS?SERVICE=WCS&version=2.0.1',
       bounds: [-180, -90, 180, 90],
+      origin: [-180, 90],
       size: [720, 361],
       resolution: [0.5, 0.5],
       runInterval: 6 * 3600,          // Produced every 6h
@@ -71,6 +72,7 @@ module.exports = {
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-GLOBAL-ARPEGE-01-EUROPE-WCS?SERVICE=WCS&version=2.0.1',
       bounds: [-32, 20, 42, 72],
+      origin: [-32, 72],
       size: [741, 521],
       resolution: [0.1, 0.1],
       runInterval: 6 * 3600,            // Produced every 6h
@@ -102,13 +104,14 @@ module.exports = {
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-HIGHRES-AROME-0025-FRANCE-WCS?SERVICE=WCS&version=2.0.1',
       bounds: [-8, 38, 12, 53],
+      origin: [-8, 53],
       size: [801, 601],
       resolution: [0.025, 0.025],
       runInterval: 3 * 3600,            // Produced every 3h
       oldestRunInterval: 24 * 3600,     // Don't go back in time older than 1 day
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
-      upperLimit: 102 * 3600,           // Up to T0+42
+      upperLimit: 42 * 3600,            // Up to T0+42
       updateInterval: 15 * 60,          // Check for update every 15 minutes
       elements: [
         {
@@ -136,6 +139,7 @@ module.exports = {
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-HIGHRES-AROME-001-FRANCE-WCS?SERVICE=WCS&version=2.0.1',
       bounds: [-12, 37.5, 16, 55.4],
+      origin: [-12, 55.4],
       size: [2801, 1791],
       resolution: 0.01,
       runInterval: 3 * 3600,            // Produced every 3h

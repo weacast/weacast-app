@@ -23,12 +23,10 @@
         <i>layers</i>
         <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 20]">Map</q-tooltip>
       </button>
-
-      <q-fab icon="perm_identity" direction="left" v-show="authenticated">
-        <q-small-fab class="primary" @click.native="signout" icon="exit_to_app">
-          <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 20]">Sign Out</q-tooltip>
-        </q-small-fab>
-      </q-fab>
+      <button @click="$refs.profile.open()" v-show="authenticated">
+        <i>perm_identity</i>
+        <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 20]">Profile</q-tooltip>
+      </button>
 
     </div>
 
@@ -42,16 +40,40 @@
 
       <q-drawer-link icon="home" to="/home">Home</q-drawer-link>
       <q-drawer-link icon="layers" to="/map">Map</q-drawer-link>
+      <q-collapsible icon="language" label="Model">
+        <div class="list">
+          <label v-for="forecast in forecasts" class="item two-lines">
+            <div class="item-primary">
+              <q-radio v-model="selectedForecast" :val="forecast"></q-radio>
+            </div>
+            <div class="item-content">
+              <div>{{forecast.name}}</div>
+              <div>Description</div>
+            </div>
+          </label>
+        </div>
+      </q-collapsible>
 
       <q-collapsible icon="info" label="About">
         <p style="padding: 25px;" class="text-grey-7">
-          Weacast relies on Quasar and Feathers.
+          Please read the <a href="https://weacast.gitbooks.io/weacast-docs/">Weacast Book</a>
         </p>
       </q-collapsible>
     </q-drawer>
 
+    <q-drawer swipe-only right-side ref="profile" v-show="authenticated">
+      <div class="toolbar light">
+        <i>perm_identity</i>
+        <q-toolbar-title :padding="1">
+            Profile
+        </q-toolbar-title>
+      </div>
+
+      <q-drawer-link icon="exit_to_app" to="/home" @click.native="signout">Sign Out</q-drawer-link>
+    </q-drawer>
+
     <!-- sub-routes -->
-    <router-view class="layout-view" :user="user"></router-view>
+    <router-view class="layout-view" :user="user" :forecastModel="selectedForecast"></router-view>
     
   </q-layout>
 </template>
@@ -63,7 +85,9 @@ import api from 'src/api'
 export default {
   data () {
     return {
-      user: null
+      user: null,
+      forecasts: [],
+      selectedForecast: null
     }
   },
   computed: {
@@ -106,18 +130,30 @@ export default {
     })
     .catch(_ => {
       this.$router.push({ name: 'home' })
-    })
-    // On successfull login
-    api.on('authenticated', response => {
-      this.getUser(response.accessToken)
-      .then(user => {
-        this.$router.push({ name: 'home' })
+      // On successfull login
+      api.on('authenticated', response => {
+        this.getUser(response.accessToken)
+        .then(user => {
+          this.$router.push({ name: 'home' })
+        })
       })
     })
     // On logout
     api.on('logout', () => {
       this.$data.user = null
       this.$router.push({ name: 'home' })
+    })
+
+    // Configure available forecast models
+    api.service('/forecasts').find()
+    .then(response => {
+      response.data.forEach(forecast => {
+        forecast.elements.forEach(element => {
+          // Declare element service
+          api.service('/' + forecast.name + '/' + element.name)
+        })
+      })
+      this.forecasts = response.data
     })
   },
   beforeDestroy () {
