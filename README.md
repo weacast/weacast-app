@@ -1,4 +1,4 @@
-![Weacast Logo](https://avatars3.githubusercontent.com/u/27728487?v=3&s=200)
+<img src="https://github.com/weacast/weacast-docs/blob/master/images/weacast-logo.png" width="256">
 
 ## Open Source gathering and usage of weather forecast data
 
@@ -12,7 +12,7 @@
 
 This short video demonstrates how Weacast can be used to gather forecast data from different models to visualize and predict wind in different locations
 
-[![Weacast video](https://img.youtube.com/vi/JHU7WbETWjw/0.jpg)](https://www.youtube.com/watch?v=JHU7WbETWjw)
+[![Weacast video](https://github.com/weacast/weacast-docs/blob/master/images/weacast-wind.png)](https://www.youtube.com/watch?v=JHU7WbETWjw)
 
 If you want some help or participate to the development of Weacast contact us on our Gitter rooms :
 * https://gitter.im/weacast/Lobby for general questions about using Weacast
