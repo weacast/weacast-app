@@ -2943,6 +2943,10 @@ isarray@1.0.0, isarray@^1.0.0, isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
 
+iso8601-js-period@0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/iso8601-js-period/-/iso8601-js-period-0.2.0.tgz#e5740fd4e720b960a85eb685fc205201621c018c"
+
 isobject@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-2.1.0.tgz#f065561096a3f1da2ef46272f815c840d87e0c89"
@@ -2958,6 +2962,10 @@ jodid25519@^1.0.0:
   resolved "https://registry.yarnpkg.com/jodid25519/-/jodid25519-1.0.2.tgz#06d4912255093419477d425633606e0e90782967"
   dependencies:
     jsbn "~0.1.0"
+
+"jquery@1.x || 2.x":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.2.4.tgz#2c89d6889b5eac522a7eea32c14521559c6cbf02"
 
 jquery@^3.2.1:
   version "3.2.1"
@@ -3105,6 +3113,14 @@ leaflet-measure@^2.1.7:
     i18n-2 "^0.6.3"
     underscore "^1.7.0"
 
+leaflet-timedimension@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/leaflet-timedimension/-/leaflet-timedimension-1.0.6.tgz#f401d5c291e812a06ea9bc70a042fac5e20a36ce"
+  dependencies:
+    iso8601-js-period "0.2.0"
+    jquery "1.x || 2.x"
+    leaflet "~0.7.4 || ~1.0.0"
+
 leaflet-velocity@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/leaflet-velocity/-/leaflet-velocity-1.1.0.tgz#f91a1318ae12c0b8ac9d5faceae3d2e12b3772bb"
@@ -3113,7 +3129,7 @@ leaflet@^0.7.7:
   version "0.7.7"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-0.7.7.tgz#1e352ba54e63d076451fa363c900890cb2cf75ee"
 
-leaflet@^1.0.3:
+leaflet@^1.0.3, "leaflet@~0.7.4 || ~1.0.0":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.0.3.tgz#1f401b98b45c8192134c6c8d69686253805007c8"
 

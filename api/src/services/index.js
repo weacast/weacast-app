@@ -1,4 +1,5 @@
 import path from 'path'
+import logger from 'winston'
 import core, { createService } from 'weacast-core'
 import arpege from 'weacast-arpege'
 import arome from 'weacast-arome'
@@ -8,7 +9,12 @@ module.exports = function() {
   // Setup app services
   const users = createService('users', app, path.join(__dirname, '..', 'models'), path.join(__dirname, '..', 'services'))
   // Set up our plugin services
-  app.configure(core)
-  app.configure(arpege)
-  app.configure(arome)
+  try {
+    app.configure(core)
+    app.configure(arpege)
+    app.configure(arome)
+  }
+  catch (error) {
+    logger.error(error.message)
+  }
 }

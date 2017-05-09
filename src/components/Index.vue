@@ -79,6 +79,12 @@
 </template>
 
 <script>
+// Required by leaflet-velocity/timedimension, we make it availalbe as a global import
+// because it must be present before other libs async load
+import jQuery from 'jquery/dist/jquery.js'
+window.$ = jQuery
+window.jQuery = jQuery
+
 import { Toast } from 'quasar'
 import api from 'src/api'
 
