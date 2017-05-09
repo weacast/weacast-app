@@ -49,11 +49,13 @@ module.exports = {
       oldestRunInterval: 24 * 3600,   // Don't go back in time older than 1 day
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
-      upperLimit: 102 * 3600,         // Up to T0+102
+      upperLimit: 102 * 3600,           // Up to T0+102
       updateInterval: 15 * 60,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
+          // Use 'db' (or remove this property as it is default) to store data directly as JSON object in DB instead of files
+          //dataStore: 'fs',
           coverageid: 'U_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
             height: 10
