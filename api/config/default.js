@@ -38,6 +38,7 @@ module.exports = {
       name: 'arpege-world',
       label: 'ARPEGE - 0.5°',
       description: 'World-wide',
+      attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
       model: 'arpege',
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-GLOBAL-ARPEGE-05-GLOBE-WCS?SERVICE=WCS&version=2.0.1',
@@ -67,13 +68,21 @@ module.exports = {
           subsets: {
             height: 10
           }
-        }
+        }/*,
+        {
+          name: 'temperature',
+          coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+          subsets: {
+            height: 2
+          }
+        }*/
       ]
     },
     {
       name: 'arpege-europe',
       label: 'ARPEGE - 0.1°',
       description: 'Europe',
+      attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
       model: 'arpege',
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-GLOBAL-ARPEGE-01-EUROPE-WCS?SERVICE=WCS&version=2.0.1',
@@ -101,13 +110,21 @@ module.exports = {
           subsets: {
             height: 10
           }
-        }
+        }/*,
+        {
+          name: 'temperature',
+          coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+          subsets: {
+            height: 2
+          }
+        }*/
       ]
     },
     {
       name: 'arome-france',
       label: 'AROME - 0.025°',
       description: 'France',
+      attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
       model: 'arome',
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-HIGHRES-AROME-0025-FRANCE-WCS?SERVICE=WCS&version=2.0.1',
@@ -135,14 +152,25 @@ module.exports = {
           subsets: {
             height: 10
           }
-        }
+        }/*,
+        {
+          name: 'temperature',
+          coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+          subsets: {
+            height: 2
+          }
+        }*/
       ]
     }
     // This model generates too much data to be stored in MongoDB documents (limited to 16 MB)
+    // Could try with experimental 'fs' data store
     /*
     ,
     {
       name: 'arome-france-high',
+      label: 'AROME - 0.01°',
+      description: 'France',
+      attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
       model: 'arome',
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-HIGHRES-AROME-001-FRANCE-WCS?SERVICE=WCS&version=2.0.1',
@@ -159,6 +187,7 @@ module.exports = {
       elements: [
         {
           name: 'u-wind',
+          dataStore: 'fs',
           coverageid: 'U_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
             height: 10
@@ -166,6 +195,7 @@ module.exports = {
         },
         {
           name: 'v-wind',
+          dataStore: 'fs',
           coverageid: 'V_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
             height: 10

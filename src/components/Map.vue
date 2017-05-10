@@ -58,19 +58,23 @@ export default {
         this.map.removeLayer(this.temperature)
       }
       this.temperature = new HeatLayer({
-        element: 'temperature'
+        element: 'temperature',
+        attribution: this.forecastModel.attribution
       })
-      this.temperature.setForecastModel(this.forecastModel)
       this.map.addLayer(this.temperature)
+      // Should come last so that we do not tirgger multiple updates of data
+      this.temperature.setForecastModel(this.forecastModel)
       */
       if (this.wind) {
         this.map.removeLayer(this.wind)
       }
       this.wind = new FlowLayer({
         uElement: 'u-wind',
-        vElement: 'v-wind'
+        vElement: 'v-wind',
+        attribution: this.forecastModel.attribution
       })
       this.map.addLayer(this.wind)
+      // Should come last so that we do not tirgger multiple updates of data
       this.wind.setForecastModel(this.forecastModel)
     }
   },
