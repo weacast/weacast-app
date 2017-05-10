@@ -133,6 +133,17 @@ export default {
     })
     .then(user => {
       Toast.create.positive('Restoring previous session')
+      // Configure available forecast models
+      api.service('/forecasts').find()
+      .then(response => {
+        response.data.forEach(forecast => {
+          forecast.elements.forEach(element => {
+            // Declare element service
+            api.service('/' + forecast.name + '/' + element.name)
+          })
+        })
+        this.forecasts = response.data
+      })
     })
     .catch(_ => {
       this.$router.push({ name: 'home' })
@@ -148,18 +159,6 @@ export default {
     api.on('logout', () => {
       this.$data.user = null
       this.$router.push({ name: 'home' })
-    })
-
-    // Configure available forecast models
-    api.service('/forecasts').find()
-    .then(response => {
-      response.data.forEach(forecast => {
-        forecast.elements.forEach(element => {
-          // Declare element service
-          api.service('/' + forecast.name + '/' + element.name)
-        })
-      })
-      this.forecasts = response.data
     })
   },
   beforeDestroy () {
