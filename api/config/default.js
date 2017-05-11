@@ -30,7 +30,7 @@ module.exports = {
   db: {
     adapter: 'mongodb',
     path: path.join(__dirname, '../db-data'),
-    url: 'mongodb://localhost:27018/weacast'
+    url: 'mongodb://127.0.0.1:27017/weacast'
   },
   forecastPath: path.join(__dirname, '../forecast-data'),
   forecasts: [

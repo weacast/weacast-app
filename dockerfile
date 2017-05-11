@@ -1,15 +1,18 @@
-#change this to your own repo, should you have uploaded your image!
 FROM  quasarframework/client-dev:latest
 
-MAINTAINER Your Name <your.email@your-sites-address.com>
+MAINTAINER Luc Claustres <luc.claustres@orange.fr>
 
 WORKDIR /opt/app
-
-COPY package.json /opt/app/
-RUN npm install
-
 COPY . /opt/app
 
-EXPOSE 8080
+RUN npm install
+RUN quasar build
 
-CMD /bin/sh
+WORKDIR /opt/app/api
+
+RUN npm install
+RUN npm run build
+
+EXPOSE 8081
+
+CMD [ "npm", "run", "prod" ]

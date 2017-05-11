@@ -24,7 +24,7 @@ export class Server {
   constructor() {
     this.app = feathers()
     // Load app configuration
-    this.app.configure(configuration(path.join(__dirname, '..')))
+    this.app.configure(configuration())
     // Initialize DB
     this.app.db = Database.create(this.app)
     // Serve pure static assets
@@ -33,7 +33,7 @@ export class Server {
     }
     else {
       const staticsPath = path.posix.join(this.app.get('client').dev.publicPath, 'statics/')
-      this.app.use(staticsPath, feathers.static('../client/statics'))
+      this.app.use(staticsPath, feathers.static('../dist/statics'))
     }
 
     // Define HTTP proxies to your custom API backend. See /config/index.js -> proxyTable

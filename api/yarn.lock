@@ -652,7 +652,7 @@ combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@^2.8.1:
+commander@^2.8.1, commander@^2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.9.0.tgz#9c99094176e12240cb22d6c5146098400fe0f7d4"
   dependencies:
@@ -833,7 +833,7 @@ debug@2.3.3:
   dependencies:
     ms "0.7.2"
 
-debug@2.6.1, debug@^2.1.1, debug@^2.2.0, debug@^2.3.1, debug@^2.6.0:
+debug@2.6.1, debug@^2.2.0, debug@^2.3.1, debug@^2.6.0:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.1.tgz#79855090ba2c4e3115cc7d8769491d58f0491351"
   dependencies:
@@ -844,6 +844,12 @@ debug@2.6.3:
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.3.tgz#0f7eb8c30965ec08c72accfa0130c8b79984141d"
   dependencies:
     ms "0.7.2"
+
+debug@^2.1.1, debug@^2.6.4:
+  version "2.6.6"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.6.tgz#a9fa6fbe9ca43cf1e79f73b75c0189cbb7d6db5a"
+  dependencies:
+    ms "0.7.3"
 
 deep-extend@~0.4.0:
   version "0.4.1"
@@ -1295,6 +1301,14 @@ feathers-authentication-client@^0.1.10:
     feathers-errors "^2.4.0"
     jwt-decode "^2.1.0"
 
+feathers-authentication-client@^0.3.1:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/feathers-authentication-client/-/feathers-authentication-client-0.3.2.tgz#add0ed0f562c2462228c22d688e1261ef5f96e56"
+  dependencies:
+    debug "^2.2.0"
+    feathers-errors "^2.4.0"
+    jwt-decode "^2.1.0"
+
 feathers-authentication-jwt@^0.3.1:
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/feathers-authentication-jwt/-/feathers-authentication-jwt-0.3.1.tgz#ef9a0c053cd015fdc20f3db9163e2c97aaa6592f"
@@ -1318,6 +1332,23 @@ feathers-authentication-local@^0.3.3:
     lodash.omit "^4.5.0"
     lodash.pick "^4.4.0"
     passport-local "^1.0.0"
+
+feathers-authentication@^1.2.2:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/feathers-authentication/-/feathers-authentication-1.2.3.tgz#7cbba3a2f228876d5671f3bb8616dd2fabb07934"
+  dependencies:
+    debug "^2.2.0"
+    feathers-authentication-client "^0.3.1"
+    feathers-commons "^0.8.4"
+    feathers-errors "^2.4.0"
+    feathers-socket-commons "^2.3.1"
+    jsonwebtoken "^7.1.9"
+    lodash.merge "^4.6.0"
+    lodash.omit "^4.5.0"
+    lodash.pick "^4.4.0"
+    long-timeout "^0.1.1"
+    ms "^1.0.0"
+    passport "^0.3.2"
 
 feathers-authentication@pre:
   version "1.2.0"
@@ -1346,9 +1377,15 @@ feathers-configuration@^0.4.1:
     config "^1.21.0"
     debug "^2.2.0"
 
-feathers-errors@^2.0.1, feathers-errors@^2.2.0, feathers-errors@^2.4.0, feathers-errors@^2.5.0, feathers-errors@^2.6.1:
+feathers-errors@^2.0.1, feathers-errors@^2.4.0, feathers-errors@^2.5.0, feathers-errors@^2.6.1:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/feathers-errors/-/feathers-errors-2.6.2.tgz#85ff2658fcacabb989783fbe44aa1a1b700560a6"
+  dependencies:
+    debug "^2.2.0"
+
+feathers-errors@^2.2.0, feathers-errors@^2.6.3:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/feathers-errors/-/feathers-errors-2.8.0.tgz#0ec07f316e6efa11ac542a530a0a169d9ea9aa57"
   dependencies:
     debug "^2.2.0"
 
@@ -1549,6 +1586,14 @@ from@~0:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/from/-/from-0.1.7.tgz#83c60afc58b9c56997007ed1a768b3ab303a44fe"
 
+fs-extra@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-3.0.1.tgz#3794f378c58b342ea7dbbb23095109c4b3b62291"
+  dependencies:
+    graceful-fs "^4.1.2"
+    jsonfile "^3.0.0"
+    universalify "^0.1.0"
+
 fs-readdir-recursive@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/fs-readdir-recursive/-/fs-readdir-recursive-1.0.0.tgz#8cd1745c8b4f8a29c8caec392476921ba195f560"
@@ -1594,6 +1639,13 @@ gauge@~2.7.1:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
+gdal@~0.9.3:
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/gdal/-/gdal-0.9.4.tgz#6dad4abb8ffb3e0d51150fb7935ad7c622c81818"
+  dependencies:
+    nan "~2.5.0"
+    node-pre-gyp "~0.6.27"
+
 generate-function@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/generate-function/-/generate-function-2.0.0.tgz#6858fe7c0969b7d4e9093337647ac79f60dfbe74"
@@ -1603,6 +1655,12 @@ generate-object-property@^1.1.0:
   resolved "https://registry.yarnpkg.com/generate-object-property/-/generate-object-property-1.2.0.tgz#9c0e1c40308ce804f4783618b937fa88f99d50d0"
   dependencies:
     is-property "^1.0.0"
+
+geo-pixel-stream@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/geo-pixel-stream/-/geo-pixel-stream-0.4.0.tgz#9118b0c53a611d2bce157891126031053d872c9c"
+  dependencies:
+    gdal "~0.9.3"
 
 getpass@^0.1.1:
   version "0.1.6"
@@ -1668,7 +1726,7 @@ got@^3.2.0:
     read-all-stream "^3.0.0"
     timed-out "^2.0.0"
 
-graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4:
+graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.4, graceful-fs@^4.1.6:
   version "4.1.11"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.11.tgz#0e8bdfe4d1ddb8854d64e04ea7c00e2a026e5658"
 
@@ -2102,6 +2160,12 @@ json5@^0.5.0:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/json5/-/json5-0.5.1.tgz#1eade7acc012034ad84e2396767ead9fa5495821"
 
+jsonfile@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-3.0.0.tgz#92e7c7444e5ffd5fa32e6a9ae8b85034df8347d0"
+  optionalDependencies:
+    graceful-fs "^4.1.6"
+
 jsonify@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
@@ -2327,6 +2391,10 @@ lodash@^4.0.0, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
+long-timeout@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/long-timeout/-/long-timeout-0.1.1.tgz#9721d788b47e0bcb5a24c2e2bee1a0da55dab514"
+
 loose-envify@^1.0.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.3.1.tgz#d1a8ad33fa9ce0e713d65fdd0ac8b748d478c848"
@@ -2439,15 +2507,19 @@ ms@0.7.2:
   version "0.7.2"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.2.tgz#ae25cf2512b3885a1d95d7f037868d8431124765"
 
-ms@^0.7.1:
+ms@0.7.3, ms@^0.7.1:
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.3.tgz#708155a5e44e33f5fd0fc53e81d0d40a91be1fff"
+
+ms@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-1.0.0.tgz#59adcd22edc543f7b5381862d31387b1f4bc9473"
 
 mute-stream@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/mute-stream/-/mute-stream-0.0.5.tgz#8fbfabb0a98a253d3184331f9e8deb7372fac6c0"
 
-nan@^2.3.0, nan@~2.5.1:
+nan@^2.3.0, nan@~2.5.0, nan@~2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.5.1.tgz#d5b01691253326a97a2bbee9e61c55d8d60351e2"
 
@@ -2483,7 +2555,7 @@ node-abi@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.0.0.tgz#443bfd151b599231028ae425e592e76cd31cb537"
 
-node-pre-gyp@^0.6.29:
+node-pre-gyp@^0.6.29, node-pre-gyp@~0.6.27:
   version "0.6.34"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.34.tgz#94ad1c798a11d7fc67381b50d47f8cc18d9799f7"
   dependencies:
@@ -3501,6 +3573,10 @@ underscore@~1.4.4:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.4.4.tgz#61a6a32010622afa07963bf325203cf12239d604"
 
+universalify@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.0.tgz#9eb1c4651debcc670cc94f1a75762332bb967778"
+
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/unpipe/-/unpipe-1.0.0.tgz#b2bf4ee8514aae6165b4817829d21b2ef49904ec"
@@ -3570,6 +3646,78 @@ verror@1.3.6:
   resolved "https://registry.yarnpkg.com/verror/-/verror-1.3.6.tgz#cff5df12946d297d2baaefaa2689e25be01c005c"
   dependencies:
     extsprintf "1.0.2"
+
+weacast-arome@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/weacast-arome/-/weacast-arome-0.1.0.tgz#e47c758a7894e66bf71287f256d6cb62d2bb224b"
+  dependencies:
+    debug "^2.6.4"
+    feathers-authentication "^1.2.2"
+    feathers-errors "^2.6.3"
+    feathers-hooks "^2.0.1"
+    feathers-hooks-common "^3.0.0"
+    feathers-levelup "^1.1.1"
+    feathers-mongodb "^2.8.0"
+    feathers-nedb "^2.6.2"
+    fs-extra "^3.0.0"
+    moment "^2.18.1"
+    mongodb "^2.2.26"
+    request "^2.81.0"
+    uberproto "^1.2.0"
+    weacast-arpege "^0.1.0"
+    weacast-core "^0.1.0"
+    winston "^2.3.1"
+
+weacast-arpege@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/weacast-arpege/-/weacast-arpege-0.1.0.tgz#eb78323e090e4c747dbb043c7d6ba7a5f3eb8a9e"
+  dependencies:
+    debug "^2.6.4"
+    feathers-authentication "^1.2.2"
+    feathers-errors "^2.6.3"
+    feathers-hooks "^2.0.1"
+    feathers-hooks-common "^3.0.0"
+    feathers-levelup "^1.1.1"
+    feathers-mongodb "^2.8.0"
+    feathers-nedb "^2.6.2"
+    fs-extra "^3.0.0"
+    moment "^2.18.1"
+    mongodb "^2.2.26"
+    request "^2.81.0"
+    uberproto "^1.2.0"
+    weacast-core "^0.1.0"
+    weacast-gtiff2json "^0.1.0"
+    winston "^2.3.1"
+
+weacast-core@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/weacast-core/-/weacast-core-0.1.0.tgz#32ecb232e58be22ae2c7186c0028e273b2d95eb4"
+  dependencies:
+    debug "^2.6.4"
+    feathers-authentication "^1.2.2"
+    feathers-errors "^2.6.3"
+    feathers-hooks "^2.0.1"
+    feathers-hooks-common "^3.0.0"
+    feathers-levelup "^1.1.1"
+    feathers-mongodb "^2.8.0"
+    feathers-nedb "^2.6.2"
+    fs-extra "^3.0.0"
+    leveldown "^1.6.0"
+    levelup "^1.3.5"
+    moment "^2.18.1"
+    mongodb "^2.2.26"
+    nedb "^1.8.0"
+    request "^2.81.0"
+    sublevelup "^4.0.0"
+    uberproto "^1.2.0"
+    winston "^2.3.1"
+
+weacast-gtiff2json@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/weacast-gtiff2json/-/weacast-gtiff2json-0.1.0.tgz#c0f9b9a5b4a30538260d9d56489c10523d28af94"
+  dependencies:
+    commander "^2.9.0"
+    geo-pixel-stream "^0.4.0"
 
 which@^1.2.9:
   version "1.2.14"

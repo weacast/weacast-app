@@ -47,7 +47,8 @@
     "roboto-fontface": "^0.7.0",
     "socket.io-client": "^1.7.3",
     "vue": "^2.2.2",
-    "vue-router": "^2.0.0"
+    "vue-router": "^2.0.0",
+    "weacast-core": "^0.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",

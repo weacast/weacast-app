@@ -49,6 +49,9 @@
     "nedb": "^1.8.0",
     "request": "^2.81.0",
     "sublevelup": "^4.0.0",
+    "weacast-arome": "^0.1.0",
+    "weacast-arpege": "^0.1.0",
+    "weacast-core": "^0.1.0",
     "winston": "^2.3.1"
   }
 }
