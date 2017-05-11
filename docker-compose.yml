@@ -1,13 +1,26 @@
 version: '2'
 
 services:
-  app:
+  weacast:
     build: .
-    image: your-docker-org/your-app-name
-    command: sh
-    volumes:
-      - .:/opt/app
-      - /opt/app/node_modules
+    container_name: weacast
+    image: weacast/weacast
+    links:
+      - mongodb-weacast:mongodb
     ports:
-      - 8080:8080
-    tty: true
+      - 8081:8081
+    networks:
+      - weacast
+  mongodb-weacast:
+    container_name: mongodb-weacast
+    image: mongo
+    volumes:
+      - mongodb_weacast:/data/db
+    networks:
+      - weacast
+
+volumes:
+  mongodb_weacast:
+
+networks:
+  weacast:
