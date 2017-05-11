@@ -2,7 +2,7 @@ const authentication = require('feathers-authentication')
 const jwt = require('feathers-authentication-jwt')
 const local = require('feathers-authentication-local')
 
-module.exports = function() {
+module.exports = function () {
   const app = this
   const config = app.get('authentication')
 
@@ -23,4 +23,4 @@ module.exports = function() {
       ]
     }
   })
-};
+}

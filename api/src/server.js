@@ -1,5 +1,4 @@
 const path = require('path')
-const logger = require('winston')
 const compress = require('compression')
 const cors = require('cors')
 const helmet = require('helmet')
@@ -21,7 +20,7 @@ const authentication = require('./authentication')
 import { Database } from 'weacast-core'
 
 export class Server {
-  constructor() {
+  constructor () {
     this.app = feathers()
     // Load app configuration
     this.app.configure(configuration())
@@ -38,7 +37,7 @@ export class Server {
 
     // Define HTTP proxies to your custom API backend. See /config/index.js -> proxyTable
     // https://github.com/chimurai/http-proxy-middleware
-    Object.keys(this.app.get('proxyTable')).forEach( (context) => {
+    Object.keys(this.app.get('proxyTable')).forEach(context => {
       let options = this.config.this.app.get('proxyTable')[context]
       if (typeof options === 'string') {
         options = { target: options }
@@ -57,7 +56,7 @@ export class Server {
   async run () {
     // First try to connect to DB
     await this.app.db.connect()
-    
+
     const port = this.app.get('port')
     // Set up Plugins and providers
     this.app.configure(hooks())
@@ -71,7 +70,7 @@ export class Server {
     // Configure middleware (see `middleware/index.js`) - always has to be last
     this.app.configure(middleware)
     this.app.hooks(appHooks)
-    
+
     // Last lauch server
     await this.app.listen(port)
   }

@@ -1,5 +1,4 @@
 {
-  "presets": ["es2017-node7"],
-  "plugins": ["transform-runtime"],
-  "comments": false
+  "plugins": [ "transform-runtime", "add-module-exports", "transform-export-extensions" ],
+  "presets": [ "es2015", "es2017-node7" ]
 }

@@ -5,8 +5,8 @@ let server = new Server()
 
 process.on('unhandledRejection', (reason, p) =>
   logger.error('Unhandled Rejection at: Promise ', p, reason)
-);
+)
 
-server.run().then( () => {
+server.run().then(_ => {
   logger.info(' Server listen at ' + server.app.get('port').toString())
 })

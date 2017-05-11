@@ -9,8 +9,8 @@ const gravatarUrl = 'https://s.gravatar.com/avatar'
 // The size query. Our chat needs 60px images
 const query = 's=200'
 
-module.exports = function() {
-  return function(hook) {
+module.exports = function () {
+  return function (hook) {
     // The user email
     const { email } = hook.data
     // Gravatar uses MD5 hashes from an email address to get the image
@@ -20,6 +20,6 @@ module.exports = function() {
 
     // Hooks can either return nothing or a promise
     // that resolves with the `hook` object for asynchronous operations
-    return Promise.resolve(hook);
+    return Promise.resolve(hook)
   }
 }
