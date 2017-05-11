@@ -31,7 +31,7 @@ module.exports = {
   db: {
     adapter: 'mongodb',
     path: path.join(__dirname, '../db-data'),
-    url: (containerized ? 'mongodb://mongodb:27017/weacast' : 'mongodb://127.0.0.1:27017/weacast')
+    url: process.env.DB_URL || (containerized ? 'mongodb://mongodb:27017/weacast' : 'mongodb://127.0.0.1:27017/weacast')
   },
   forecastPath: path.join(__dirname, '../forecast-data'),
   forecasts: [
