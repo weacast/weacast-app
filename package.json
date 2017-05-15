@@ -1,7 +1,7 @@
 {
   "name": "weacast-app",
   "description": "Weacast Web App and Services",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/weacast/weacast",
   "keywords": [
     "weacast"
@@ -22,9 +22,9 @@
   "scripts": {
     "prepublish": "npm run build",
     "publish": "git push origin --tags && npm run changelog && git push origin",
-    "release:patch": "cd api && npm --no-git-tag-version version patch && cd .. && npm version patch",
-    "release:minor": "cd api && npm --no-git-tag-version version minor && cd .. && npm version minor",
-    "release:major": "cd api && npm --no-git-tag-version version major && cd .. && npm version major",
+    "release:patch": "cd api && npm run release:patch && cd .. && npm version --force patch",
+    "release:minor": "cd api && npm run release:minor && cd .. && npm version --force minor",
+    "release:major": "cd api && run release:major && cd .. && npm version --force major",
     "changelog": "github_changelog_generator && git add CHANGELOG.md && git commit -am \"Updating changelog\"",
     "clean": "node build/script.clean.js",
     "dev": "node build/script.dev.js",
