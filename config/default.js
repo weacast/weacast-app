@@ -1,6 +1,6 @@
 module.exports = {
     apiPath: '/api',
-    transport: 'web-socket', // Could be 'web-socket'
+    transport: 'web-socket', // Could be 'http' or 'web-socket'
     baseLayers: [
         {
             type: 'tileLayer',
