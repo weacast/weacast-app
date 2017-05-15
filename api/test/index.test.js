@@ -17,7 +17,7 @@ describe('weacast', () => {
   })
 
   it('registers the users service', () => {
-    let service = server.app.service('users')
+    let service = server.app.getService('users')
     expect(service).toExist()
   })
 })
