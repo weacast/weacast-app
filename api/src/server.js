@@ -1,29 +1,16 @@
 const path = require('path')
-const compress = require('compression')
-const cors = require('cors')
-const helmet = require('helmet')
-const bodyParser = require('body-parser')
 const proxyMiddleware = require('http-proxy-middleware')
 
 const feathers = require('feathers')
-const configuration = require('feathers-configuration')
-const hooks = require('feathers-hooks')
-const rest = require('feathers-rest')
-const socketio = require('feathers-socketio')
-
 const middleware = require('./middleware')
 const services = require('./services')
 const appHooks = require('./main.hooks')
 
-const authentication = require('./authentication')
-
-import { Database } from 'weacast-core'
+import { weacast, Database } from 'weacast-core'
 
 export class Server {
   constructor () {
-    this.app = feathers()
-    // Load app configuration
-    this.app.configure(configuration())
+    this.app = weacast()
     // Initialize DB
     this.app.db = Database.create(this.app)
     // Serve pure static assets
@@ -44,13 +31,6 @@ export class Server {
       }
       this.app.use(proxyMiddleware(context, options))
     })
-
-    // Enable CORS, security, compression, favicon and body parsing
-    this.app.use(cors())
-    this.app.use(helmet())
-    this.app.use(compress())
-    this.app.use(bodyParser.json())
-    this.app.use(bodyParser.urlencoded({ extended: true }))
   }
 
   async run () {
@@ -58,12 +38,6 @@ export class Server {
     await this.app.db.connect()
 
     const port = this.app.get('port')
-    // Set up Plugins and providers
-    this.app.configure(hooks())
-    this.app.configure(rest())
-    this.app.configure(socketio())
-
-    this.app.configure(authentication)
 
     // Set up our services (see `services/index.js`)
     this.app.configure(services)

@@ -117,7 +117,7 @@ export default {
     getUser (accessToken) {
       return api.passport.verifyJWT(accessToken)
       .then(payload => {
-        return api.service('users').get(payload.userId)
+        return api.getService('users').get(payload.userId)
       })
       .then(user => {
         this.$data.user = user
@@ -128,30 +128,27 @@ export default {
   mounted () {
     // Check if there is already a session running
     api.authenticate()
-    .then((response) => {
-      return this.getUser(response.accessToken)
-    })
     .then(user => {
       Toast.create.positive('Restoring previous session')
-      // Configure available forecast models
-      api.service('/forecasts').find()
-      .then(response => {
-        response.data.forEach(forecast => {
-          forecast.elements.forEach(element => {
-            // Declare element service
-            api.service('/' + forecast.name + '/' + element.name)
-          })
-        })
-        this.forecasts = response.data
-      })
     })
     .catch(_ => {
       this.$router.push({ name: 'home' })
-      // On successfull login
-      api.on('authenticated', response => {
-        this.getUser(response.accessToken)
-        .then(user => {
-          this.$router.push({ name: 'home' })
+    })
+    // On successfull login
+    api.on('authenticated', response => {
+      this.getUser(response.accessToken)
+      .then(user => {
+        this.$router.push({ name: 'home' })
+        // Configure available forecast models
+        api.getService('forecasts').find()
+        .then(response => {
+          response.data.forEach(forecast => {
+            forecast.elements.forEach(element => {
+              // Declare element service
+              api.getService(forecast.name + '/' + element.name)
+            })
+          })
+          this.forecasts = response.data
         })
       })
     })

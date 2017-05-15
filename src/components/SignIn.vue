@@ -19,7 +19,7 @@ export default {
       return this.$route.name === 'register'
     },
     register (email, password) {
-      return api.service('users').create({
+      return api.getService('users').create({
         email: email,
         password: password
       })
@@ -35,6 +35,8 @@ export default {
   mounted () {
     Dialog.create({
       title: this.isRegistration() ? 'Register' : 'Sign In',
+      noBackdropDismiss: true,
+      noEscDismiss: true,
       form: {
         email: {
           type: 'textbox',

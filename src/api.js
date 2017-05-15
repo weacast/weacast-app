@@ -1,15 +1,32 @@
 import feathers from 'feathers-client'
 import hooks from 'feathers-hooks'
 import io from 'socket.io-client'
-const socket = io('http://localhost:8081', {transports: ['websocket']})
+import config from 'config'
 
-const api = feathers()
+let api = feathers()
   .configure(hooks())
-  // .configure(feathers.rest('http://localhost:8080'))
-  .configure(feathers.socketio(socket))
-  .configure(feathers.authentication({ storage: window.localStorage }))
+  .configure(feathers.authentication({
+    storage: window.localStorage,
+    path: config.apiPath + '/authentication'
+  }))
 
-api.service('/users')
-api.service('/forecasts')
+// This avoid managing the API path before each service name
+api.getService = function (path) {
+  return api.service(config.apiPath + '/' + path)
+}
+
+if (config.transport === 'web-socket') {
+  let socket = io(window.location.origin, {
+    transports: ['websocket'],
+    path: config.apiPath + 'ws'
+  })
+  api.configure(feathers.socketio(socket))
+}
+else {
+  api.configure(feathers.rest(window.location.origin).fetch(window.fetch.bind(window)))
+}
+
+api.users = api.getService('users')
+api.forecasts = api.getService('forecasts')
 
 export default api

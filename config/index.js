@@ -47,13 +47,13 @@ module.exports = {
     // Proxy your API if using any.
     // Also see /build/script.dev.js and search for "proxy api requests"
     // https://github.com/chimurai/http-proxy-middleware
+    // Does not work well to manage API path with feathers, notably on WS
     proxyTable: {
       '/api': {
         target: 'http://localhost:8081',
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
+        ws: true,
+        logLevel: 'debug'
       }
     }
   }

@@ -46,12 +46,17 @@ compiler.plugin('compilation', function (compilation) {
 
 // proxy requests like API. See /config/index.js -> dev.proxyTable
 // https://github.com/chimurai/http-proxy-middleware
+var wsProxy = null
 Object.keys(proxyTable).forEach(function (context) {
   var options = proxyTable[context]
   if (typeof options === 'string') {
     options = { target: options }
   }
-  app.use(proxyMiddleware(context, options))
+  var proxy = proxyMiddleware(context, options)
+  app.use(proxy)
+  if (options.ws) {
+    wsProxy = proxy
+  }
 })
 
 // handle fallback for HTML5 history API
@@ -71,7 +76,7 @@ app.use(staticsPath, express.static('./src/statics'))
 // try to serve Cordova statics for Play App
 app.use(express.static(env.platform.cordovaAssets))
 
-module.exports = app.listen(port, function (err) {
+var server = app.listen(port, function (err) {
   if (err) {
     console.log(err)
     return
@@ -84,3 +89,9 @@ module.exports = app.listen(port, function (err) {
     })
   }
 })
+
+if (wsProxy) {
+  server.on('upgrade', wsProxy.upgrade)  // <-- subscribe to http 'upgrade'
+}
+
+module.exports = server

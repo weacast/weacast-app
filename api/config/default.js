@@ -2,6 +2,8 @@ var path = require('path')
 var containerized = require('containerized')()
 var clientConfig = require('../../config')
 
+var API_PREFIX = '/api'
+
 module.exports = {
   client: clientConfig,
 
@@ -12,7 +14,7 @@ module.exports = {
 
   port: process.env.PORT || 8081,
 
-  apiPath: '/api',
+  apiPath: API_PREFIX,
 
   host: 'localhost',
   paginate: {
@@ -25,8 +27,8 @@ module.exports = {
       'jwt',
       'local'
     ],
-    path: '/authentication',
-    service: 'users'
+    path: API_PREFIX + '/authentication',
+    service: API_PREFIX + '/users'
   },
   db: {
     adapter: 'mongodb',
@@ -51,7 +53,7 @@ module.exports = {
       oldestRunInterval: 24 * 3600,   // Don't go back in time older than 1 day
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
-      upperLimit: 102 * 3600,           // Up to T0+102
+      upperLimit: 102 * 3600,         // Up to T0+102
       updateInterval: 15 * 60,        // Check for update every 15 minutes
       elements: [
         {
