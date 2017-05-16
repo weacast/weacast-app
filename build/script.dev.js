@@ -54,9 +54,6 @@ Object.keys(proxyTable).forEach(function (context) {
   }
   var proxy = proxyMiddleware(context, options)
   app.use(proxy)
-  if (options.ws) {
-    wsProxy = proxy
-  }
 })
 
 // handle fallback for HTML5 history API
@@ -89,9 +86,5 @@ var server = app.listen(port, function (err) {
     })
   }
 })
-
-if (wsProxy) {
-  server.on('upgrade', wsProxy.upgrade)  // <-- subscribe to http 'upgrade'
-}
 
 module.exports = server

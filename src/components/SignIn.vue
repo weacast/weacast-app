@@ -19,7 +19,7 @@ export default {
       return this.$route.name === 'register'
     },
     register (email, password) {
-      return api.getService('users').create({
+      return api.users.create({
         email: email,
         password: password
       })

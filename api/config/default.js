@@ -54,7 +54,7 @@ module.exports = {
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
       upperLimit: 102 * 3600,         // Up to T0+102
-      updateInterval: 15 * 60,        // Check for update every 15 minutes
+      updateInterval: 0,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -98,7 +98,7 @@ module.exports = {
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
       upperLimit: 102 * 3600,           // Up to T0+102
-      updateInterval: 15 * 60,          // Check for update every 15 minutes
+      updateInterval: 0,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -140,7 +140,7 @@ module.exports = {
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
       upperLimit: 42 * 3600,            // Up to T0+42
-      updateInterval: 15 * 60,          // Check for update every 15 minutes
+      updateInterval: 0,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',

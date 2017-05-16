@@ -3,6 +3,7 @@ import logger from 'winston'
 import core, { createService } from 'weacast-core'
 import arpege from 'weacast-arpege'
 import arome from 'weacast-arome'
+import probe from 'weacast-probe'
 
 module.exports = function () {
   const app = this
@@ -13,6 +14,7 @@ module.exports = function () {
     app.configure(core)
     app.configure(arpege)
     app.configure(arome)
+    app.configure(probe)
   }
   catch (error) {
     logger.error(error.message)

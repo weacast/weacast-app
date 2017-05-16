@@ -117,7 +117,7 @@ export default {
     getUser (accessToken) {
       return api.passport.verifyJWT(accessToken)
       .then(payload => {
-        return api.getService('users').get(payload.userId)
+        return api.users.get(payload.userId)
       })
       .then(user => {
         this.$data.user = user
@@ -140,7 +140,7 @@ export default {
       .then(user => {
         this.$router.push({ name: 'home' })
         // Configure available forecast models
-        api.getService('forecasts').find()
+        api.forecasts.find()
         .then(response => {
           response.data.forEach(forecast => {
             forecast.elements.forEach(element => {
