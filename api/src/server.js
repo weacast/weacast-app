@@ -6,13 +6,11 @@ const middleware = require('./middleware')
 const services = require('./services')
 const appHooks = require('./main.hooks')
 
-import { weacast, Database } from 'weacast-core'
+import { weacast } from 'weacast-core'
 
 export class Server {
   constructor () {
     this.app = weacast()
-    // Initialize DB
-    this.app.db = Database.create(this.app)
     // Serve pure static assets
     if (process.env.NODE_ENV === 'production') {
       this.app.use(this.app.get('client').build.publicPath, feathers.static('../dist'))

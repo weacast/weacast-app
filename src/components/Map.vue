@@ -62,12 +62,11 @@ import 'leaflet-basemaps/L.Control.Basemaps.css'
 import 'leaflet-fullscreen/dist/Leaflet.fullscreen.js'
 import 'leaflet-fullscreen/dist/leaflet.fullscreen.css'
 import 'leaflet-filelayer'
-import 'leaflet-timedimension/dist/leaflet.timedimension.src.js'
 import 'leaflet-timedimension/dist/leaflet.timedimension.control.css'
 
-import FlowLayer from 'weacast-core/lib/layers/flow-layer.js'
+import { FlowLayer } from 'weacast-client'
 // Heat layer does not work well to represent scalar value at low resolution due to lat/lon distortions
-// import HeatLayer from 'weacast-core/lib/layers/heat-layer.js'
+// import { HeatLayer } from 'weacast-client'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -109,7 +108,7 @@ export default {
       if (this.temperature) {
         this.map.removeLayer(this.temperature)
       }
-      this.temperature = new HeatLayer({
+      this.temperature = new HeatLayer(api, {
         element: 'temperature',
         attribution: this.forecastModel.attribution
       })
@@ -120,14 +119,20 @@ export default {
       if (this.wind) {
         this.map.removeLayer(this.wind)
       }
-      this.wind = new FlowLayer({
+      this.wind = new FlowLayer(api, {
         uElement: 'u-wind',
         vElement: 'v-wind',
         attribution: this.forecastModel.attribution
       })
       this.map.addLayer(this.wind)
-      // Should come last so that we do not tirgger multiple updates of data
-      this.wind.setForecastModel(this.forecastModel)
+      // Should come last so that we do not trigger multiple updates of data
+      // For visualization we decimate the data resolution by 2
+      this.wind.setForecastModel({
+        name: this.forecastModel.name,
+        origin: this.forecastModel.origin,
+        size: [Math.floor(0.5 * this.forecastModel.size[0]), Math.floor(0.5 * this.forecastModel.size[1])],
+        resolution: [2 * this.forecastModel.resolution[0], 2 * this.forecastModel.resolution[1]]
+      })
     },
     probe () {
       // Set forecast elements to probe

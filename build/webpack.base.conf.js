@@ -44,7 +44,7 @@ webpackConfig = {
         test: /\.(vue|js)$/,
         loader: 'eslint-loader',
         include: projectRoot,
-        exclude: [/node_modules/, /weacast-core/],
+        exclude: [/node_modules/, /weacast-client/],
         options: {
           formatter: require('eslint-friendly-formatter')
         }
@@ -111,6 +111,10 @@ webpackConfig = {
     }),
     new ProgressBarPlugin({
       format: config.progressFormat
+    }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery'
     })
   ],
   performance: {
