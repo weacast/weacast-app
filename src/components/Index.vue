@@ -118,6 +118,9 @@ export default {
         this.$data.user = user
         return user
       })
+      .catch(_ => {
+        this.signout()
+      })
     }
   },
   mounted () {

@@ -53,8 +53,8 @@ module.exports = {
       oldestRunInterval: 24 * 3600,   // Don't go back in time older than 1 day
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
-      upperLimit: 102 * 3600,         // Up to T0+102
-      updateInterval: 0,        // Check for update every 15 minutes
+      upperLimit: 6 * 3600,         // Up to T0+102
+      updateInterval: 15 * 60,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -97,8 +97,8 @@ module.exports = {
       oldestRunInterval: 24 * 3600,     // Don't go back in time older than 1 day
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
-      upperLimit: 102 * 3600,           // Up to T0+102
-      updateInterval: 0,          // Check for update every 15 minutes
+      upperLimit: 3 * 3600,           // Up to T0+102
+      updateInterval: 15 * 60,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -139,8 +139,8 @@ module.exports = {
       oldestRunInterval: 24 * 3600,     // Don't go back in time older than 1 day
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
-      upperLimit: 42 * 3600,            // Up to T0+42
-      updateInterval: 0,          // Check for update every 15 minutes
+      upperLimit: 1 * 3600,            // Up to T0+42
+      updateInterval: 15 * 60,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',

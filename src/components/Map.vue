@@ -134,14 +134,21 @@ export default {
         resolution: [2 * this.forecastModel.resolution[0], 2 * this.forecastModel.resolution[1]]
       })
     },
-    probe () {
+    async probe () {
+      // Not yet ready
+      if (!this.forecastModel) return
+
+      if (this.userProbe) {
+        // Remove old probe
+        await api.probes.remove(this.userProbe._id)
+      }
       // Set forecast elements to probe
-      this.userGeoJson.properties = {
+      Object.assign(this.userGeoJson, {
         forecast: this.forecastModel.name,
         elements: ['u-wind', 'v-wind'],
         time: this.currentTime.toISOString()
-      }
-      return api.probes
+      })
+      await api.probes
       .create(this.userGeoJson)
       .then(response => {
         this.userProbe = response
@@ -150,10 +157,8 @@ export default {
     },
     currentTimeChanged () {
       if (this.userProbe) {
-        // Remove old probe
-        api.probes.remove(this.userProbe._id)
-        // Create new one for new time
-        .then(_ => this.probe())
+        // Create new probe for new time
+        this.probe()
       }
     },
     getPropertyList () {
@@ -166,48 +171,57 @@ export default {
       })
     },
     searchWeatherConditions () {
-      let bestLocation, bestDirection, bestSpeed
-      let minDelta = 999
-      this.userProbe.features.forEach(location => {
-        let u = Object.values(location.properties[this.forecastModel.name + '/u-wind'])[0]
-        let v = Object.values(location.properties[this.forecastModel.name + '/v-wind'])[0]
-        let norm = Math.sqrt(u * u + v * v)
-        let degrees = 180.0 + Math.atan2(u, v) * 180.0 / Math.PI
-        let direction = this.weather.windDirection
-        if (this.weather.windProperty) {
-          direction += parseFloat(location.properties[this.weather.windProperty])
-          if (direction > 360) direction -= 360
-        }
-        let directionDelta = Math.abs(degrees - direction)
-        let speedDelta = Math.abs(norm - this.weather.windSpeed)
-        let delta = 0.5 * directionDelta / 360 + 0.5 * speedDelta / 50
-        if (delta < minDelta) {
-          minDelta = delta
-          bestDirection = degrees
-          bestSpeed = norm
-          bestLocation = location
+      api.probeResults.find({
+        query: {
+          forecastTime: this.currentTime.toISOString(),
+          probeId: this.userProbe._id,
+          $paginate: false
         }
       })
-      if (bestLocation) {
-        Dialog.create({
-          title: 'Results',
-          message: (this.weather.labelProperty ? bestLocation.properties[this.weather.labelProperty] : 'Location ') + ' with ' + bestDirection.toFixed(2) + '° and ' + bestSpeed.toFixed(2) + ' m/s',
-          buttons: [
-            {
-              label: 'LOCATE',
-              handler: () => {
-                this.map.setView(new L.LatLng(bestLocation.geometry.coordinates[1], bestLocation.geometry.coordinates[0]), 12)
+      .then(locations => {
+        let bestLocation, bestDirection, bestSpeed
+        let minDelta = 999
+        locations.forEach(location => {
+          let u = location.properties['u-wind']
+          let v = location.properties['v-wind']
+          let norm = Math.sqrt(u * u + v * v)
+          let degrees = 180.0 + Math.atan2(u, v) * 180.0 / Math.PI
+          let direction = this.weather.windDirection
+          if (this.weather.windProperty) {
+            direction += parseFloat(location.properties[this.weather.windProperty])
+            if (direction > 360) direction -= 360
+          }
+          let directionDelta = Math.abs(degrees - direction)
+          let speedDelta = Math.abs(norm - this.weather.windSpeed)
+          let delta = 0.5 * directionDelta / 360 + 0.5 * speedDelta / 50
+          if (delta < minDelta) {
+            minDelta = delta
+            bestDirection = degrees
+            bestSpeed = norm
+            bestLocation = location
+          }
+        })
+        if (bestLocation) {
+          Dialog.create({
+            title: 'Results',
+            message: (this.weather.labelProperty ? bestLocation.properties[this.weather.labelProperty] : 'Location ') + ' with ' + bestDirection.toFixed(2) + '° and ' + bestSpeed.toFixed(2) + ' m/s',
+            buttons: [
+              {
+                label: 'LOCATE',
+                handler: () => {
+                  this.map.setView(new L.LatLng(bestLocation.geometry.coordinates[1], bestLocation.geometry.coordinates[0]), 12)
+                }
               }
-            }
-          ]
-        })
-      }
-      else {
-        Dialog.create({
-          title: 'Alert',
-          message: 'No matching airport found for your input.'
-        })
-      }
+            ]
+          })
+        }
+        else {
+          Dialog.create({
+            title: 'Alert',
+            message: 'No matching airport found for your input.'
+          })
+        }
+      })
     }
   },
   mounted () {
