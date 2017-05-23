@@ -28,7 +28,7 @@
               title="Label property"
             ></q-dialog-select>
           </div>
-          <div>
+          <div v-if="this.userProbe">
             <p class="caption">Direction property</p>
             <q-dialog-select
               type="radio"
@@ -43,7 +43,7 @@
       </div>
       <button class="orange" @click="$refs.weatherModal.close()">Search</button>
     </q-modal>
-    <button v-if="this.userProbe" class="white circular absolute-bottom-right" style="margin-bottom: 6em; margin-right: 1em" @click="$refs.weatherModal.open()">
+    <button v-if="getProbe()" class="white circular absolute-bottom-right" style="margin-bottom: 6em; margin-right: 1em" @click="$refs.weatherModal.open()">
       <i>search</i>
     </button>
   </div>
@@ -86,6 +86,7 @@ export default {
         windProperty: '',
         labelProperty: ''
       },
+      defaultProbes: [],
       userProbe: null
     }
   },
@@ -103,53 +104,58 @@ export default {
     setupForecastLayers () {
       // Not yet ready
       if (!this.forecastModel) return
-
+      // For visualization we decimate the data resolution by 2 for performance reasons
+      let visualModel = {
+        name: this.forecastModel.name,
+        origin: this.forecastModel.origin,
+        bounds: this.forecastModel.bounds,
+        size: [Math.floor(0.5 * this.forecastModel.size[0]), Math.floor(0.5 * this.forecastModel.size[1])],
+        resolution: [2 * this.forecastModel.resolution[0], 2 * this.forecastModel.resolution[1]]
+      }
       /*
       if (this.temperature) {
         this.map.removeLayer(this.temperature)
       }
       this.temperature = new HeatLayer(api, {
-        element: 'temperature',
+        elements: ['temperature'],
         attribution: this.forecastModel.attribution
       })
       this.map.addLayer(this.temperature)
       // Should come last so that we do not tirgger multiple updates of data
-      this.temperature.setForecastModel(this.forecastModel)
+      this.temperature.setForecastModel(visualModel)
       */
       if (this.wind) {
         this.map.removeLayer(this.wind)
       }
       this.wind = new FlowLayer(api, {
-        uElement: 'u-wind',
-        vElement: 'v-wind',
+        elements: ['u-wind', 'v-wind'],
         attribution: this.forecastModel.attribution
       })
       this.map.addLayer(this.wind)
       // Should come last so that we do not trigger multiple updates of data
-      // For visualization we decimate the data resolution by 2
-      this.wind.setForecastModel({
-        name: this.forecastModel.name,
-        origin: this.forecastModel.origin,
-        size: [Math.floor(0.5 * this.forecastModel.size[0]), Math.floor(0.5 * this.forecastModel.size[1])],
-        resolution: [2 * this.forecastModel.resolution[0], 2 * this.forecastModel.resolution[1]]
+      this.wind.setForecastModel(visualModel)
+    },
+    setupDefaultProbe () {
+      api.probes.find({ query: { $paginate: false, $select: ['forecast', 'elements', 'features'] } })
+      .then(probes => {
+        this.defaultProbes = probes
       })
     },
     async probe () {
       // Not yet ready
       if (!this.forecastModel) return
 
-      if (this.userProbe) {
-        // Remove old probe
-        await api.probes.remove(this.userProbe._id)
-      }
       // Set forecast elements to probe
-      Object.assign(this.userGeoJson, {
+      Object.assign(this.userProbe, {
         forecast: this.forecastModel.name,
-        elements: ['u-wind', 'v-wind'],
-        time: this.currentTime.toISOString()
+        elements: ['u-wind', 'v-wind']
       })
       await api.probes
-      .create(this.userGeoJson)
+      .create(this.userProbe, {
+        query: {
+          forecastTime: this.currentTime.toISOString()
+        }
+      })
       .then(response => {
         this.userProbe = response
         Toast.create.positive('Forecast data has been probed for your layer you can now search matching conditions')
@@ -157,71 +163,84 @@ export default {
     },
     currentTimeChanged () {
       if (this.userProbe) {
-        // Create new probe for new time
+        // Perform new probe for new time
         this.probe()
       }
     },
+    getProbe () {
+      // User probe is  having priority
+      if (this.userProbe) return this.userProbe
+      if (this.forecastModel && this.defaultProbes.length > 0) return this.defaultProbes.find(probe => probe.forecast === this.forecastModel.name)
+      return null
+    },
     getPropertyList () {
-      if (!this.userProbe) return []
-      return Object.keys(this.userProbe.features[0].properties).map(property => {
+      if (!this.getProbe()) return []
+      return Object.keys(this.getProbe().features[0].properties).map(property => {
         return {
           label: property,
           value: property
         }
       })
     },
-    searchWeatherConditions () {
-      api.probeResults.find({
-        query: {
-          forecastTime: this.currentTime.toISOString(),
-          probeId: this.userProbe._id,
-          $paginate: false
-        }
-      })
-      .then(locations => {
-        let bestLocation, bestDirection, bestSpeed
-        let minDelta = 999
-        locations.forEach(location => {
-          let u = location.properties['u-wind']
-          let v = location.properties['v-wind']
-          let norm = Math.sqrt(u * u + v * v)
-          let degrees = 180.0 + Math.atan2(u, v) * 180.0 / Math.PI
-          let direction = this.weather.windDirection
-          if (this.weather.windProperty) {
-            direction += parseFloat(location.properties[this.weather.windProperty])
-            if (direction > 360) direction -= 360
+    async searchWeatherConditions () {
+      let locations = null
+      // Default probe is streamed so we need to retrieve results first
+      if (!this.userProbe) {
+        locations = await api.probeResults.find({
+          query: {
+            forecastTime: this.currentTime.toISOString(),
+            probeId: this.getProbe()._id,
+            $paginate: false
           }
-          let directionDelta = Math.abs(degrees - direction)
-          let speedDelta = Math.abs(norm - this.weather.windSpeed)
+        })
+      }
+      else {
+        locations = this.userProbe.features
+      }
+
+      let bestLocation, bestDirection, bestSpeed
+      let minDelta = 999
+      locations.forEach(location => {
+        let windDirection = location.properties['windDirection']
+        let windSpeed = location.properties['windSpeed']
+        // It might happen values are missing if location is outside forecast model bounds
+        if (windDirection && windSpeed) {
+          let targetDirection = this.weather.windDirection
+          if (this.weather.windProperty) {
+            targetDirection += parseFloat(location.properties[this.weather.windProperty])
+            if (targetDirection > 360) targetDirection -= 360
+          }
+          let directionDelta = Math.abs(windDirection - targetDirection)
+          let speedDelta = Math.abs(windSpeed - this.weather.windSpeed)
           let delta = 0.5 * directionDelta / 360 + 0.5 * speedDelta / 50
           if (delta < minDelta) {
             minDelta = delta
-            bestDirection = degrees
-            bestSpeed = norm
+            bestDirection = windDirection
+            bestSpeed = windSpeed
             bestLocation = location
           }
-        })
-        if (bestLocation) {
-          Dialog.create({
-            title: 'Results',
-            message: (this.weather.labelProperty ? bestLocation.properties[this.weather.labelProperty] : 'Location ') + ' with ' + bestDirection.toFixed(2) + '° and ' + bestSpeed.toFixed(2) + ' m/s',
-            buttons: [
-              {
-                label: 'LOCATE',
-                handler: () => {
-                  this.map.setView(new L.LatLng(bestLocation.geometry.coordinates[1], bestLocation.geometry.coordinates[0]), 12)
-                }
-              }
-            ]
-          })
-        }
-        else {
-          Dialog.create({
-            title: 'Alert',
-            message: 'No matching airport found for your input.'
-          })
         }
       })
+      if (bestLocation) {
+        Dialog.create({
+          title: 'Results',
+          message: (this.weather.labelProperty ? bestLocation.properties[this.weather.labelProperty] : 'Location ') + ' with ' + bestDirection.toFixed(2) + '° and ' + bestSpeed.toFixed(2) + ' m/s',
+          buttons: [
+            {
+              label: 'LOCATE',
+              handler: () => {
+                this.map.setView(new L.LatLng(bestLocation.geometry.coordinates[1], bestLocation.geometry.coordinates[0]), 12)
+              }
+            }
+          ]
+        })
+      }
+      else {
+        Dialog.create({
+          title: 'Alert',
+          message: 'No matching airport found for your input.'
+        })
+      }
     }
   },
   mounted () {
@@ -242,6 +261,7 @@ export default {
 
     this.setupBaseLayers()
     this.setupForecastLayers()
+    this.setupDefaultProbe()
 
     var scaleControl = L.control.scale()
     scaleControl.addTo(map)
@@ -324,7 +344,7 @@ export default {
       switchControl.addOverlay(event.layer, event.filename)
       // Keep track of layer
       this.userLayer = event.layer
-      this.userGeoJson = this.userLayer.toGeoJSON()
+      this.userProbe = this.userLayer.toGeoJSON()
       // Perform probing
       this.probe()
     })
