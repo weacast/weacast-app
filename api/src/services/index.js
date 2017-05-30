@@ -23,31 +23,40 @@ module.exports = function () {
 
   let probesService = app.getService('probes')
 
-  // Create a default user if not already done
+  // Create default users if not already done
   usersService.find({ paginate: false })
   .then(users => {
-    if (users.length === 0) {
-      logger.info('Initializing default user (email = weacast@weacast.org, password = weacast)')
-      usersService.create({
-        email: 'weacast@weacast.org',
-        password: 'weacast'
-      })
-    }
+    app.get('authentication').defaultUsers.forEach(defaultUser => {
+      let createdUser = users.find(user => user.email === defaultUser.email)
+      if (!createdUser) {
+        logger.info('Initializing default user (email = ' + user.email + ', password = ' + user.password + ')')
+        usersService.create({
+          email: 'weacast@weacast.org',
+          password: 'weacast'
+        })
+      }
+    })
   })
   // Create a default probe if not already done
-  probesService.find({ paginate: false })
-  .then(async probes => {
-    if (probes.length === 0) {
-      let geojson = fs.readJsonSync(path.join(__dirname, '..', '..', 'data', 'ne_10m_airports.geojson'))
-      // One probe for each forecast model and elements
-      for (let forecast of app.get('forecasts')) {
-        logger.info('Initializing default probe for forecast model ' + forecast.name)
-        Object.assign(geojson, {
-          forecast: forecast.name,
-          elements: forecast.elements.map(element => element.name)
-        })
-        await probesService.create(geojson)
+  probesService.find({ paginate: false, query: { $select: ['']} })
+  .then(probes => {
+    app.get('defaultProbes').forEach(async defaultProbe => {
+      const probeName = path.parse(defaultProbe.fileName).name
+      let createdProbe = probes.find(probe => probe.name === probeName)
+      if (!createdProbe) {
+        let geojson = fs.readJsonSync(path.join(app.get('probePath'), defaultProbe.fileName))
+        // One probe for each forecast model and elements
+        for (let forecast of app.get('forecasts')) {
+          logger.info('Initializing default probe ' + defaultProbe.fileName + ' for forecast model ' + forecast.name)
+          let options = Object.assign({
+            name: probeName,
+            forecast: forecast.name,
+            elements: forecast.elements.map(element => element.name)
+          }, defaultProbe.options)
+          Object.assign(geojson, options)
+          await probesService.create(geojson)
+        }
       }
-    }
+    })
   })
 }

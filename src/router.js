@@ -1,11 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { loadComponentForRoute } from './utils'
 
 Vue.use(VueRouter)
-
-function load (component) {
-  return () => System.import(`components/${component}.vue`)
-}
 
 export default new VueRouter({
   /*
@@ -23,33 +20,33 @@ export default new VueRouter({
   routes: [
     {
       path: '/',
-      component: load('Index'),
+      component: loadComponentForRoute('Index'),
       children: [
         {
           path: '/home',
           name: 'home',
-          component: load('Home')
+          component: loadComponentForRoute('Home')
         },
         {
           path: '/signin',
           name: 'signin',
-          component: load('SignIn')
+          component: loadComponentForRoute('SignIn')
         },
         {
           path: '/register',
           name: 'register',
-          component: load('SignIn')
+          component: loadComponentForRoute('SignIn')
         },
         {
           path: '/map',
           name: 'map',
-          component: load('Map')
+          component: loadComponentForRoute('Map')
         }
       ]
     },
     {
       path: '*',
-      component: load('Error404')
+      component: loadComponentForRoute('Error404')
     } // Not found
   ]
 })

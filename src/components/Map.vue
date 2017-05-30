@@ -1,72 +1,24 @@
 <template>
   <!-- root node required -->
   <div>
-    <!-- your content -->
     <div id="map"></div>
-    <q-modal ref="weatherModal" @close="searchWeatherConditions()" :content-css="{padding: '20px', minWidth: '30vw'}">
-      <h5>Weather conditions</h5>
-      <div>
-        <div class="row justify-around">
-          <div>
-            <p class="caption">Wind speed (m/s)</p>
-            <q-range v-model="weather.windSpeed" :min="0" :max="20" :step="0.5" label></q-range>
-          </div>
-          <div>
-            <p class="caption">Wind direction (°)</p>
-            <q-knob v-model="weather.windDirection" :placeholder="weather.windDirection+'°'" :min="0" :max="360"></q-knob>
-          </div>
-        </div>
-        <div class="row justify-around">
-          <div>
-            <p class="caption">Label property</p>
-            <q-dialog-select
-              type="radio"
-              v-model="weather.labelProperty"
-              :options="getPropertyList()"
-              ok-label="OK"
-              cancel-label="Cancel"
-              title="Label property"
-            ></q-dialog-select>
-          </div>
-          <div v-if="this.userProbe">
-            <p class="caption">Direction property</p>
-            <q-dialog-select
-              type="radio"
-              v-model="weather.windProperty"
-              :options="getPropertyList()"
-              ok-label="OK"
-              cancel-label="Cancel"
-              title="Direction property"
-            ></q-dialog-select>
-          </div>
-        </div>
-      </div>
-      <button class="orange" @click="$refs.weatherModal.close()">Search</button>
-    </q-modal>
-    <button v-if="getProbe()" class="white circular absolute-bottom-right" style="margin-bottom: 6em; margin-right: 1em" @click="$refs.weatherModal.open()">
-      <i>search</i>
-    </button>
+    <component is="seeker" :probe="probe" :current-time="currentTime" @center="center"></component>
   </div>
 </template>
 
 <script>
-import { Toast, Dialog } from 'quasar'
-import config from 'config'
-import api from 'src/api'
+import { Toast } from 'quasar'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import 'leaflet-measure/dist/leaflet-measure.js'
-import 'leaflet-measure/dist/leaflet-measure.css'
-import 'leaflet-basemaps/L.Control.Basemaps.js'
-import 'leaflet-basemaps/L.Control.Basemaps.css'
-import 'leaflet-fullscreen/dist/Leaflet.fullscreen.js'
-import 'leaflet-fullscreen/dist/leaflet.fullscreen.css'
-import 'leaflet-filelayer'
-import 'leaflet-timedimension/dist/leaflet.timedimension.control.css'
 
-import { FlowLayer } from 'weacast-client'
-// Heat layer does not work well to represent scalar value at low resolution due to lat/lon distortions
-// import { HeatLayer } from 'weacast-client'
+import { MixinStore } from 'weacast-client'
+
+import config from 'config'
+import api from 'src/api'
+
+// FIXME : Dynamic component loading based on config does not work
+// import seeker from './WindSeeker'
+import seeker from './RunwaySeeker'
 
 delete L.Icon.Default.prototype._getIconUrl
 L.Icon.Default.mergeOptions({
@@ -77,276 +29,98 @@ L.Icon.Default.mergeOptions({
 
 export default {
   props: ['forecastModel'],
+  // Make the seeker component available to Vue but take care that in config we have the element name not the file name
+  components: {
+    // FIXME : Dynamic component loading based on config does not work
+    // seeker: loadComponent(config.seeker)
+    seeker: seeker
+  },
+  // Jump from mixin names to mixin objects
+  mixins: config.map.mixins.map(mixinName => MixinStore.get(mixinName)),
   data () {
     return {
-      baseLayers: [],
-      weather: {
-        windDirection: 0.0,
-        windSpeed: 10,
-        windProperty: '',
-        labelProperty: ''
-      },
-      defaultProbes: [],
-      userProbe: null
+      currentTime: null
     }
   },
   watch: {
     forecastModel: function (model) {
-      this.setupForecastLayers()
+      this.setupDefaultProbe()
     }
   },
   methods: {
-    setupBaseLayers () {
-      config.baseLayers.forEach(baseLayer => {
-        this.baseLayers.push(L[baseLayer.type](...baseLayer.arguments))
-      })
+    setupControls () {
+      this.controls.forEach(control => control.addTo(this.map))
     },
-    setupForecastLayers () {
+    center (longitude, latitude, zoomLevel) {
+      this.map.setView(new L.LatLng(latitude, longitude), zoomLevel || 12)
+    },
+    async setupDefaultProbe () {
       // Not yet ready
       if (!this.forecastModel) return
-      // For visualization we decimate the data resolution by 2 for performance reasons
-      let visualModel = {
-        name: this.forecastModel.name,
-        origin: this.forecastModel.origin,
-        bounds: this.forecastModel.bounds,
-        size: [Math.floor(0.5 * this.forecastModel.size[0]), Math.floor(0.5 * this.forecastModel.size[1])],
-        resolution: [2 * this.forecastModel.resolution[0], 2 * this.forecastModel.resolution[1]]
+      // Retrieve the available probes
+      let probes = await api.probes.find({ query: { $paginate: false, $select: ['elements', 'forecast'] } })
+      // Find the right one for current model
+      this.defaultProbe = probes.find(probe => probe.forecast === this.forecastModel.name)
+      if (this.defaultProbe) {
+        Toast.create.positive('Forecast data has been probed you can now search matching conditions')
+        // Update content to get features
+        this.defaultProbe = await api.probes.get(this.defaultProbe._id, { query: { $select: ['elements', 'forecast', 'features'] } })
+        this.probe = this.defaultProbe
       }
-      /*
-      if (this.temperature) {
-        this.map.removeLayer(this.temperature)
+      else {
+        Toast.create.negative('Forecast data has not been probed you cannot search matching weather conditions')
       }
-      this.temperature = new HeatLayer(api, {
-        elements: ['temperature'],
-        attribution: this.forecastModel.attribution
-      })
-      this.map.addLayer(this.temperature)
-      // Should come last so that we do not tirgger multiple updates of data
-      this.temperature.setForecastModel(visualModel)
-      */
-      if (this.wind) {
-        this.map.removeLayer(this.wind)
-      }
-      this.wind = new FlowLayer(api, {
-        elements: ['u-wind', 'v-wind'],
-        attribution: this.forecastModel.attribution
-      })
-      this.map.addLayer(this.wind)
-      // Should come last so that we do not trigger multiple updates of data
-      this.wind.setForecastModel(visualModel)
     },
-    setupDefaultProbe () {
-      api.probes.find({ query: { $paginate: false, $select: ['forecast', 'elements', 'features'] } })
-      .then(probes => {
-        this.defaultProbes = probes
-      })
-    },
-    async probe () {
+    async probe (geojson) {
       // Not yet ready
       if (!this.forecastModel) return
 
       // Set forecast elements to probe
-      Object.assign(this.userProbe, {
+      Object.assign(geojson, {
         forecast: this.forecastModel.name,
         elements: ['u-wind', 'v-wind']
       })
       await api.probes
-      .create(this.userProbe, {
+      .create(geojson, {
         query: {
           forecastTime: this.currentTime.toISOString()
         }
       })
       .then(response => {
         this.userProbe = response
+        this.probe = this.userProbe
         Toast.create.positive('Forecast data has been probed for your layer you can now search matching conditions')
       })
-    },
-    currentTimeChanged () {
-      if (this.userProbe) {
-        // Perform new probe for new time
-        this.probe()
-      }
-    },
-    getProbe () {
-      // User probe is  having priority
-      if (this.userProbe) return this.userProbe
-      if (this.forecastModel && this.defaultProbes.length > 0) return this.defaultProbes.find(probe => probe.forecast === this.forecastModel.name)
-      return null
-    },
-    getPropertyList () {
-      if (!this.getProbe()) return []
-      return Object.keys(this.getProbe().features[0].properties).map(property => {
-        return {
-          label: property,
-          value: property
-        }
-      })
-    },
-    async searchWeatherConditions () {
-      let locations = null
-      // Default probe is streamed so we need to retrieve results first
-      if (!this.userProbe) {
-        locations = await api.probeResults.find({
-          query: {
-            forecastTime: this.currentTime.toISOString(),
-            probeId: this.getProbe()._id,
-            $paginate: false
-          }
-        })
-      }
-      else {
-        locations = this.userProbe.features
-      }
-
-      let bestLocation, bestDirection, bestSpeed
-      let minDelta = 999
-      locations.forEach(location => {
-        let windDirection = location.properties['windDirection']
-        let windSpeed = location.properties['windSpeed']
-        // It might happen values are missing if location is outside forecast model bounds
-        if (windDirection && windSpeed) {
-          let targetDirection = this.weather.windDirection
-          if (this.weather.windProperty) {
-            targetDirection += parseFloat(location.properties[this.weather.windProperty])
-            if (targetDirection > 360) targetDirection -= 360
-          }
-          let directionDelta = Math.abs(windDirection - targetDirection)
-          let speedDelta = Math.abs(windSpeed - this.weather.windSpeed)
-          let delta = 0.5 * directionDelta / 360 + 0.5 * speedDelta / 50
-          if (delta < minDelta) {
-            minDelta = delta
-            bestDirection = windDirection
-            bestSpeed = windSpeed
-            bestLocation = location
-          }
-        }
-      })
-      if (bestLocation) {
-        Dialog.create({
-          title: 'Results',
-          message: (this.weather.labelProperty ? bestLocation.properties[this.weather.labelProperty] : 'Location ') + ' with ' + bestDirection.toFixed(2) + '° and ' + bestSpeed.toFixed(2) + ' m/s',
-          buttons: [
-            {
-              label: 'LOCATE',
-              handler: () => {
-                this.map.setView(new L.LatLng(bestLocation.geometry.coordinates[1], bestLocation.geometry.coordinates[0]), 12)
-              }
-            }
-          ]
-        })
-      }
-      else {
-        Dialog.create({
-          title: 'Alert',
-          message: 'No matching airport found for your input.'
-        })
-      }
     }
   },
+  beforeCreate () {
+    // Store configuration object (map section) first to make it available
+    // to the whole lifecycle and mixins
+    this.configuration = config.map
+    // Ibid for API
+    this.api = api
+  },
+  created () {
+    // This is the right place to declare private members because Vue has already processed observed data
+    this.controls = []
+  },
   mounted () {
-    var map = L.map('map', {
-      timeDimension: true,
-      timeDimensionControl: true,
-      timeDimensionControlOptions: {
-        position: 'bottomright',
-        speedSlider: false,
-        playButton: false
-      }
-    }).setView([46.578992, -0.294869], 10)
-    this.map = map
-    map.timeDimension.on('timeload', data => {
-      this.currentTime = new Date(data.time)
-      this.currentTimeChanged()
-    })
-
-    this.setupBaseLayers()
-    this.setupForecastLayers()
+    // Initialize the map now the DOM is ready
+    this.map = L.map('map').setView([46.578992, -0.294869], 10)
+    this.setupControls()
     this.setupDefaultProbe()
 
-    var scaleControl = L.control.scale()
-    scaleControl.addTo(map)
-
-    this.basemapsControl = L.control.basemaps({
-      basemaps: this.baseLayers,
-      position: 'bottomleft',
-      tileX: 0,  // tile X coordinate
-      tileY: 0,  // tile Y coordinate
-      tileZ: 1   // tile zoom level
-    })
-    this.basemapsControl.addTo(map)
-
-    var measureControl = new L.Control.Measure({ position: 'topright' })
-    measureControl.addTo(map)
-
-    // This one is used to add custom user layers
-    var switchControl = L.control.layers([], [])
-    switchControl.addTo(map)
-    switchControl.getContainer().style.visibility = 'hidden'
-
-    var fullscreenControl = new L.Control.Fullscreen()
-    fullscreenControl.addTo(map)
-
-    var geojsonOptions = {
-      onEachFeature: function (feature, layer) {
-        layer.bindPopup(Object.keys(feature.properties).map(function (k) {
-          return k + ': ' + feature.properties[k]
-        }).join('<br />'), {
-          maxHeight: 200
-        })
-      },
-      style: function (feature) {
-        return {
-          opacity: 1,
-          radius: 6,
-          color: 'red',
-          fillOpacity: 0.5,
-          fillColor: 'green'
-        }
-      },
-      pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, {
-          opacity: 1,
-          color: 'red',
-          fillOpacity: 0.5,
-          fillColor: 'green'
-        })
+    this.$emit('ready')
+    this.$on('center', (longitude, latitude, zoomLevel) => this.center(longitude, latitude, zoomLevel))
+    this.$on('currentTimeChanged', currentTime => {
+      if (this.userProbe) {
+        // Perform new on-demand probe for new time
+        this.probe(this.userProbe)
       }
-    }
-
-    L.Control.FileLayerLoad.LABEL = '<i class="material-icons">file_upload</i>'
-    this.fileControl = L.Control.fileLayerLoad({
-      // Allows you to use a customized version of L.geoJson.
-      // For example if you are using the Proj4Leaflet leaflet plugin,
-      // you can pass L.Proj.geoJson and load the files into the
-      // L.Proj.GeoJson instead of the L.geoJson.
-      layer: L.geoJson,
-      // See http://leafletjs.com/reference.html#geojson-options
-      layerOptions: geojsonOptions,
-      // Add to map after loading (default: true) ?
-      addToMap: true,
-      // File size limit in kb (default: 1024) ?
-      fileSizeLimit: 1024 * 1024,
-      // Restrict accepted file formats (default: .geojson, .kml, and .gpx) ?
-      formats: [
-        '.geojson',
-        '.kml'
-      ]
     })
-    this.fileControl.addTo(map)
-    this.fileControl.loader.on('data:loaded', event => {
-      // Remove any previous layer
-      if (this.userLayer) {
-        switchControl.removeLayer(this.userLayer)
-        this.map.removeLayer(this.userLayer)
-      }
-      switchControl.getContainer().style.visibility = 'visible'
-      // Add to map layer switcher
-      switchControl.addOverlay(event.layer, event.filename)
-      // Keep track of layer
-      this.userLayer = event.layer
-      this.userProbe = this.userLayer.toGeoJSON()
+    this.$on('fileLayerLoaded', (fileLayer, filename) => {
       // Perform probing
-      this.probe()
+      this.probe(fileLayer.toGeoJSON())
     })
   },
   beforeDestroy () {

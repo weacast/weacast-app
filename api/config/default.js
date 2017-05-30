@@ -28,20 +28,39 @@ module.exports = {
       'local'
     ],
     path: API_PREFIX + '/authentication',
-    service: API_PREFIX + '/users'
+    service: API_PREFIX + '/users',
+    defaultUsers: [
+      {
+        email: 'weacast@weacast.org',
+        password: 'weacast'
+      }
+    ]
   },
   db: {
     adapter: 'mongodb',
-    path: path.join(__dirname, '../db-data'),
+    path: path.join(__dirname, '..', 'db-data'),
     url: process.env.DB_URL || (containerized ? 'mongodb://mongodb:27017/weacast' : 'mongodb://127.0.0.1:27017/weacast')
   },
-  forecastPath: path.join(__dirname, '../forecast-data'),
+  probePath: path.join(__dirname, '..', 'probe-data'),
+  defaultProbes: [
+    /*
+    {
+      fileName: 'ne_10m_airports.geojson'
+    },
+    */
+    {
+      fileName: 'runways.geojson',
+      options: {
+        windBearingProperty: 'MagBearing'
+      }
+    }
+  ],
+  forecastPath: path.join(__dirname, '..', 'forecast-data'),
   forecasts: [
     {
       name: 'arpege-world',
       label: 'ARPEGE - 0.5°',
       description: 'World-wide',
-      attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
       model: 'arpege',
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-GLOBAL-ARPEGE-05-GLOBE-WCS?SERVICE=WCS&version=2.0.1',
@@ -54,7 +73,7 @@ module.exports = {
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
       upperLimit: 102 * 3600,         // Up to T0+102
-      updateInterval: 15 * 60,        // Check for update every 15 minutes
+      updateInterval: 0,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -78,14 +97,16 @@ module.exports = {
           subsets: {
             height: 10
           }
-        }/*,
+        }
+        /*,
         {
           name: 'temperature',
           coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
             height: 2
           }
-        }*/
+        }
+        */
       ]
     },
     {
@@ -127,21 +148,22 @@ module.exports = {
           subsets: {
             height: 10
           }
-        }/*,
+        }
+        /*,
         {
           name: 'temperature',
           coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
             height: 2
           }
-        }*/
+        }
+        */
       ]
     },
     {
       name: 'arome-france',
       label: 'AROME - 0.025°',
       description: 'France',
-      attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
       model: 'arome',
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-HIGHRES-AROME-0025-FRANCE-WCS?SERVICE=WCS&version=2.0.1',
@@ -154,7 +176,7 @@ module.exports = {
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
       upperLimit: 42 * 3600,            // Up to T0+42
-      updateInterval: 15 * 60,          // Check for update every 15 minutes
+      updateInterval: 0,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -176,14 +198,16 @@ module.exports = {
           subsets: {
             height: 10
           }
-        }/*,
+        }
+        /*,
         {
           name: 'temperature',
           coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
             height: 2
           }
-        }*/
+        }
+        */
       ]
     }
     // This model generates too much data to be stored in MongoDB documents (limited to 16 MB)
@@ -194,7 +218,6 @@ module.exports = {
       name: 'arome-france-high',
       label: 'AROME - 0.01°',
       description: 'France',
-      attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
       model: 'arome',
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-HIGHRES-AROME-001-FRANCE-WCS?SERVICE=WCS&version=2.0.1',

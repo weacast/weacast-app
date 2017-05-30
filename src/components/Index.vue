@@ -136,7 +136,10 @@ export default {
     api.on('authenticated', response => {
       this.getUser(response.accessToken)
       .then(user => {
-        this.$router.push({ name: 'home' })
+        // If no route
+        if (!this.$route.name) {
+          this.$router.push({ name: 'home' })
+        }
         // Configure available forecast models
         api.forecasts.find()
         .then(response => {
