@@ -38,7 +38,7 @@ module.exports = function () {
     })
   })
   // Create a default probe if not already done
-  probesService.find({ paginate: false, query: { $select: ['']} })
+  probesService.find({ paginate: false, query: { $select: ['name']} })
   .then(probes => {
     app.get('defaultProbes').forEach(async defaultProbe => {
       const probeName = path.parse(defaultProbe.fileName).name

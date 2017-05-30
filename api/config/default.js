@@ -43,16 +43,8 @@ module.exports = {
   },
   probePath: path.join(__dirname, '..', 'probe-data'),
   defaultProbes: [
-    /*
     {
       fileName: 'ne_10m_airports.geojson'
-    },
-    */
-    {
-      fileName: 'runways.geojson',
-      options: {
-        windBearingProperty: 'MagBearing'
-      }
     }
   ],
   forecastPath: path.join(__dirname, '..', 'forecast-data'),
