@@ -97,7 +97,10 @@ export default {
       let minDelta = 999
       locations.forEach(location => {
         // Direction is expressed in meteorological convention, i.e. angle from which the flow comes
+        // we need to convert it to geographical convention, i.e. angle toward which the element goes
         let windDirection = location.properties['windDirection']
+        windDirection += 180
+        if (windDirection >= 360) windDirection -= 360
         let windSpeed = location.properties['windSpeed']
         // It might happen values are missing if location is outside forecast model bounds
         if (windDirection && windSpeed) {
@@ -106,10 +109,8 @@ export default {
           if (this.windProperty) {
             // Take care that bearing uses the geographical convention, i.e. angle toward which the element goes,
             // we need to convert it to meteorological convention, i.e. angle from which the flow comes
-            let bearing = parseFloat(location.properties[this.windProperty]) - 180.0
-            if (bearing < 0) bearing += 360.0
+            let bearing = parseFloat(location.properties[this.windProperty])
             targetDirection += bearing
-            if (targetDirection > 360.0) targetDirection -= 360.0
           }
           let directionDelta = Math.abs(windDirection - targetDirection)
           let speedDelta = Math.abs(windSpeed - this.windSpeed)
