@@ -2,30 +2,20 @@
   <!-- root node required -->
   <div>
     <div id="map"></div>
-    <component is="seeker" :probe="probe" :current-time="currentTime" @center="center"></component>
+    <component is="seeker" :probe="probe" :current-time="currentTime"></component>
   </div>
 </template>
 
 <script>
 import { Toast } from 'quasar'
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
-
 import { MixinStore } from 'weacast-client'
 
 import config from 'config'
 import api from 'src/api'
 
 // FIXME : Dynamic component loading based on config does not work
-// import seeker from './WindSeeker'
-import seeker from './RunwaySeeker'
-
-delete L.Icon.Default.prototype._getIconUrl
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
-})
+import seeker from './WindSeeker'
+// import seeker from './RunwaySeeker'
 
 export default {
   props: ['forecastModel'],
@@ -39,7 +29,6 @@ export default {
   mixins: config.map.mixins.map(mixinName => MixinStore.get(mixinName)),
   data () {
     return {
-      currentTime: null
     }
   },
   watch: {
@@ -48,12 +37,6 @@ export default {
     }
   },
   methods: {
-    setupControls () {
-      this.controls.forEach(control => control.addTo(this.map))
-    },
-    center (longitude, latitude, zoomLevel) {
-      this.map.setView(new L.LatLng(latitude, longitude), zoomLevel || 12)
-    },
     async setupDefaultProbe () {
       // Not yet ready
       if (!this.forecastModel) return
@@ -78,19 +61,17 @@ export default {
       // Set forecast elements to probe
       Object.assign(geojson, {
         forecast: this.forecastModel.name,
-        elements: ['u-wind', 'v-wind']
+        elements: this.forecastModel.elements.map(element => element.name)
       })
-      await api.probes
+      let response = await api.probes
       .create(geojson, {
         query: {
-          forecastTime: this.currentTime.toISOString()
+          forecastTime: this.currentTime.format()
         }
       })
-      .then(response => {
-        this.userProbe = response
-        this.probe = this.userProbe
-        Toast.create.positive('Forecast data has been probed for your layer you can now search matching conditions')
-      })
+      this.userProbe = response
+      this.probe = this.userProbe
+      Toast.create.positive('Forecast data has been probed for your layer you can now search matching conditions')
     }
   },
   beforeCreate () {
@@ -100,18 +81,9 @@ export default {
     // Ibid for API
     this.api = api
   },
-  created () {
-    // This is the right place to declare private members because Vue has already processed observed data
-    this.controls = []
-  },
   mounted () {
-    // Initialize the map now the DOM is ready
-    this.map = L.map('map').setView([46.578992, -0.294869], 10)
-    this.setupControls()
+    this.$emit('mapReady')
     this.setupDefaultProbe()
-
-    this.$emit('ready')
-    this.$on('center', (longitude, latitude, zoomLevel) => this.center(longitude, latitude, zoomLevel))
     this.$on('currentTimeChanged', currentTime => {
       if (this.userProbe) {
         // Perform new on-demand probe for new time
@@ -122,9 +94,6 @@ export default {
       // Perform probing
       this.probe(fileLayer.toGeoJSON())
     })
-  },
-  beforeDestroy () {
-    this.map.remove()
   }
 }
 </script>

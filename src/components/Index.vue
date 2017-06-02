@@ -7,7 +7,7 @@
         <q-tooltip anchor="bottom middle" self="top middle" :offset="[0, 20]">Menu</q-tooltip>
       </button>
 
-      <q-toolbar-title :padding="0">Weacast</q-toolbar-title>
+      <q-toolbar-title :padding="0">{{appName}}</q-toolbar-title>
 
       <button class="primary" @click="goTo('signin')" v-show="!authenticated">
         Sign In
@@ -82,10 +82,12 @@
 
 import { Toast } from 'quasar'
 import api from 'src/api'
+import config from 'config'
 
 export default {
   data () {
     return {
+      appName: 'Weacast',
       user: null,
       forecasts: [],
       selectedForecast: null
@@ -123,6 +125,10 @@ export default {
       })
     }
   },
+  created () {
+    // Apply app name if given
+    if (config.appName) this.appName = config.appName
+  },
   mounted () {
     // Check if there is already a session running
     api.authenticate()
@@ -150,6 +156,11 @@ export default {
             })
           })
           this.forecasts = response.data
+          // Select default if any or first one
+          this.selectedForecast = this.forecasts.find(forecast => forecast.isDefault)
+          if (!this.selectedForecast) {
+            this.selectedForecast = this.forecasts.length > 0 ? this.forecasts[0] : null
+          }
         })
       })
     })

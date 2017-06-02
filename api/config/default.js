@@ -103,6 +103,7 @@ module.exports = {
     },
     {
       name: 'arpege-europe',
+      isDefault: true,
       label: 'ARPEGE - 0.1°',
       description: 'Europe',
       attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',

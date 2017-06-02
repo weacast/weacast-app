@@ -60,6 +60,7 @@ export default {
               })
               .then(_ => {
                 Toast.create.positive('You are now logged in')
+                this.$router.push({ name: 'home' })
               })
               .catch(_ => {
                 Toast.create.negative('Cannot register, please check your e-mail or password')
@@ -70,6 +71,7 @@ export default {
               this.login(data.email, data.password)
               .then(_ => {
                 Toast.create.positive('You are now logged in')
+                this.$router.push({ name: 'home' })
               })
               .catch(_ => {
                 Toast.create.negative('Cannot sign in, please check your e-mail or password')

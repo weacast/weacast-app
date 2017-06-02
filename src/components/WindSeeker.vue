@@ -1,7 +1,7 @@
 <template>
   <!-- root node required -->
   <div>
-    <q-modal ref="windModal" @close="searchWindConditions()" :content-css="{padding: '20px', minWidth: '30vw'}">
+    <q-modal ref="windModal" :content-css="{padding: '20px', minWidth: '30vw'}">
       <h5>Wind conditions</h5>
       <div>
         <div class="row justify-around">
@@ -39,7 +39,10 @@
           </div>
         </div>
       </div>
-      <button class="orange" @click="$refs.windModal.close()">Search</button>
+      <div class="row float-right">
+        <button class="primary clear" @click="searchWindConditions()">Search</button>
+        <button class="orange clear" @click="$refs.windModal.close()">Close</button>
+      </div>
     </q-modal>
     <button v-if="probe" class="white circular absolute-bottom-right" style="margin-bottom: 6em; margin-right: 1em" @click="$refs.windModal.open()">
       <i>search</i>
@@ -73,6 +76,8 @@ export default {
       })
     },
     async searchWindConditions () {
+      this.$refs.windModal.close()
+
       let locations = null
       // Check if probe is streamed so we need to retrieve results first
       if (this.probe._id) {
@@ -91,18 +96,24 @@ export default {
       let bestLocation, bestDirection, bestSpeed
       let minDelta = 999
       locations.forEach(location => {
+        // Direction is expressed in meteorological convention, i.e. angle from which the flow comes
         let windDirection = location.properties['windDirection']
         let windSpeed = location.properties['windSpeed']
         // It might happen values are missing if location is outside forecast model bounds
         if (windDirection && windSpeed) {
           let targetDirection = this.windDirection
+          // Compute bearing relatively to a bearing property if given
           if (this.windProperty) {
-            targetDirection += parseFloat(location.properties[this.windProperty])
-            if (targetDirection > 360) targetDirection -= 360
+            // Take care that bearing uses the geographical convention, i.e. angle toward which the element goes,
+            // we need to convert it to meteorological convention, i.e. angle from which the flow comes
+            let bearing = parseFloat(location.properties[this.windProperty]) - 180.0
+            if (bearing < 0) bearing += 360.0
+            targetDirection += bearing
+            if (targetDirection > 360.0) targetDirection -= 360.0
           }
           let directionDelta = Math.abs(windDirection - targetDirection)
           let speedDelta = Math.abs(windSpeed - this.windSpeed)
-          let delta = 0.5 * directionDelta / 360 + 0.5 * speedDelta / 50
+          let delta = 0.5 * directionDelta / 360.0 + 0.5 * speedDelta / 50.0
           if (delta < minDelta) {
             minDelta = delta
             bestDirection = windDirection
@@ -119,7 +130,7 @@ export default {
             {
               label: 'LOCATE',
               handler: () => {
-                this.$emit('center', bestLocation.geometry.coordinates[0], bestLocation.geometry.coordinates[1], 12)
+                this.$parent.center(bestLocation.geometry.coordinates[0], bestLocation.geometry.coordinates[1], 12)
               }
             }
           ]
