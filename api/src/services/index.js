@@ -29,10 +29,10 @@ module.exports = function () {
     app.get('authentication').defaultUsers.forEach(defaultUser => {
       let createdUser = users.find(user => user.email === defaultUser.email)
       if (!createdUser) {
-        logger.info('Initializing default user (email = ' + user.email + ', password = ' + user.password + ')')
+        logger.info('Initializing default user (email = ' + defaultUser.email + ', password = ' + defaultUser.password + ')')
         usersService.create({
-          email: 'weacast@weacast.org',
-          password: 'weacast'
+          email: defaultUser.email,
+          password: defaultUser.password
         })
       }
     })
