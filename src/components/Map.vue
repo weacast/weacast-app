@@ -13,9 +13,7 @@ import { MixinStore } from 'weacast-client'
 import config from 'config'
 import api from 'src/api'
 
-// FIXME : Dynamic component loading based on config does not work
 import seeker from './WindSeeker'
-// import seeker from './RunwaySeeker'
 
 export default {
   props: ['forecastModel'],

@@ -2,7 +2,6 @@ module.exports = {
   apiPath: '/api',
   transport: 'web-socket', // Could be 'http' or 'web-socket',
   appName: 'Weacast',
-  seeker: 'WindSeeker',
   map: {
     mixins: [ 'base', 'baseLayers', 'forecastLayers', 'geojsonLayers', 'fileLayers', 'fullscreen', 'measure', 'scalebar' ],
     baseLayers: [
