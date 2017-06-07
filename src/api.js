@@ -1,6 +1,9 @@
+import apiHooks from './main.hooks'
 import { weacast } from 'weacast-client'
 
 let api = weacast()
+// Setup app hooks
+api.hooks(apiHooks)
 
 api.users = api.getService('users')
 api.forecasts = api.getService('forecasts')

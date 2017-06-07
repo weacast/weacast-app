@@ -63,7 +63,8 @@
 
     <q-drawer swipe-only right-side ref="profile" v-show="authenticated">
       <div class="toolbar light">
-        <i>perm_identity</i>
+        <i v-if="!hasAvatar">perm_identity</i>
+        <img v-if="hasAvatar" :src="user.avatar" style="border-radius:50%" width="32px" height="32px">
         <q-toolbar-title :padding="1">
             Profile
         </q-toolbar-title>
@@ -96,6 +97,9 @@ export default {
   computed: {
     authenticated () {
       return this.$data.user !== null
+    },
+    hasAvatar () {
+      return this.authenticated && this.$data.user.avatar
     }
   },
   methods: {

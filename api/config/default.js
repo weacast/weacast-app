@@ -36,6 +36,21 @@ module.exports = {
       }
     ]
   },
+  logs: {
+    Console: {
+      colorize: true
+    },
+    DailyRotateFile: {
+      dirname: path.join(__dirname, '..', 'logs'),
+      filename: 'weacast-',
+      datePattern: 'yyyy-MM-dd.log'
+      /* Possible in next version of the logger : see https://github.com/winstonjs/winston-daily-rotate-file/pull/45
+      filename: path.join(__dirname, '..', 'logs'),
+      datePattern: '/yyyy/MM/dd.log',
+      createTree: true
+      */
+    }
+  },
   db: {
     adapter: 'mongodb',
     path: path.join(__dirname, '..', 'db-data'),

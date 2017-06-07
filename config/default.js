@@ -2,6 +2,9 @@ module.exports = {
   apiPath: '/api',
   transport: 'web-socket', // Could be 'http' or 'web-socket',
   appName: 'Weacast',
+  logs: {
+    level: (process.env.NODE_ENV === 'development' ? 'debug' : 'info')
+  },
   map: {
     mixins: [ 'base', 'baseLayers', 'forecastLayers', 'geojsonLayers', 'fileLayers', 'fullscreen', 'measure', 'scalebar' ],
     baseLayers: [

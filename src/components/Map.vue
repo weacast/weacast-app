@@ -2,7 +2,7 @@
   <!-- root node required -->
   <div>
     <div id="map"></div>
-    <component is="seeker" :probe="probe" :current-time="currentTime"></component>
+    <component is="seeker" v-if="probe" :probe="probe" :current-time="currentTime"></component>
   </div>
 </template>
 
@@ -27,6 +27,7 @@ export default {
   mixins: config.map.mixins.map(mixinName => MixinStore.get(mixinName)),
   data () {
     return {
+      probe: null
     }
   },
   watch: {
@@ -38,6 +39,8 @@ export default {
     async setupDefaultProbe () {
       // Not yet ready
       if (!this.forecastModel) return
+      // Remove default layer if any
+      if (this.probeLayer) this.removeLayer(this.probeLayer)
       // Retrieve the available probes
       let probes = await api.probes.find({ query: { $paginate: false, $select: ['elements', 'forecast'] } })
       // Find the right one for current model
@@ -47,12 +50,16 @@ export default {
         // Update content to get features
         this.defaultProbe = await api.probes.get(this.defaultProbe._id, { query: { $select: ['elements', 'forecast', 'features'] } })
         this.probe = this.defaultProbe
+        this.probeLayer = this.addGeoJsonCluster({
+          type: 'FeatureCollection',
+          features: this.probe.features
+        })
       }
       else {
         Toast.create.negative('Forecast data has not been probed you cannot search matching weather conditions')
       }
     },
-    async probe (geojson) {
+    performProbing (geojson) {
       // Not yet ready
       if (!this.forecastModel) return
 
@@ -61,15 +68,17 @@ export default {
         forecast: this.forecastModel.name,
         elements: this.forecastModel.elements.map(element => element.name)
       })
-      let response = await api.probes
+      return api.probes
       .create(geojson, {
         query: {
           forecastTime: this.currentTime.format()
         }
       })
-      this.userProbe = response
-      this.probe = this.userProbe
-      Toast.create.positive('Forecast data has been probed for your layer you can now search matching conditions')
+      .then(response => {
+        this.userProbe = response
+        this.probe = this.userProbe
+        Toast.create.positive('Forecast data has been probed for your layer you can now search matching conditions')
+      })
     }
   },
   beforeCreate () {
@@ -85,12 +94,14 @@ export default {
     this.$on('currentTimeChanged', currentTime => {
       if (this.userProbe) {
         // Perform new on-demand probe for new time
-        this.probe(this.userProbe)
+        this.performProbing(this.userProbe)
       }
     })
     this.$on('fileLayerLoaded', (fileLayer, filename) => {
+      // Remove default layer if any
+      if (this.probeLayer) this.removeLayer(this.probeLayer)
       // Perform probing
-      this.probe(fileLayer.toGeoJSON())
+      this.performProbing(fileLayer.toGeoJSON())
     })
   }
 }

@@ -1,9 +1,9 @@
 // Application hooks that run for every service
-import { hooks } from 'weacast-core'
+import { hooks } from 'weacast-client'
 
 module.exports = {
   before: {
-    all: [ hooks.log ],
+    all: [ hooks.log, hooks.emit ],
     find: [],
     get: [],
     create: [],
@@ -13,7 +13,7 @@ module.exports = {
   },
 
   after: {
-    all: [ hooks.log ],
+    all: [ hooks.log, hooks.emit ],
     find: [],
     get: [],
     create: [],
@@ -23,7 +23,7 @@ module.exports = {
   },
 
   error: {
-    all: [ hooks.log ],
+    all: [ hooks.log, hooks.emit ],
     find: [],
     get: [],
     create: [],

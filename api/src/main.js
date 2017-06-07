@@ -1,5 +1,10 @@
-const logger = require('winston')
-const Server = require('./server').Server
+import fs from 'fs-extra'
+import path from 'path'
+import logger from 'winston'
+import { Server } from './server'
+
+// This will ensure the log directory does exist
+fs.ensureDirSync(path.join(__dirname, '..', 'logs'))
 
 let server = new Server()
 
