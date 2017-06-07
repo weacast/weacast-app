@@ -77,11 +77,15 @@
               <i>place</i>
             </a>
             <div class="timeline-title">
-              {{runway.forecastTime.format('h:mm:ss a')}}</br>{{runway.Ident}} - {{runway.Airport}}
+              <span v-if="!runway.interval">{{runway.forecastTime.format('h:mm a')}}</span>
+              <span v-if="runway.interval">{{runway.forecastTime.format('h:mm a')}} - {{runway.interval.forecastTime.format('h:mm a')}}</span>
+              </br>
+              {{runway.Ident}} - {{runway.Airport}} - {{runway.distance.toFixed(0)}} Kms
             </div>
             <div class="timeline-date text-italic">
-              {{runway.windSpeed.toFixed(2)}} kt/s - {{runway.windBearingDirection.toFixed(2)}}°</br>
-              {{runway.Length.toFixed(2)}} ft X {{runway.Width.toFixed(2)}} ft
+              Wind: {{runway.windSpeed.toFixed(2)}} kt/s - Bearing: {{runway.windBearingDirection.toFixed(2)}}°</br>
+              Headwind: {{runway.headWindSpeed.toFixed(2)}} kt/s - Crosswind: {{runway.crossWindSpeed.toFixed(2)}} kt/s</br>
+              Length: {{runway.Length.toFixed(2)}} ft - Width: {{runway.Width.toFixed(2)}} ft
             </div>
           </div>
         </div>
@@ -181,7 +185,7 @@ export default {
           }
         },
         {
-          label: 'Time',
+          label: 'Time (UTC)',
           field: 'forecastTime',
           width: '120px',
           filter: true,
@@ -212,7 +216,37 @@ export default {
         },
         {
           label: 'Wind direction (°)',
+          field: 'windDirection',
+          width: '120px',
+          filter: true,
+          sort: true,
+          format (value) {
+            return value.toFixed(2)
+          }
+        },
+        {
+          label: 'Relative wind direction (°)',
           field: 'windBearingDirection',
+          width: '120px',
+          filter: true,
+          sort: true,
+          format (value) {
+            return value.toFixed(2)
+          }
+        },
+        {
+          label: 'Crosswind speed (kt/s)',
+          field: 'crossWindSpeed',
+          width: '120px',
+          filter: true,
+          sort: true,
+          format (value) {
+            return value.toFixed(2)
+          }
+        },
+        {
+          label: 'Headwind speed (kt/s)',
+          field: 'headWindSpeed',
           width: '120px',
           filter: true,
           sort: true,
@@ -336,11 +370,14 @@ export default {
         runway.properties.windSpeed = meters2Knots(_.toNumber(runway.properties.windSpeed))
         runway.properties.windDirection = _.toNumber(runway.properties.windDirection)
         runway.properties.windBearingDirection = _.toNumber(runway.properties.windBearingDirection)
+        // Compute distance from departure airport
+        runway.properties.distance = distance(this.departureAirport, runway)
+        // Then projected components of the difference between the wind and the target direction
+        runway.properties.headWindSpeed = runway.properties.windSpeed * Math.cos(runway.properties.windBearingDirection * Math.PI / 180.0)
+        runway.properties.crossWindSpeed = runway.properties.windSpeed * Math.sin(runway.properties.windBearingDirection * Math.PI / 180.0)
         runway.forecastTime = moment.utc(runway.forecastTime)
         // Quasar table does not support nested fields like 'properties.Length' so we flatten properties
         Object.assign(runway, runway.properties)
-        // Compute distance from departure airport
-        runway.distance = distance(this.departureAirport, runway)
         // Time alias for layer visualization
         runway.properties.time = runway.forecastTime.valueOf()
       })
@@ -406,59 +443,58 @@ export default {
     searchRunways () {
       // Chaining modal close and dialog open requires the use of callback
       this.$refs.searchModal.close(async _ => {
+        let progressDialog = Dialog.create({
+          title: 'Please wait',
+          message: 'Seeking for runways matching your input...',
+          progress: { indeterminate: true },
+          buttons: ['Cancel'],
+          noBackdropDismiss: true,
+          noEscDismiss: true
+        })
         // Remove previous data
         this.runways = []
         this.destroyRunwaysLayer()
         this.destroyAirportMarker()
-        /*
-        let progressDialog = await Dialog.create({
-          title: 'Please wait',
-          message: 'Processing forecast data...',
-          progress: { indeterminate: true },
-          buttons: [],
-          noBackdropDismiss: true,
-          noEscDismiss: true
-        })
-        */
         // Because of the required precision simply take the first runway location as departure airport location
         this.departureAirport = this.probe.features.find(runway => runway.properties.Airport === this.departureICAO)
         let response = await api.probeResults.find(this.buildQuery())
-        // await progressDialog.close()
-        this.runways = this.processRunways(response.data)
-        // When initializing a new search filter all forecast times by those with results only
-        this.createRunwaysLayer(true)
-        this.createAirportMarker()
-        this.$parent.center(this.departureAirport.geometry.coordinates[0], this.departureAirport.geometry.coordinates[1], 5)
+        progressDialog.close(async _ => {
+          this.runways = this.processRunways(response.data)
+          // When initializing a new search filter all forecast times by those with results only
+          this.createRunwaysLayer(true)
+          this.createAirportMarker()
+          this.$parent.center(this.departureAirport.geometry.coordinates[0], this.departureAirport.geometry.coordinates[1], 5)
 
-        if (response.total > 0) {
-          Dialog.create({
-            title: response.total + ' matching results found',
-            message: response.total > MAX_RUNWAYS
-              ? 'Found more than ' + MAX_RUNWAYS + ' runways, you can now browse matching runways but please consider refining your search parameters.'
-              : 'You can now browse matching runways',
-            buttons: [
-              {
-                label: 'View as table',
-                handler: () => {
-                  this.$refs.tableModal.open()
-                }
-              },
-              {
-                label: 'View as timeline',
-                handler: () => {
-                  this.$refs.timelineModal.open()
-                }
-              },
-              'Close'
-            ]
-          })
-        }
-        else {
-          Dialog.create({
-            title: 'Alert',
-            message: 'No matching runway found for your input, please consider changing search parameters.'
-          })
-        }
+          if (response.total > 0) {
+            Dialog.create({
+              title: response.total + ' matching results found',
+              message: response.total > MAX_RUNWAYS
+                ? 'Found more than ' + MAX_RUNWAYS + ' runways, you can now browse matching runways but please consider refining your search parameters because you might miss some results.'
+                : 'You can now browse matching runways',
+              buttons: [
+                {
+                  label: 'View as table',
+                  handler: () => {
+                    this.$refs.tableModal.open()
+                  }
+                },
+                {
+                  label: 'View as timeline',
+                  handler: () => {
+                    this.$refs.timelineModal.open()
+                  }
+                },
+                'Close'
+              ]
+            })
+          }
+          else {
+            Dialog.create({
+              title: 'Alert',
+              message: 'No matching runway found for your input, please consider changing search parameters.'
+            })
+          }
+        })
       })
     },
     getCalendarDay (dayDate) {
@@ -470,7 +506,40 @@ export default {
       let runways = this.runways.filter(runway => runway.forecastTime.isBetween(startDate, endDate, null, '[)'))
       // Then sort by time
       runways.sort((runway1, runway2) => runway1.forecastTime.isBefore(runway2.forecastTime) ? -1 : (runway2.forecastTime.isBefore(runway1.forecastTime) ? 1 : 0))
-      // Then agregate when
+      // Then agregate when the same runway covers multiple forecast intervals
+      const interval = this.$parent.forecastModel.interval
+      runways = runways.filter((runway, index) => {
+        // Check if a previous runway distant of a single interval
+        if (index > 0) {
+          let previousRunway = runways[index - 1]
+          // If so the element shall be filtered from the list as we always keep the first one of an interval
+          if (runway.Ident === previousRunway.Ident &&
+              runway.forecastTime.diff(previousRunway.forecastTime, 'seconds') <= interval) {
+            return false
+          }
+        }
+        // Check for following runways distant of a single interval
+        let lastIndex = index
+        let lastRunway = runway
+        let hasNextRunway = true
+        while (hasNextRunway) {
+          lastIndex++
+          if (lastIndex === runways.length) {
+            hasNextRunway = false
+          }
+          else {
+            let previousRunway = lastRunway
+            lastRunway = runways[lastIndex]
+            hasNextRunway = (previousRunway.Ident === lastRunway.Ident) &&
+                            (lastRunway.forecastTime.diff(previousRunway.forecastTime, 'seconds') <= interval)
+          }
+        }
+        // Know we now that last index is the last one belonging to the same interval if any, keep track of it
+        if (lastIndex - index >= 2) {
+          runway.interval = Object.assign({}, runways[lastIndex - 1])
+        }
+        return true
+      })
       return runways
     },
     locateRunway (runway) {

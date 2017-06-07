@@ -48,10 +48,12 @@ export default {
         // Update content to get features
         this.defaultProbe = await api.probes.get(this.defaultProbe._id, { query: { $select: ['elements', 'forecast', 'features'] } })
         this.probe = this.defaultProbe
+        /* Do not add default probe layer
         this.probeLayer = this.addGeoJsonCluster({
           type: 'FeatureCollection',
           features: this.probe.features
         })
+        */
       }
       else {
         Toast.create.negative('Forecast data has not been probed you cannot search matching weather conditions')
