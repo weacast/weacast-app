@@ -13,15 +13,13 @@ import { MixinStore } from 'weacast-client'
 import config from 'config'
 import api from 'src/api'
 
-import seeker from './WindSeeker'
+import { loadComponent } from '../utils'
 
 export default {
   props: ['forecastModel'],
-  // Make the seeker component available to Vue but take care that in config we have the element name not the file name
+  // Make the seeker component available to Vue dynamically
   components: {
-    // FIXME : Dynamic component loading based on config does not work
-    // seeker: loadComponent(config.seeker)
-    seeker: seeker
+    seeker: loadComponent(config.map ? config.map.seeker : 'WindSeeker')
   },
   // Jump from mixin names to mixin objects
   mixins: config.map.mixins.map(mixinName => MixinStore.get(mixinName)),
