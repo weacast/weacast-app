@@ -6,6 +6,7 @@ module.exports = {
     level: (process.env.NODE_ENV === 'development' ? 'debug' : 'info')
   },
   map: {
+    seeker: 'WindSeeker',
     mixins: [ 'base', 'baseLayers', 'forecastLayers', 'geojsonLayers', 'fileLayers', 'fullscreen', 'measure', 'scalebar' ],
     baseLayers: [
       {
