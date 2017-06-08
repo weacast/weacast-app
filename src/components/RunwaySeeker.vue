@@ -25,11 +25,11 @@
         <q-collapsible icon="fingerprint" label="Select weather conditions" group="group">
           <div class="row items-center justify-around">
             <div>
-              <p class="caption">Wind speed range (kt/s)</p>
+              <p class="caption">Wind speed range (kt)</p>
               <q-double-range v-model="windSpeed" :min="0" :max="100" :step="1" label-always></q-double-range>
             </div>
             <div>
-              <p class="caption">Wind direction (°)</p>
+              <p class="caption">Relative wind direction (°)</p>
               <q-knob v-model="windDirection" :placeholder="windDirection + '°'" :min="0" :max="360"></q-knob>
             </div>
             <div>
@@ -48,6 +48,11 @@
               <p class="caption">Minimum runway width (ft)</p>
               <q-range v-model="minRunwayWidth" :min="50" :max="300" :step="10" label-always></q-range>
             </div>
+          </div>
+        </q-collapsible>
+        <q-collapsible icon="timelapse" label="Select time range" group="group">
+          <div class="row items-center justify-around">
+            <q-datetime-range class="full-width" type="datetime" v-model="dateTimeRange" :min="minDateTime" :max="maxDateTime"></q-datetime-range>
           </div>
         </q-collapsible>
       </div>
@@ -79,12 +84,15 @@
             <div class="timeline-title">
               <span v-if="!runway.interval">{{runway.forecastTime.format('h:mm a')}}</span>
               <span v-if="runway.interval">{{runway.forecastTime.format('h:mm a')}} - {{runway.interval.forecastTime.format('h:mm a')}}</span>
-              </br>
               {{runway.Ident}} - {{runway.Airport}} - {{runway.distance.toFixed(0)}} Kms
             </div>
             <div class="timeline-date text-italic">
-              Wind: {{runway.windSpeed.toFixed(2)}} kt/s - Bearing: {{runway.windBearingDirection.toFixed(2)}}°</br>
-              Headwind: {{runway.headWindSpeed.toFixed(2)}} kt/s - Crosswind: {{runway.crossWindSpeed.toFixed(2)}} kt/s</br>
+              <span v-if="!runway.interval">Wind speed: {{runway.windSpeed.toFixed(2)}} kt - Relative direction: {{runway.windBearingDirection.toFixed(2)}}°</span>
+              <span v-if="runway.interval">Wind speed: {{runway.windSpeed.toFixed(2)}} kt to {{runway.interval.windSpeed.toFixed(2)}} kt</span>
+              <span v-if="runway.interval">Relative direction: {{runway.windBearingDirection.toFixed(2)}}° to {{runway.interval.windBearingDirection.toFixed(2)}}°</span>
+              <span v-if="!runway.interval">Headwind: {{runway.headWindSpeed.toFixed(2)}} kt - Crosswind: {{runway.crossWindSpeed.toFixed(2)}} kt</span>
+              <span v-if="runway.interval">Headwind: {{runway.headWindSpeed.toFixed(2)}} kt to {{runway.interval.headWindSpeed.toFixed(2)}} kt</span>
+              <span v-if="runway.interval">Crosswind: {{runway.crossWindSpeed.toFixed(2)}} kt to {{runway.interval.crossWindSpeed.toFixed(2)}} kt</span>
               Length: {{runway.Length.toFixed(2)}} ft - Width: {{runway.Width.toFixed(2)}} ft
             </div>
           </div>
@@ -118,7 +126,7 @@ import distance from 'turf-distance'
 import { Dialog } from 'quasar'
 import api from 'src/api'
 
-const MAX_RUNWAYS = 100
+const MAX_RUNWAYS = 50
 
 // Convert from knots to meters
 function knots2Meters (knots) {
@@ -159,6 +167,9 @@ export default {
       windSpeed: { min: 15, max: 30 },
       minRunwayLength: 5000,
       minRunwayWidth: 100,
+      minDateTime: '',
+      maxDateTime: '',
+      dateTimeRange: { from: '', to: '' },
       tableColumns: [
         {
           label: 'Runway',
@@ -195,7 +206,7 @@ export default {
           }
         },
         {
-          label: 'Wind speed (kt/s)',
+          label: 'Wind speed (kt)',
           field: 'windSpeed',
           width: '120px',
           filter: true,
@@ -205,7 +216,7 @@ export default {
           }
         },
         {
-          label: 'Wind gust (kt/s)',
+          label: 'Wind gust (kt)',
           field: 'gust',
           width: '120px',
           filter: true,
@@ -235,7 +246,7 @@ export default {
           }
         },
         {
-          label: 'Crosswind speed (kt/s)',
+          label: 'Crosswind speed (kt)',
           field: 'crossWindSpeed',
           width: '120px',
           filter: true,
@@ -245,7 +256,7 @@ export default {
           }
         },
         {
-          label: 'Headwind speed (kt/s)',
+          label: 'Headwind speed (kt)',
           field: 'headWindSpeed',
           width: '120px',
           filter: true,
@@ -309,6 +320,15 @@ export default {
         }))
       }
     },
+    setupTimeRange () {
+      const availableTimes = this.$parent.map.timeDimension.getAvailableTimes()
+      if (availableTimes.length > 0) {
+        this.minDateTime = moment.utc(availableTimes[0]).format()
+        this.maxDateTime = moment.utc(availableTimes[availableTimes.length - 1]).format()
+        this.dateTimeRange.from = this.minDateTime
+        this.dateTimeRange.to = this.maxDateTime
+      }
+    },
     buildQuery () {
       let query = {
         probeId: this.probe._id,
@@ -357,6 +377,10 @@ export default {
           $gte: 0,
           $lte: maxDirection
         }
+      }
+      query['forecastTime'] = {
+        $gte: this.dateTimeRange.from,
+        $lte: this.dateTimeRange.to
       }
 
       return { query }
@@ -419,7 +443,7 @@ export default {
       this.runwaysLayer = this.$parent.addTimedGeoJson({
         type: 'FeatureCollection',
         features: this.runways
-      }, {
+      }, 'Runways', {
         updateTimeDimension: update,
         updateTimeDimensionMode: 'replace',
         // For instant visualization make features alive only 1s after their time
@@ -438,7 +462,7 @@ export default {
         this.departureAirport.geometry.coordinates[0]
       ])
       marker.bindPopup('Departure airport (' + this.departureAirport.properties.Airport + ')')
-      this.departureAirportMarker = this.$parent.addLayer(marker)
+      this.departureAirportMarker = this.$parent.addLayer(marker, 'Airport')
     },
     searchRunways () {
       // Chaining modal close and dialog open requires the use of callback
@@ -551,6 +575,8 @@ export default {
   },
   mounted () {
     this.buildAirportList()
+    this.setupTimeRange()
+    this.$parent.map.timeDimension.on('availabletimeschanged', _ => this.setupTimeRange())
   }
 }
 </script>
