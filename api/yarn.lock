@@ -884,6 +884,10 @@ chai-lint@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/chai-lint/-/chai-lint-0.1.1.tgz#e9ccfd57d223de4f9b14a76cc962113743b680a8"
 
+chai-spies@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/chai-spies/-/chai-spies-0.7.1.tgz#343d99f51244212e8b17e64b93996ff7b2c2a9b1"
+
 chai@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/chai/-/chai-3.5.0.tgz#4d02637b067fe958bdbfdd3a40ec56fef7373247"
@@ -1157,13 +1161,13 @@ debug@2.6.0:
   dependencies:
     ms "0.7.2"
 
-debug@2.6.1, debug@^2.2.0, debug@^2.3.1, debug@^2.6.0:
+debug@2.6.1, debug@^2.1.1, debug@^2.2.0, debug@^2.3.1, debug@^2.6.0:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.1.tgz#79855090ba2c4e3115cc7d8769491d58f0491351"
   dependencies:
     ms "0.7.2"
 
-debug@2.6.4, debug@^2.1.1, debug@^2.6.4:
+debug@2.6.4, debug@^2.6.4:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.4.tgz#7586a9b3c39741c0282ae33445c4e8ac74734fe0"
   dependencies:
@@ -2804,7 +2808,7 @@ lodash.restparam@^3.0.0:
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/lodash.restparam/-/lodash.restparam-3.6.1.tgz#936a4e309ef330a7645ed4145986c85ae5b20805"
 
-lodash@^4.0.0, lodash@^4.17.2, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1:
+lodash@^4.0.0, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.2.0, lodash@^4.3.0, lodash@^4.6.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
@@ -4181,9 +4185,9 @@ verror@1.3.6:
   dependencies:
     extsprintf "1.0.2"
 
-weacast-arome@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/weacast-arome/-/weacast-arome-0.1.3.tgz#f48796d9c1cb811c46988475470febe47967df38"
+weacast-arome@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/weacast-arome/-/weacast-arome-0.2.0.tgz#5ea36d8fd9dc3df036569dcd0d236228f4648b78"
   dependencies:
     debug "^2.6.4"
     feathers-authentication "^1.2.2"
@@ -4198,13 +4202,13 @@ weacast-arome@^0.1.3:
     mongodb "^2.2.26"
     request "^2.81.0"
     uberproto "^1.2.0"
-    weacast-arpege "^0.1.3"
-    weacast-core "^0.1.3"
+    weacast-arpege "^0.2.0"
+    weacast-core "^0.2.0"
     winston "^2.3.1"
 
-weacast-arpege@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/weacast-arpege/-/weacast-arpege-0.1.3.tgz#c2b753532dc9d8614ffe176d4adfadc7badbfe13"
+weacast-arpege@^0.2.0, weacast-arpege@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/weacast-arpege/-/weacast-arpege-0.2.1.tgz#4e0647b436d045a0c4b6860f57228596148aa9b6"
   dependencies:
     debug "^2.6.4"
     feathers-authentication "^1.2.2"
@@ -4219,13 +4223,13 @@ weacast-arpege@^0.1.3:
     mongodb "^2.2.26"
     request "^2.81.0"
     uberproto "^1.2.0"
-    weacast-core "^0.1.3"
+    weacast-core "^0.2.0"
     weacast-gtiff2json "^0.1.0"
     winston "^2.3.1"
 
-weacast-core@^0.1.2, weacast-core@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/weacast-core/-/weacast-core-0.1.3.tgz#40a8f7ba1e1473e07c69b579ddab35dfbc2f3260"
+weacast-core@^0.2.0, weacast-core@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/weacast-core/-/weacast-core-0.2.1.tgz#1b28532a3c889b93450fc02d94b3d5f2f5a792f8"
   dependencies:
     body-parser "^1.17.1"
     compression "^1.6.2"
@@ -4255,6 +4259,7 @@ weacast-core@^0.1.2, weacast-core@^0.1.3:
     sublevelup "^4.0.0"
     uberproto "^1.2.0"
     winston "^2.3.1"
+    winston-daily-rotate-file "^1.4.6"
 
 weacast-gtiff2json@^0.1.0:
   version "0.1.0"
@@ -4263,10 +4268,11 @@ weacast-gtiff2json@^0.1.0:
     commander "^2.9.0"
     geo-pixel-stream "^0.4.0"
 
-weacast-probe@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/weacast-probe/-/weacast-probe-0.1.1.tgz#e85a2bc9d86db38aed6e625d89a9605de19203c6"
+weacast-probe@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/weacast-probe/-/weacast-probe-0.2.1.tgz#68e54c3c856c922925d63e82502c22c857d19d57"
   dependencies:
+    chai-spies "^0.7.1"
     debug "^2.6.4"
     feathers-authentication "^1.2.2"
     feathers-errors "^2.6.3"
@@ -4276,11 +4282,12 @@ weacast-probe@^0.1.1:
     feathers-mongodb "^2.8.0"
     feathers-nedb "^2.6.2"
     fs-extra "^3.0.0"
+    lodash "^4.17.4"
     moment "^2.18.1"
     mongodb "^2.2.26"
     request "^2.81.0"
     uberproto "^1.2.0"
-    weacast-core "^0.1.2"
+    weacast-core "^0.2.1"
     weacast-gtiff2json "^0.1.0"
     winston "^2.3.1"
 
@@ -4299,6 +4306,10 @@ wide-align@^1.1.0:
 window-size@0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/window-size/-/window-size-0.1.0.tgz#5438cd2ea93b202efa3a19fe8887aee7c94f9c9d"
+
+winston-daily-rotate-file@^1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/winston-daily-rotate-file/-/winston-daily-rotate-file-1.4.6.tgz#f204b6ada19a5386fdf52fe997d8e10e43ff7788"
 
 winston@^2.3.1:
   version "2.3.1"
