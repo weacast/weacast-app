@@ -5244,6 +5244,10 @@ weacast-client@^0.2.0:
     socket.io-client "^1.7.3"
     vue "^2.3.3"
 
+weacast-leaflet-velocity@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/weacast-leaflet-velocity/-/weacast-leaflet-velocity-1.1.0.tgz#a096f4fcd4a3b3753a459146949e3c4fd39ad3bc"
+
 webpack-dev-middleware@^1.8.4:
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-1.10.1.tgz#c6b4cf428139cf1aefbe06a0c00fdb4f8da2f893"
