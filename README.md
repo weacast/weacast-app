@@ -23,4 +23,6 @@ If you want some help or participate to the development of Weacast contact us on
 
 The [Weacast docs](https://weacast.gitbooks.io/weacast-docs/) are loaded with awesome stuff and tell you everything you need to know about using and configuring Weacast.
 
+Take also a look at the [roadmap](https://github.com/weacast/weacast/projects/1).
+
 
