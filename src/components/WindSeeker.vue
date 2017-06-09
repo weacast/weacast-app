@@ -10,7 +10,8 @@
             <q-range v-model="windSpeed" :min="0" :max="20" :step="0.5" label></q-range>
           </div>
           <div>
-            <p class="caption">Wind direction (°)</p>
+            <p v-if="!isUserProbe" class="caption">From direction (°)</p>
+            <p v-if="isUserProbe" class="caption">Relative direction (°)</p>
             <q-knob v-model="windDirection" :placeholder="windDirection+'°'" :min="0" :max="360"></q-knob>
           </div>
         </div>
@@ -61,7 +62,7 @@ export default {
       windDirection: 0.0,
       windSpeed: 10,
       windProperty: '',
-      labelProperty: ''
+      labelProperty: 'name'
     }
   },
   computed: {
@@ -107,14 +108,15 @@ export default {
           // Direction is expressed in meteorological convention, i.e. angle from which the flow comes
           // we need to convert it to geographical convention, i.e. angle toward which the element goes
           let windDirection = location.properties['windDirection']
-          windDirection += 180
-          if (windDirection >= 360) windDirection -= 360
           let windSpeed = location.properties['windSpeed']
           // It might happen values are missing if location is outside forecast model bounds
           if (windDirection && windSpeed) {
             let targetDirection = this.windDirection
             // Compute bearing relatively to a bearing property if given
             if (this.windProperty) {
+              windDirection += 180
+              if (windDirection >= 360) windDirection -= 360
+
               // Take care that bearing uses the geographical convention, i.e. angle toward which the element goes,
               // we need to convert it to meteorological convention, i.e. angle from which the flow comes
               let bearing = parseFloat(location.properties[this.windProperty])

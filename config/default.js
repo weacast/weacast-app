@@ -54,7 +54,14 @@ module.exports = {
           attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
           lineWidth: 2,
           frameRate: 20,
-          particleMultiplier: 1 / 900
+          particleMultiplier: 1 / 900,
+          displayOptions: {
+            velocityType: 'Wind',
+            position: 'bottomright',
+            emptyString: 'No wind data',
+            angleConvention: 'meteoCW',
+            speedUnit: 'm/s'
+          }
         }
       }/*,
       {

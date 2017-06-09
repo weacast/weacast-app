@@ -40,7 +40,7 @@
 
       <q-drawer-link icon="home" to="/home">Home</q-drawer-link>
       <q-drawer-link icon="layers" to="/map">Map</q-drawer-link>
-      <q-collapsible icon="language" label="Model">
+      <q-collapsible opened icon="language" label="Model">
         <div class="list">
           <label v-for="forecast in forecasts" class="item two-lines">
             <div class="item-primary">

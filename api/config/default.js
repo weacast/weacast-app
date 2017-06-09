@@ -31,7 +31,7 @@ module.exports = {
     service: API_PREFIX + '/users',
     defaultUsers: [
       {
-        email: 'weacast@weacast.org',
+        email: 'weacast@weacast.xyz',
         password: 'weacast'
       }
     ]
