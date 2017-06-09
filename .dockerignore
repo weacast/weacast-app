@@ -1,0 +1,10 @@
+.git
+dist
+electron/dist
+node_modules
+electron/node_modules
+api/node_modules
+api/forecast-data
+api/db-data
+api/dist
+api/logs
