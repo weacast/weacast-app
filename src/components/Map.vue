@@ -52,7 +52,7 @@ export default {
         this.probeLayer = this.addGeoJsonCluster({
           type: 'FeatureCollection',
           features: this.probe.features
-        })
+        }, 'Probe')
         */
       }
       else {

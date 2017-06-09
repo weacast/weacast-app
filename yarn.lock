@@ -2299,7 +2299,7 @@ feathers-socketio@1.5.2:
     socket.io "^1.7.1"
     uberproto "^1.2.0"
 
-feathers@2.1.1:
+feathers@2.1.1, feathers@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/feathers/-/feathers-2.1.1.tgz#d44b19a76c570c6c47b371615bc25a5e0a53efb4"
   dependencies:
@@ -3140,9 +3140,9 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-leaflet-basemaps@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/leaflet-basemaps/-/leaflet-basemaps-0.1.3.tgz#241d895a3c297d1628e75f5673215d1f50cb8e4f"
+leaflet-basemaps@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/leaflet-basemaps/-/leaflet-basemaps-0.2.0.tgz#29b851a8963ed6d7784c38eebd7df9468aad4c1a"
 
 leaflet-filelayer@^0.6.0:
   version "0.6.0"
@@ -4163,9 +4163,9 @@ qs@6.4.0, qs@^6.0.1, qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
-quasar-framework@^0.13.4:
-  version "0.13.6"
-  resolved "https://registry.yarnpkg.com/quasar-framework/-/quasar-framework-0.13.6.tgz#a80aecd46d75437e5bd9d9cbd638d699521fdf57"
+quasar-framework@^0.13.10:
+  version "0.13.10"
+  resolved "https://registry.yarnpkg.com/quasar-framework/-/quasar-framework-0.13.10.tgz#fd5e813cc9c75220c92f587b19525423ff7aa6f8"
 
 query-string@^4.1.0:
   version "4.3.2"
@@ -4608,7 +4608,7 @@ socket.io-adapter@0.5.0:
     debug "2.3.3"
     socket.io-parser "2.3.1"
 
-socket.io-client@1.7.4:
+socket.io-client@1.7.4, socket.io-client@^1.7.3:
   version "1.7.4"
   resolved "https://registry.yarnpkg.com/socket.io-client/-/socket.io-client-1.7.4.tgz#ec9f820356ed99ef6d357f0756d648717bdd4281"
   dependencies:
@@ -5210,6 +5210,10 @@ vue@^2.2.2:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.2.6.tgz#451714b394dd6d4eae7b773c40c2034a59621aed"
 
+vue@^2.3.3:
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.3.4.tgz#5ec3b87a191da8090bbef56b7cfabd4158038171"
+
 watchpack@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/watchpack/-/watchpack-1.3.1.tgz#7d8693907b28ce6013e7f3610aa2a1acf07dad87"
@@ -5217,6 +5221,32 @@ watchpack@^1.3.1:
     async "^2.1.2"
     chokidar "^1.4.3"
     graceful-fs "^4.1.2"
+
+weacast-client@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/weacast-client/-/weacast-client-0.2.0.tgz#3a91fb3f8bc78462f8b9cbe5e6f342f6b24dbadd"
+  dependencies:
+    config "^1.26.1"
+    feathers "^2.1.1"
+    feathers-client "^2.2.0"
+    feathers-hooks "^2.0.1"
+    jquery "^3.2.1"
+    leaflet "^1.0.3"
+    leaflet-basemaps "^0.2.0"
+    leaflet-filelayer "^0.6.0"
+    leaflet-fullscreen "^1.0.2"
+    leaflet-heatmap "^1.0.0"
+    leaflet-measure "^2.1.7"
+    leaflet-timedimension "^1.0.6"
+    leaflet-velocity "^1.1.0"
+    leaflet.markercluster "^1.0.5"
+    loglevel "^1.4.1"
+    socket.io-client "^1.7.3"
+    vue "^2.3.3"
+
+weacast-leaflet-velocity@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/weacast-leaflet-velocity/-/weacast-leaflet-velocity-1.1.0.tgz#a096f4fcd4a3b3753a459146949e3c4fd39ad3bc"
 
 webpack-dev-middleware@^1.8.4:
   version "1.10.1"

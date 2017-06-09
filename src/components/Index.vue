@@ -40,7 +40,7 @@
 
       <q-drawer-link icon="home" to="/home">Home</q-drawer-link>
       <q-drawer-link icon="layers" to="/map">Map</q-drawer-link>
-      <q-collapsible icon="language" label="Model">
+      <q-collapsible opened icon="language" label="Model">
         <div class="list">
           <label v-for="forecast in forecasts" class="item two-lines">
             <div class="item-primary">
@@ -96,10 +96,10 @@ export default {
   },
   computed: {
     authenticated () {
-      return this.$data.user !== null
+      return this.user !== null
     },
     hasAvatar () {
-      return this.authenticated && this.$data.user.avatar
+      return this.authenticated && this.user.avatar
     }
   },
   methods: {
@@ -121,7 +121,7 @@ export default {
         return api.users.get(payload.userId)
       })
       .then(user => {
-        this.$data.user = user
+        this.user = user
         return user
       })
       .catch(_ => {
@@ -156,7 +156,9 @@ export default {
           response.data.forEach(forecast => {
             forecast.elements.forEach(element => {
               // Declare element service
-              api.getService(forecast.name + '/' + element.name)
+              let elementService = api.getService(forecast.name + '/' + element.name)
+              // These services do some computations that might be long
+              elementService.timeout = 30000
             })
           })
           this.forecasts = response.data
@@ -170,7 +172,7 @@ export default {
     })
     // On logout
     api.on('logout', () => {
-      this.$data.user = null
+      this.user = null
       this.$router.push({ name: 'home' })
     })
   },

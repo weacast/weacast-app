@@ -6,12 +6,14 @@
 [![Code Climate](https://codeclimate.com/github/weacast/weacast/badges/gpa.svg)](https://codeclimate.com/github/weacast/weacast)
 [![Test Coverage](https://codeclimate.com/github/weacast/weacast/badges/coverage.svg)](https://codeclimate.com/github/weacast/weacast/coverage)
 [![Dependency Status](https://img.shields.io/david/weacast/weacast.svg?style=flat-square)](https://david-dm.org/weacast/weacast)
-[![Download Status](https://img.shields.io/npm/dm/weacast.svg?style=flat-square)](https://www.npmjs.com/package/weacast)
+[![Docker Pulls](https://img.shields.io/docker/pulls/weacast/weacast.svg?style=plastic)](https://hub.docker.com/r/weacast/weacast/)
 [![Join the chat at https://gitter.im/weacast/Lobby](https://badges.gitter.im/weacast/Lobby.svg)](https://gitter.im/weacast/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 **This is a WIP, not yet ready for production use**
 
 ### Have a look at our [showcase](https://weacast.gitbooks.io/weacast-docs/SHOWCASE.html) first
+
+A [live demo](http://demo.weacast.xyz) is usually running at [demo.weacast.xyz](http://demo.weacast.xyz).
 
 [![Weacast videos](https://github.com/weacast/weacast-docs/blob/master/images/weacast-wind.png)](https://weacast.gitbooks.io/weacast-docs/SHOWCASE.html)
 
@@ -22,5 +24,7 @@ If you want some help or participate to the development of Weacast contact us on
 ## Documentation
 
 The [Weacast docs](https://weacast.gitbooks.io/weacast-docs/) are loaded with awesome stuff and tell you everything you need to know about using and configuring Weacast.
+
+Take also a look at the [roadmap](https://github.com/weacast/weacast/projects/1).
 
 
