@@ -24,7 +24,9 @@ module.exports = function () {
   let probesService = app.getService('probes')
 
   // Create default users if not already done
-  usersService.find({ paginate: false })
+  usersService.find({
+    paginate: false
+  })
   .then(users => {
     app.get('authentication').defaultUsers.forEach(defaultUser => {
       let createdUser = users.find(user => user.email === defaultUser.email)
@@ -38,7 +40,12 @@ module.exports = function () {
     })
   })
   // Create a default probe if not already done
-  probesService.find({ paginate: false, query: { $select: ['name']} })
+  probesService.find({
+    paginate: false,
+    query: {
+      $select: ['name']
+    }
+  })
   .then(probes => {
     app.get('defaultProbes').forEach(async defaultProbe => {
       const probeName = path.parse(defaultProbe.fileName).name
