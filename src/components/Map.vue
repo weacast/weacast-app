@@ -51,7 +51,7 @@ export default {
         this.probeLayer = this.addGeoJsonCluster({
           type: 'FeatureCollection',
           features: this.probe.features
-        })
+        }, 'Probe')
       }
       else {
         Toast.create.negative('Forecast data has not been probed you cannot search matching weather conditions')

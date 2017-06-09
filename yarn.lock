@@ -3140,9 +3140,9 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-leaflet-basemaps@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/leaflet-basemaps/-/leaflet-basemaps-0.1.3.tgz#241d895a3c297d1628e75f5673215d1f50cb8e4f"
+leaflet-basemaps@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/leaflet-basemaps/-/leaflet-basemaps-0.2.0.tgz#29b851a8963ed6d7784c38eebd7df9468aad4c1a"
 
 leaflet-filelayer@^0.6.0:
   version "0.6.0"
@@ -4163,9 +4163,9 @@ qs@6.4.0, qs@^6.0.1, qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
-quasar-framework@^0.13.4:
-  version "0.13.6"
-  resolved "https://registry.yarnpkg.com/quasar-framework/-/quasar-framework-0.13.6.tgz#a80aecd46d75437e5bd9d9cbd638d699521fdf57"
+quasar-framework@^0.13.10:
+  version "0.13.10"
+  resolved "https://registry.yarnpkg.com/quasar-framework/-/quasar-framework-0.13.10.tgz#fd5e813cc9c75220c92f587b19525423ff7aa6f8"
 
 query-string@^4.1.0:
   version "4.3.2"

@@ -48,13 +48,18 @@ module.exports = {
     forecastLayers: [
       {
         type: 'FlowLayer',
+        name: 'Wind',
         options: {
           elements: ['u-wind', 'v-wind'],
           attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
+          lineWidth: 2,
+          frameRate: 20,
+          particleMultiplier: 1 / 900
         }
       }/*,
       {
         type: 'HeatLayer',
+        name: 'Gust',
         options: {
           elements: ['gust'],
           attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
