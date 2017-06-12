@@ -2,7 +2,7 @@
   <!-- root node required -->
   <div>
     <div id="map"></div>
-    <component is="seeker" v-if="probe" :probe="probe" :current-time="currentTime"></component>
+    <component is="seeker" v-if="probe" :probe="probe" :current-time="currentTime" :forecastModel="forecastModel"></component>
   </div>
 </template>
 

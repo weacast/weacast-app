@@ -56,7 +56,7 @@ import { Dialog } from 'quasar'
 import api from 'src/api'
 
 export default {
-  props: ['probe', 'currentTime'],
+  props: ['probe', 'currentTime', 'forecastModel'],
   data () {
     return {
       windDirection: 0.0,
