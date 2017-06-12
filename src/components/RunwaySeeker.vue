@@ -152,7 +152,7 @@ function kilometers2Meters (meters) {
 }
 
 export default {
-  props: ['probe', 'currentTime'],
+  props: ['probe', 'currentTime', 'forecastModel'],
   data () {
     return {
       airports: [],
@@ -306,6 +306,10 @@ export default {
   watch: {
     probe: function (probe) {
       this.buildAirportList()
+    },
+    forecastModel: function (model) {
+      // Clear previous result
+      this.clearRunways()
     }
   },
   methods: {
@@ -321,6 +325,9 @@ export default {
       }
     },
     setupTimeRange () {
+      // When results are produced all forecast times are filtered by those with results only
+      // We only want to update the min/max time range according to the underlying model time range
+      if (this.runways && this.runways.length > 0) return
       const availableTimes = this.$parent.map.timeDimension.getAvailableTimes()
       if (availableTimes.length > 0) {
         this.minDateTime = moment.utc(availableTimes[0]).format()
@@ -439,7 +446,7 @@ export default {
     // 'instant' = only runways for the current time are visible
     // 'cumulative' = runways until the current time are visible
     createRunwaysLayer (update) {
-      if (!this.runways) return
+      if (!this.runways || this.runways.length === 0) return
       this.runwaysLayer = this.$parent.addTimedGeoJson({
         type: 'FeatureCollection',
         features: this.runways
@@ -464,6 +471,11 @@ export default {
       marker.bindPopup('Departure airport (' + this.departureAirport.properties.Airport + ')')
       this.departureAirportMarker = this.$parent.addLayer(marker, 'Airport')
     },
+    clearRunways () {
+      this.runways = []
+      this.destroyRunwaysLayer()
+      this.destroyAirportMarker()
+    },
     searchRunways () {
       // Chaining modal close and dialog open requires the use of callback
       this.$refs.searchModal.close(async _ => {
@@ -476,20 +488,18 @@ export default {
           noEscDismiss: true
         })
         // Remove previous data
-        this.runways = []
-        this.destroyRunwaysLayer()
-        this.destroyAirportMarker()
+        this.clearRunways()
         // Because of the required precision simply take the first runway location as departure airport location
         this.departureAirport = this.probe.features.find(runway => runway.properties.Airport === this.departureICAO)
         let response = await api.probeResults.find(this.buildQuery())
         progressDialog.close(async _ => {
           this.runways = this.processRunways(response.data)
-          // When initializing a new search filter all forecast times by those with results only
-          this.createRunwaysLayer(true)
           this.createAirportMarker()
           this.$parent.center(this.departureAirport.geometry.coordinates[0], this.departureAirport.geometry.coordinates[1], 5)
 
           if (response.total > 0) {
+            // When initializing a new search filter all forecast times by those with results only
+            this.createRunwaysLayer(true)
             Dialog.create({
               title: response.total + ' matching results found',
               message: response.total > MAX_RUNWAYS
