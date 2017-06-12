@@ -74,7 +74,7 @@
         <div v-for="(dayDate, index) in runwaysDays">
           <div class="timeline-label">
             <h4 class="bg-white text-italic">
-              {{getCalendarDay(dayDate)}}
+              {{getCalendarDay(dayDate)}} ({{dayDate.format('YYYY-MM-DD')}})
             </h4>
           </div>
           <div v-for="runway in runwaysByDay[index]" class="timeline-item">
@@ -538,41 +538,71 @@ export default {
       const endDate = startDate.clone().add(1, 'days')
       // First filter runways belonging to given day
       let runways = this.runways.filter(runway => runway.forecastTime.isBetween(startDate, endDate, null, '[)'))
-      // Then sort by time
-      runways.sort((runway1, runway2) => runway1.forecastTime.isBefore(runway2.forecastTime) ? -1 : (runway2.forecastTime.isBefore(runway1.forecastTime) ? 1 : 0))
+      // Then sort by time so that contigous object are together
+      runways.sort((runway1, runway2) => {
+        // Time sort
+        if (runway1.forecastTime.isBefore(runway2.forecastTime)) return -1
+        if (runway2.forecastTime.isBefore(runway1.forecastTime)) return 1
+        return 0
+      })
       // Then agregate when the same runway covers multiple forecast intervals
       const interval = this.$parent.forecastModel.interval
-      runways = runways.filter((runway, index) => {
-        // Check if a previous runway distant of a single interval
-        if (index > 0) {
-          let previousRunway = runways[index - 1]
-          // If so the element shall be filtered from the list as we always keep the first one of an interval
-          if (runway.Ident === previousRunway.Ident &&
-              runway.forecastTime.diff(previousRunway.forecastTime, 'seconds') <= interval) {
-            return false
-          }
-        }
-        // Check for following runways distant of a single interval
-        let lastIndex = index
-        let lastRunway = runway
-        let hasNextRunway = true
-        while (hasNextRunway) {
-          lastIndex++
-          if (lastIndex === runways.length) {
-            hasNextRunway = false
+      function findContigousRunway (runways, index, direction = 'forward') {
+        let runway = runways[index]
+        let contigousRunway = null
+        let search = true
+        while (search) {
+          if (direction === 'forward') {
+            index++
+            if (index === runways.length) {
+              search = false
+            }
           }
           else {
-            let previousRunway = lastRunway
-            lastRunway = runways[lastIndex]
-            hasNextRunway = (previousRunway.Ident === lastRunway.Ident) &&
-                            (lastRunway.forecastTime.diff(previousRunway.forecastTime, 'seconds') <= interval)
+            index--
+            if (index < 0) {
+              search = false
+            }
+          }
+          if (search) {
+            let currentRunway = runways[index]
+            const isSameTime = currentRunway.forecastTime.isSame(runway.forecastTime)
+            // While we are on the same forecast time continue to search because we can have
+            // interleaved results for different airport runways at the same time
+            if (!isSameTime) {
+              // Check if we are only distant of a single interval
+              search = currentRunway.forecastTime.diff(runway.forecastTime, 'seconds') <= interval
+              // And in this case stop only when we have found the right runway because we can have interleaved results for different airport runways at the same time
+              if (search) {
+                if ((runway.Ident === currentRunway.Ident) &&
+                    (runway.Airport === currentRunway.Airport)) {
+                  search = false
+                  contigousRunway = currentRunway
+                }
+              }
+            }
           }
         }
-        // Know we now that last index is the last one belonging to the same interval if any, keep track of it
-        if (lastIndex - index >= 2) {
-          runway.interval = Object.assign({}, runways[lastIndex - 1])
+        return { runway: contigousRunway, index }
+      }
+      runways = runways.filter((runway, index) => {
+        // Check if a previous runway distant of a single interval
+        // If so the element shall be filtered from the list as we always keep the first one of an interval
+        let contigous = findContigousRunway(runways, index, 'backward')
+        if (contigous.runway) {
+          return false
         }
-        return true
+        else {
+          // Check for following runways distant of a single interval
+          contigous = findContigousRunway(runways, index, 'forward')
+          // while we found one continue to seek and keep track of it
+          while (contigous.runway) {
+            runway.interval = Object.assign({}, contigous.runway)
+            contigous = findContigousRunway(runways, contigous.index, 'forward')
+          }
+
+          return true
+        }
       })
       return runways
     },
