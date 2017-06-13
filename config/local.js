@@ -1,5 +1,5 @@
 module.exports = {
-  appName: 'Runway seeker',
+  appName: 'XWind',
   map: {
     seeker: 'RunwaySeeker',
     mixins: [ 'base', 'baseLayers', 'forecastLayers', 'geojsonLayers', 'fullscreen', 'measure', 'scalebar' ],
