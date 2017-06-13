@@ -57,7 +57,7 @@
         </q-collapsible>
       </div>
       <div class="row float-right">
-        <button class="primary clear" @click="searchRunways">Search runways</button>
+        <button class="primary clear" @click="searchRunwaysFromModal">Search runways</button>
         <button class="orange clear" @click="$refs.searchModal.close()">Close</button>
       </div>
     </q-modal>
@@ -101,20 +101,24 @@
       <button class="primary clear float-right" @click="$refs.timelineModal.close()">Close</button>
     </q-modal>
     <q-fab id="fab" v-if="probe" icon="flight_takeoff" classNames="white" class="absolute-bottom-right" style="margin-bottom: 6em; margin-right: 1em" direction="left">
-      <q-small-fab v-if="runways.length > 0" class="white" @click.native="setMapMode(mapMode === 'instant' ? 'cumulative' : 'instant')" icon="timelapse">
+      <q-small-fab v-if="hasResults" class="white" @click.native="setMapMode(mapMode === 'instant' ? 'cumulative' : 'instant')" icon="timelapse">
         <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, -10]">
         {{mapMode === 'instant' ? 'Switch to cumulative map mode' : 'Switch to instant map mode'}}</q-tooltip>
       </q-small-fab>
-      <q-small-fab v-if="runways.length > 0" class="white" @click.native="$refs.timelineModal.open" icon="access_time">
+      <q-small-fab v-if="hasResults" class="white" @click.native="$refs.timelineModal.open" icon="access_time">
         <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, -10]">View runways as timeline</q-tooltip>
       </q-small-fab>
-      <q-small-fab v-if="runways.length > 0" class="white" @click.native="$refs.tableModal.open" icon="view_column">
+      <q-small-fab v-if="hasResults" class="white" @click.native="$refs.tableModal.open" icon="view_column">
         <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, -10]">View runways as table</q-tooltip>
       </q-small-fab>
       <q-small-fab class="white" @click.native="$refs.searchModal.open" icon="search">
         <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, -10]">Search for runways</q-tooltip>
       </q-small-fab>
     </q-fab>
+    <button v-if="hasResults && hasNewResults" @click="searchRunways" class="negative circular absolute-bottom-right small" style="margin-bottom: 12em; margin-right: 1em">
+      <i>fiber_new</i>
+      <q-tooltip anchor="top middle" self="bottom middle" :offset="[0, -10]">New results available, click to update your search</q-tooltip>
+    </button>
   </div>
 </template>
 
@@ -123,7 +127,7 @@ import _ from 'lodash'
 import moment from 'moment'
 import L from 'leaflet'
 import distance from 'turf-distance'
-import { Dialog } from 'quasar'
+import { Toast, Dialog } from 'quasar'
 import api from 'src/api'
 
 const MAX_RUNWAYS = 50
@@ -170,6 +174,7 @@ export default {
       minDateTime: '',
       maxDateTime: '',
       dateTimeRange: { from: '', to: '' },
+      hasNewResults: false,
       tableColumns: [
         {
           label: 'Runway',
@@ -301,6 +306,11 @@ export default {
           noDataAfterFiltering: '<i>warning</i> No runway. Please refine your search terms.'
         }
       }
+    }
+  },
+  computed: {
+    hasResults () {
+      return this.runways && this.runways.length > 0
     }
   },
   watch: {
@@ -475,60 +485,64 @@ export default {
       this.runways = []
       this.destroyRunwaysLayer()
       this.destroyAirportMarker()
+      this.hasNewResults = false
     },
-    searchRunways () {
-      // Chaining modal close and dialog open requires the use of callback
-      this.$refs.searchModal.close(async _ => {
-        let progressDialog = Dialog.create({
-          title: 'Please wait',
-          message: 'Seeking for runways matching your input...',
-          progress: { indeterminate: true },
-          buttons: ['Cancel'],
-          noBackdropDismiss: true,
-          noEscDismiss: true
-        })
-        // Remove previous data
-        this.clearRunways()
-        // Because of the required precision simply take the first runway location as departure airport location
-        this.departureAirport = this.probe.features.find(runway => runway.properties.Airport === this.departureICAO)
-        let response = await api.probeResults.find(this.buildQuery())
-        progressDialog.close(async _ => {
-          this.runways = this.processRunways(response.data)
-          this.createAirportMarker()
-          this.$parent.center(this.departureAirport.geometry.coordinates[0], this.departureAirport.geometry.coordinates[1], 5)
+    async searchRunways () {
+      let progressDialog = Dialog.create({
+        title: 'Please wait',
+        message: 'Seeking for runways matching your input...',
+        progress: { indeterminate: true },
+        buttons: ['Cancel'],
+        noBackdropDismiss: true,
+        noEscDismiss: true
+      })
+      // Remove previous data
+      this.clearRunways()
+      // Because of the required precision simply take the first runway location as departure airport location
+      this.departureAirport = this.probe.features.find(runway => runway.properties.Airport === this.departureICAO)
+      let response = await api.probeResults.find(this.buildQuery())
+      progressDialog.close(async _ => {
+        this.runways = this.processRunways(response.data)
+        this.createAirportMarker()
+        this.$parent.center(this.departureAirport.geometry.coordinates[0], this.departureAirport.geometry.coordinates[1], 5)
 
-          if (response.total > 0) {
-            // When initializing a new search filter all forecast times by those with results only
-            this.createRunwaysLayer(true)
-            Dialog.create({
-              title: response.total + ' matching results found',
-              message: response.total > MAX_RUNWAYS
-                ? 'Found more than ' + MAX_RUNWAYS + ' runways, you can now browse matching runways but please consider refining your search parameters because you might miss some results.'
-                : 'You can now browse matching runways',
-              buttons: [
-                {
-                  label: 'View as table',
-                  handler: () => {
-                    this.$refs.tableModal.open()
-                  }
-                },
-                {
-                  label: 'View as timeline',
-                  handler: () => {
-                    this.$refs.timelineModal.open()
-                  }
-                },
-                'Close'
-              ]
-            })
-          }
-          else {
-            Dialog.create({
-              title: 'Alert',
-              message: 'No matching runway found for your input, please consider changing search parameters.'
-            })
-          }
-        })
+        if (response.total > 0) {
+          // When initializing a new search filter all forecast times by those with results only
+          this.createRunwaysLayer(true)
+          Dialog.create({
+            title: response.total + ' matching results found',
+            message: response.total > MAX_RUNWAYS
+              ? 'Found more than ' + MAX_RUNWAYS + ' runways, you can now browse matching runways but please consider refining your search parameters because you might miss some results.'
+              : 'You can now browse matching runways',
+            buttons: [
+              {
+                label: 'View as table',
+                handler: () => {
+                  this.$refs.tableModal.open()
+                }
+              },
+              {
+                label: 'View as timeline',
+                handler: () => {
+                  this.$refs.timelineModal.open()
+                }
+              },
+              'Close'
+            ]
+          })
+        }
+        else {
+          Dialog.create({
+            title: 'Alert',
+            message: 'No matching runway found for your input, please consider changing search parameters.'
+          })
+        }
+      })
+    },
+    searchRunwaysFromModal () {
+      // Chaining modal close and dialog open requires the use of callback
+      this.$refs.searchModal.close(_ => {
+        this.searchRunways()
       })
     },
     getCalendarDay (dayDate) {
@@ -617,6 +631,16 @@ export default {
     this.buildAirportList()
     this.setupTimeRange()
     this.$parent.map.timeDimension.on('availabletimeschanged', _ => this.setupTimeRange())
+
+    api.probes.on('results', data => {
+      if (this.probe && data.probe && data.probe._id === this.probe._id && this.hasResults) {
+        // The first time display an alert message
+        if (!this.hasNewResults) {
+          Toast.create.negative('Forecast data has been updated, please consider to perform a new search')
+        }
+        this.hasNewResults = true
+      }
+    })
   }
 }
 </script>
