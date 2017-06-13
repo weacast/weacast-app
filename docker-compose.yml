@@ -1,26 +1,26 @@
 version: '2'
 
 services:
-  weacast:
+  xwind:
     build: .
-    container_name: weacast
-    image: weacast/weacast
+    container_name: xwind
+    image: xwind/xwind
     links:
-      - mongodb-weacast:mongodb
+      - mongodb-xwind:mongodb
     ports:
       - 8081:8081
     networks:
-      - weacast
-  mongodb-weacast:
-    container_name: mongodb-weacast
+      - xwind
+  mongodb-xwind:
+    container_name: mongodb-xwind
     image: mongo
     volumes:
-      - mongodb_weacast:/data/db
+      - mongodb_xwind:/data/db
     networks:
-      - weacast
+      - xwind
 
 volumes:
-  mongodb_weacast:
+  mongodb_xwind:
 
 networks:
-  weacast:
+  xwind:
