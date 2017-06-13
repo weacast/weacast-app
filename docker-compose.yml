@@ -4,7 +4,7 @@ services:
   xwind:
     build: .
     container_name: xwind
-    image: xwind/xwind
+    image: claustres/xwind
     links:
       - mongodb-xwind:mongodb
     ports:
