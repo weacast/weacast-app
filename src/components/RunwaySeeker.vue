@@ -410,6 +410,10 @@ export default {
         runway.properties.gust = meters2Knots(_.toNumber(runway.properties.gust))
         runway.properties.windSpeed = meters2Knots(_.toNumber(runway.properties.windSpeed))
         runway.properties.windDirection = _.toNumber(runway.properties.windDirection)
+        // Take care that we want to use the bearing / geographical convention, i.e. angle toward which the element goes,
+        // we need to convert from meteorological convention, i.e. angle from which the flow comes
+        runway.properties.windDirection += 180
+        if (runway.properties.windDirection >= 360) runway.properties.windDirection -= 360
         runway.properties.windBearingDirection = _.toNumber(runway.properties.windBearingDirection)
         // Compute distance from departure airport
         runway.properties.distance = distance(this.departureAirport, runway)
