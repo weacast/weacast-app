@@ -1,7 +1,7 @@
 {
   "name": "xwind-app",
   "description": "Weacast Web App and Services",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "homepage": "https://github.com/weacast/weacast",
   "keywords": [
     "weacast"
