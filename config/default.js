@@ -63,6 +63,14 @@ module.exports = {
             speedUnit: 'm/s'
           }
         }
+      },
+      {
+        type: 'ColorLayer',
+        name: 'Gust',
+        options: {
+          elements: ['gust'],
+          attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
+        }
       }/*,
       {
         type: 'HeatLayer',
