@@ -19,6 +19,7 @@ A [live demo](http://demo.weacast.xyz) is usually running at [demo.weacast.xyz](
 
 If you want some help or participate to the development of Weacast contact us on our Gitter rooms :
 * https://gitter.im/weacast/Lobby for general questions about using Weacast
+* https://gitter.im/weacast/Announcements to be informed about important news (e.g. releases, bug fixes, etc.)
 * https://gitter.im/weacast/Development to discuss about development and roadmap
 
 ## Documentation
