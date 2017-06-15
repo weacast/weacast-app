@@ -1,5 +1,6 @@
 module.exports = {
   appName: 'XWind',
+  transport: 'http',
   map: {
     seeker: 'RunwaySeeker',
     mixins: [ 'base', 'baseLayers', 'forecastLayers', 'geojsonLayers', 'fullscreen', 'measure', 'scalebar' ],
