@@ -57,7 +57,8 @@
     "vue": "^2.2.2",
     "vue-router": "^2.0.0",
     "weacast-client": "^0.2.4",
-    "weacast-leaflet-velocity": "^1.1.0"
+    "weacast-leaflet-velocity": "^1.1.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",

@@ -12,6 +12,7 @@ import router from './router'
 
 // Required IE 11 polyfill
 import 'babel-polyfill'
+import 'whatwg-fetch'
 
 Vue.use(Quasar) // Install Quasar Framework
 Vue.use(router)
