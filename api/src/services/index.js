@@ -4,6 +4,7 @@ import logger from 'winston'
 import core from 'weacast-core'
 import arpege from 'weacast-arpege'
 import arome from 'weacast-arome'
+import gfs from 'weacast-gfs'
 import probe from 'weacast-probe'
 
 module.exports = function () {
@@ -15,6 +16,7 @@ module.exports = function () {
     app.configure(core)
     app.configure(arpege)
     app.configure(arome)
+    app.configure(gfs)
     app.configure(probe)
   }
   catch (error) {
