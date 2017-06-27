@@ -64,7 +64,7 @@ module.exports = {
   ],
   forecastPath: path.join(__dirname, '..', 'forecast-data'),
   forecasts: [
-    /* If you want to use also GFS by default
+    /*
     {
       name: 'gfs-world-low',
       label: 'GFS - 1°',
@@ -72,8 +72,8 @@ module.exports = {
       attribution: 'Forecast data from <a href="http://www.emc.ncep.noaa.gov/index.php?branch=GFS">NCEP</a>',
       model: 'gfs',
       baseUrl: 'http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_1p00.pl',
-      bounds: [-180, -90, 180, 90],
-      origin: [-180, 90],
+      bounds: [0, -90, 360, 90],
+      origin: [0, 90],
       size: [360, 181],
       resolution: [1, 1],
       runInterval: 6 * 3600,          // Produced every 6h
@@ -100,15 +100,16 @@ module.exports = {
         }
       ]
     },
+    */
     {
-      name: 'gfs-world-medium',
+      name: 'gfs-world',
       label: 'GFS - 0.5°',
       description: 'World-wide',
       attribution: 'Forecast data from <a href="http://www.emc.ncep.noaa.gov/index.php?branch=GFS">NCEP</a>',
       model: 'gfs',
       baseUrl: 'http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl',
-      bounds: [-180, -90, 180, 90],
-      origin: [-180, 90],
+      bounds: [0, -90, 360, 90],
+      origin: [0, 90],
       size: [720, 361],
       resolution: [0.5, 0.5],
       runInterval: 6 * 3600,          // Produced every 6h
@@ -135,6 +136,7 @@ module.exports = {
         }
       ]
     },
+    /*
     {
       name: 'gfs-world-high',
       label: 'GFS - 0.25°',
@@ -142,8 +144,8 @@ module.exports = {
       attribution: 'Forecast data from <a href="http://www.emc.ncep.noaa.gov/index.php?branch=GFS">NCEP</a>',
       model: 'gfs',
       baseUrl: 'http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl',
-      bounds: [-180, -90, 180, 90],
-      origin: [-180, 90],
+      bounds: [0, -90, 360, 90],
+      origin: [0, 90],
       size: [1440, 721],
       resolution: [0.25, 0.25],
       runInterval: 6 * 3600,          // Produced every 6h
@@ -187,7 +189,7 @@ module.exports = {
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
       upperLimit: 102 * 3600,         // Up to T0+102
-      updateInterval: 0 * 60,        // Check for update every 15 minutes
+      updateInterval: 15 * 60,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -212,15 +214,6 @@ module.exports = {
             height: 10
           }
         }
-        /*,
-        {
-          name: 'temperature',
-          coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
-          subsets: {
-            height: 2
-          }
-        }
-        */
       ]
     },
     {
@@ -241,7 +234,7 @@ module.exports = {
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
       upperLimit: 102 * 3600,           // Up to T0+102
-      updateInterval: 0 * 60,          // Check for update every 15 minutes
+      updateInterval: 15 * 60,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -291,7 +284,7 @@ module.exports = {
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
       upperLimit: 42 * 3600,            // Up to T0+42
-      updateInterval: 0 * 60,          // Check for update every 15 minutes
+      updateInterval: 15 * 60,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
