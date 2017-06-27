@@ -7,8 +7,9 @@
 </template>
 
 <script>
+import L from 'leaflet'
 import { Toast } from 'quasar'
-import { MixinStore } from 'weacast-client'
+import { MixinStore, WindBarbIcon } from 'weacast-client'
 
 import config from 'config'
 import api from 'src/api'
@@ -37,8 +38,9 @@ export default {
     async setupDefaultProbe () {
       // Not yet ready
       if (!this.forecastModel) return
-      // Remove default layer if any
-      if (this.probeLayer) this.removeLayer(this.probeLayer)
+      // Remove previous layer if any
+      this.removeLayer(this.probeLayer)
+      this.probeLayer = null
       // Retrieve the available probes
       let probes = await api.probes.find({ query: { $paginate: false, $select: ['elements', 'forecast'] } })
       // Find the right one for current model
@@ -58,6 +60,7 @@ export default {
       }
     },
     performProbing (geojson) {
+      console.log(geojson)
       // Not yet ready
       if (!this.forecastModel) return
 
@@ -73,10 +76,41 @@ export default {
         }
       })
       .then(response => {
+        // Remove original file layer
+        this.removeLayer(this.fileLayer)
+        // Remove previous probed layer if any
+        this.removeLayer(this.probeLayer)
+        // Then create probed layer
+        this.probeLayer = this.addGeoJsonCluster({
+          type: 'FeatureCollection',
+          features: response.features
+        }, 'Probe')
         this.userProbe = response
         this.probe = this.userProbe
         Toast.create.positive('Forecast data has been probed for your layer you can now search matching conditions')
       })
+    },
+    getPointMarker (feature, latlng) {
+      // Use wind barbs on probed features
+      if (feature.properties && feature.properties.windDirection && feature.properties.windSpeed) {
+        let icon = new WindBarbIcon({
+          deg: feature.properties.windDirection,
+          speed: feature.properties.windSpeed / 0.514, // Expressed as knots
+          pointRadius: 10,
+          pointColor: '#2B85C7',
+          pointStroke: '#111',
+          strokeWidth: 2,
+          strokeColor: '#000',
+          strokeLength: 12,
+          barbSpaceing: 4,
+          barbHeight: 10,
+          forceDir: true
+        })
+        return L.marker(latlng, { icon })
+      }
+      else {
+        return this.createMarkerFromStyle(latlng, this.configuration.pointStyle)
+      }
     }
   },
   beforeCreate () {
@@ -96,8 +130,6 @@ export default {
       }
     })
     this.$on('fileLayerLoaded', (fileLayer, filename) => {
-      // Remove default layer if any
-      if (this.probeLayer) this.removeLayer(this.probeLayer)
       // Perform probing
       this.performProbing(fileLayer.toGeoJSON())
     })
