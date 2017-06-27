@@ -53,10 +53,10 @@ module.exports = function () {
       const probeName = path.parse(defaultProbe.fileName).name
       let createdProbe = probes.find(probe => probe.name === probeName)
       if (!createdProbe) {
-        let geojson = fs.readJsonSync(path.join(app.get('probePath'), defaultProbe.fileName))
         // One probe for each forecast model and elements
         for (let forecast of app.get('forecasts')) {
           logger.info('Initializing default probe ' + defaultProbe.fileName + ' for forecast model ' + forecast.name)
+          let geojson = fs.readJsonSync(path.join(app.get('probePath'), defaultProbe.fileName))
           let options = Object.assign({
             name: probeName,
             forecast: forecast.name,
@@ -64,6 +64,9 @@ module.exports = function () {
           }, defaultProbe.options)
           Object.assign(geojson, options)
           probesService.create(geojson)
+          .then(probe => {
+            logger.info('Initialized default probe ' + defaultProbe.fileName + ' for forecast model ' + forecast.name)
+          })
         }
       }
     })
