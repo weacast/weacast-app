@@ -63,15 +63,25 @@ module.exports = {
             speedUnit: 'm/s'
           }
         }
-      }/*,
+      },
       {
-        type: 'HeatLayer',
-        name: 'Gust',
+        type: 'ColorLayer',
+        name: 'Gust (color map)',
         options: {
           elements: ['gust'],
           attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
+          visible: false
         }
-      }*/
+      },
+      {
+        type: 'HeatLayer',
+        name: 'Gust (heat map)',
+        options: {
+          elements: ['gust'],
+          attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
+          visible: false
+        }
+      }
     ],
     // Default GeoJSON layer style for polygons/lines
     featureStyle: {
