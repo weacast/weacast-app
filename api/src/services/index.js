@@ -49,7 +49,7 @@ module.exports = function () {
     }
   })
   .then(probes => {
-    app.get('defaultProbes').forEach(async defaultProbe => {
+    app.get('defaultProbes').forEach(defaultProbe => {
       const probeName = path.parse(defaultProbe.fileName).name
       let createdProbe = probes.find(probe => probe.name === probeName)
       if (!createdProbe) {
@@ -63,7 +63,7 @@ module.exports = function () {
             elements: forecast.elements.map(element => element.name)
           }, defaultProbe.options)
           Object.assign(geojson, options)
-          await probesService.create(geojson)
+          probesService.create(geojson)
         }
       }
     })
