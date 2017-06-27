@@ -46,6 +46,7 @@
     "leaflet-heatmap": "^1.0.0",
     "leaflet-measure": "^2.1.7",
     "leaflet-timedimension": "^1.0.6",
+    "leaflet-velocity": "^1.2.2",
     "leaflet.markercluster": "^1.0.5",
     "lodash": "^4.17.4",
     "loglevel": "^1.4.1",
@@ -58,7 +59,6 @@
     "vue": "^2.2.2",
     "vue-router": "^2.0.0",
     "weacast-client": "^0.2.4",
-    "weacast-leaflet-velocity": "^1.1.0",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
