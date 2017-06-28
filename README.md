@@ -9,7 +9,11 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/weacast/weacast.svg?style=plastic)](https://hub.docker.com/r/weacast/weacast/)
 [![Join the chat at https://gitter.im/weacast/Lobby](https://badges.gitter.im/weacast/Lobby.svg)](https://gitter.im/weacast/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-**This is a WIP, not yet ready for production use**
+### Under Development
+
+**Weacast is under development and currently in beta-test, updates will be pushed frequently.
+As a consequence it should be considered unstable, not yet ready for production use.
+Although we try to avoid this wherever possible, `0.x` versions on the master branch can promote breaking changes in the API.**
 
 ### Have a look at our [showcase](https://weacast.gitbooks.io/weacast-docs/SHOWCASE.html) first
 
