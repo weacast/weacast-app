@@ -1652,14 +1652,6 @@ fast-levenshtein@~2.0.4:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
 
-feathers-authentication-client@^0.1.10:
-  version "0.1.10"
-  resolved "https://registry.yarnpkg.com/feathers-authentication-client/-/feathers-authentication-client-0.1.10.tgz#396059ec877f31d50ab5a8de0f88444c6313557a"
-  dependencies:
-    debug "^2.2.0"
-    feathers-errors "^2.4.0"
-    jwt-decode "^2.1.0"
-
 feathers-authentication-client@^0.3.1:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/feathers-authentication-client/-/feathers-authentication-client-0.3.2.tgz#add0ed0f562c2462228c22d688e1261ef5f96e56"
@@ -1709,20 +1701,22 @@ feathers-authentication@^1.2.2:
     ms "^1.0.0"
     passport "^0.3.2"
 
-feathers-authentication@pre:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/feathers-authentication/-/feathers-authentication-1.2.0.tgz#e788b91acd03e5606837a7955c60216c1f8942c8"
+feathers-authentication@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/feathers-authentication/-/feathers-authentication-1.2.6.tgz#f81a8948d47760675423f602ffa75d4f5a87937e"
   dependencies:
     debug "^2.2.0"
-    feathers-authentication-client "^0.1.10"
+    feathers-authentication-client "^0.3.1"
     feathers-commons "^0.8.4"
     feathers-errors "^2.4.0"
     feathers-socket-commons "^2.3.1"
     jsonwebtoken "^7.1.9"
+    lodash.clone "^4.5.0"
     lodash.merge "^4.6.0"
     lodash.omit "^4.5.0"
     lodash.pick "^4.4.0"
-    ms "^0.7.1"
+    long-timeout "^0.1.1"
+    ms "^2.0.0"
     passport "^0.3.2"
 
 feathers-commons@^0.8.0, feathers-commons@^0.8.1, feathers-commons@^0.8.4, feathers-commons@^0.8.6, feathers-commons@^0.8.7:
@@ -2749,6 +2743,10 @@ lodash.assign@^3.0.0:
     lodash._createassigner "^3.0.0"
     lodash.keys "^3.0.0"
 
+lodash.clone@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.clone/-/lodash.clone-4.5.0.tgz#195870450f5a13192478df4bc3d23d2dea1907b6"
+
 lodash.create@3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/lodash.create/-/lodash.create-3.1.1.tgz#d7f2849f0dbda7e04682bb8cd72ab022461debe7"
@@ -2955,6 +2953,10 @@ ms@0.7.3, ms@^0.7.1:
 ms@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-1.0.0.tgz#59adcd22edc543f7b5381862d31387b1f4bc9473"
+
+ms@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
 mute-stream@0.0.5:
   version "0.0.5"
