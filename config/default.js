@@ -1,6 +1,6 @@
 module.exports = {
   apiPath: '/api',
-  transport: 'web-socket', // Could be 'http' or 'web-socket',
+  transport: 'websocket', // Could be 'http' or 'websocket',
   appName: 'Weacast',
   logs: {
     level: (process.env.NODE_ENV === 'development' ? 'debug' : 'info')
