@@ -20,5 +20,5 @@ before_script:
   - npm install -g codeclimate-test-reporter
   - npm install -g quasar-cli
 after_script:
-  - codeclimate-test-reporter < coverage/lcov.info
+  - codeclimate-test-reporter < api/coverage/lcov.info
 
