@@ -38,7 +38,8 @@ module.exports = {
   },
   logs: {
     Console: {
-      colorize: true
+      colorize: true,
+      level: (process.env.NODE_ENV === 'development' ? 'verbose' : 'info')
     },
     DailyRotateFile: {
       dirname: path.join(__dirname, '..', 'logs'),
