@@ -1151,13 +1151,13 @@ debug@2.6.0:
   dependencies:
     ms "0.7.2"
 
-debug@2.6.1, debug@^2.1.1, debug@^2.2.0, debug@^2.3.1, debug@^2.6.0:
+debug@2.6.1, debug@^2.2.0, debug@^2.3.1, debug@^2.6.0:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.1.tgz#79855090ba2c4e3115cc7d8769491d58f0491351"
   dependencies:
     ms "0.7.2"
 
-debug@2.6.4, debug@^2.6.4:
+debug@2.6.4, debug@^2.1.1, debug@^2.6.4:
   version "2.6.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.4.tgz#7586a9b3c39741c0282ae33445c4e8ac74734fe0"
   dependencies:
@@ -4258,9 +4258,9 @@ weacast-core@^0.3.0:
     winston "^2.3.1"
     winston-daily-rotate-file "^1.4.6"
 
-weacast-gfs@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/weacast-gfs/-/weacast-gfs-0.2.0.tgz#c29145c8ca8022d58104ebde24d7da78ff3d17ba"
+weacast-gfs@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/weacast-gfs/-/weacast-gfs-0.3.0.tgz#15f3d2246efbfd710d9da2f555938030944032d3"
   dependencies:
     debug "^2.6.4"
     feathers-authentication "^1.2.2"
@@ -4276,12 +4276,12 @@ weacast-gfs@^0.2.0:
     request "^2.81.0"
     uberproto "^1.2.0"
     weacast-core "^0.3.0"
-    weacast-grib2json "^0.2.0"
+    weacast-grib2json "^0.2.2"
     winston "^2.3.1"
 
-weacast-grib2json@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/weacast-grib2json/-/weacast-grib2json-0.2.0.tgz#6dd629b5069077c8bb08bc4d85a371460572ddbd"
+weacast-grib2json@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/weacast-grib2json/-/weacast-grib2json-0.2.2.tgz#3d062bfc75c312e4c32ef46376f61d18dd34edb6"
   dependencies:
     commander "^2.9.0"
     fs-extra "^3.0.1"

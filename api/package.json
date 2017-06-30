@@ -76,7 +76,7 @@
     "weacast-arome": "^0.3.0",
     "weacast-arpege": "^0.3.0",
     "weacast-core": "^0.3.0",
-    "weacast-gfs": "^0.2.0",
+    "weacast-gfs": "^0.3.0",
     "weacast-probe": "^0.3.0",
     "winston": "^2.3.1"
   }
