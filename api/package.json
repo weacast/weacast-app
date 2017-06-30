@@ -58,7 +58,7 @@
     "feathers": "^2.1.1",
     "feathers-authentication": "^1.2.6",
     "feathers-authentication-jwt": "^0.3.1",
-    "feathers-authentication-local": "^0.3.3",
+    "feathers-authentication-local": "^0.4.3",
     "feathers-errors": "^2.6.1",
     "feathers-hooks": "^2.0.1",
     "feathers-hooks-common": "^3.0.0",
@@ -73,11 +73,11 @@
     "nedb": "^1.8.0",
     "request": "^2.81.0",
     "sublevelup": "^4.0.0",
-    "weacast-arome": "^0.2.0",
-    "weacast-arpege": "^0.2.1",
-    "weacast-core": "^0.2.3",
-    "weacast-gfs": "^0.1.1",
-    "weacast-probe": "^0.2.2",
+    "weacast-arome": "^0.3.0",
+    "weacast-arpege": "^0.3.0",
+    "weacast-core": "^0.3.0",
+    "weacast-gfs": "^0.2.0",
+    "weacast-probe": "^0.3.0",
     "winston": "^2.3.1"
   }
 }
