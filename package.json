@@ -61,7 +61,7 @@
     "turf-distance": "^3.0.12",
     "vue": "^2.2.2",
     "vue-router": "^2.0.0",
-    "weacast-client": "^0.2.4",
+    "weacast-client": "^0.3.0",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
