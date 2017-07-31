@@ -1265,7 +1265,7 @@ chroma-js@1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-1.3.3.tgz#91b3a2b3856c18443ebd8c9719faea108b56263b"
 
-chroma-js@^1.3.4:
+chroma-js@1.3.4, chroma-js@^1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-1.3.4.tgz#93a7c19f287960285cc3fdebb205b8ea1a0f04f9"
 
@@ -3702,6 +3702,16 @@ leaflet-canvaslayer-field@^1.0.2:
     leaflet "1.0.3"
     npm "^3.10.7"
 
+leaflet-canvaslayer-field@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/leaflet-canvaslayer-field/-/leaflet-canvaslayer-field-1.2.0.tgz#952d4e38adb34e3ff31680b83344829d7abd9b53"
+  dependencies:
+    chroma-js "1.3.4"
+    d3 "4.9.1"
+    geotiff "0.4.1"
+    leaflet ">=1.0.3"
+    npm "^3.10.7"
+
 leaflet-filelayer@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/leaflet-filelayer/-/leaflet-filelayer-0.6.0.tgz#dca2c7eb346dcd76e01f16d517d0b5464d16e2d8"
@@ -3747,7 +3757,7 @@ leaflet.markercluster@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.0.5.tgz#12fde61630f4eb3146d92b56a36fdff903d1e023"
 
-leaflet@*, leaflet@1.0.3, leaflet@^1.0.3, "leaflet@~0.7.4 || ~1.0.0":
+leaflet@*, leaflet@1.0.3, leaflet@>=1.0.3, leaflet@^1.0.3, "leaflet@~0.7.4 || ~1.0.0":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.0.3.tgz#1f401b98b45c8192134c6c8d69686253805007c8"
 
