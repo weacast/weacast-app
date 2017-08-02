@@ -20,7 +20,6 @@
     "url": "https://github.com/weacast/weacast/issues"
   },
   "scripts": {
-    "postinstall": "cd api && yarn install && cd ..",
     "prepublish": "npm run build",
     "publish": "git push origin --tags && npm run changelog && git push origin",
     "release:patch": "cd api && npm run release:patch && cd .. && npm version --force patch && npm run publish",
