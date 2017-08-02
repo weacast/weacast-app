@@ -20,6 +20,7 @@
     "url": "https://github.com/weacast/weacast/issues"
   },
   "scripts": {
+    "postinstall": "cd api && yarn install && cd ..",
     "prepublish": "npm run build",
     "publish": "git push origin --tags && npm run changelog && git push origin",
     "release:patch": "cd api && npm run release:patch && cd .. && npm version --force patch && npm run publish",
@@ -43,7 +44,7 @@
     "jquery": "^3.2.1",
     "leaflet": "^1.0.3",
     "leaflet-basemaps": "^0.2.0",
-    "leaflet-canvaslayer-field": "^1.2.0",
+    "leaflet-canvaslayer-field": "^1.2.1",
     "leaflet-filelayer": "^0.6.0",
     "leaflet-fullscreen": "^1.0.2",
     "leaflet-heatmap": "^1.0.0",
