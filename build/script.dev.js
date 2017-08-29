@@ -4,7 +4,9 @@ require('colors')
 
 var
   path = require('path'),
+  fs = require('fs'),
   express = require('express'),
+  https = require('https'),
   webpack = require('webpack'),
   env = require('./env-utils'),
   config = require('../config'),
@@ -12,8 +14,9 @@ var
   proxyMiddleware = require('http-proxy-middleware'),
   webpackConfig = require('./webpack.dev.conf'),
   app = express(),
-  port = process.env.PORT || config.dev.port,
-  uri = 'http://localhost:' + port
+  httpsConfig = config.dev.https,
+  port = (httpsConfig ? httpsConfig.port : config.dev.port),
+  uri = (httpsConfig ? 'https' : 'http' ) + '://localhost:' + port
 
 console.log(' Starting dev server with "' + (process.argv[2] || env.platform.theme).bold + '" theme...')
 console.log(' Will listen at ' + uri.bold)
@@ -73,7 +76,7 @@ app.use(staticsPath, express.static('./src/statics'))
 // try to serve Cordova statics for Play App
 app.use(express.static(env.platform.cordovaAssets))
 
-var server = app.listen(port, function (err) {
+function handler(err) {
   if (err) {
     console.log(err)
     return
@@ -85,6 +88,15 @@ var server = app.listen(port, function (err) {
       opn(uri)
     })
   }
-})
+}
 
-module.exports = server
+if (httpsConfig) {
+  let server = https.createServer({
+    key: fs.readFileSync(httpsConfig.key),
+    cert: fs.readFileSync(httpsConfig.cert)
+  }, app)
+  server.listen(port, handler)
+} else {
+  app.listen(port, handler)
+}
+

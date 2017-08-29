@@ -1,4 +1,6 @@
 const path = require('path')
+const fs = require('fs-extra')
+const https = require('https')
 const proxyMiddleware = require('http-proxy-middleware')
 
 const feathers = require('feathers')
@@ -6,6 +8,7 @@ const middleware = require('./middleware')
 const services = require('./services')
 const appHooks = require('./main.hooks')
 
+import logger from 'winston'
 import { weacast } from 'weacast-core'
 
 export class Server {
@@ -22,8 +25,9 @@ export class Server {
 
     // Define HTTP proxies to your custom API backend. See /config/index.js -> proxyTable
     // https://github.com/chimurai/http-proxy-middleware
-    Object.keys(this.app.get('proxyTable')).forEach(context => {
-      let options = this.config.this.app.get('proxyTable')[context]
+    const proxyTable = this.app.get('proxyTable')
+    Object.keys(proxyTable).forEach(context => {
+      let options = proxyTable[context]
       if (typeof options === 'string') {
         options = { target: options }
       }
@@ -35,8 +39,6 @@ export class Server {
     // First try to connect to DB
     await this.app.db.connect()
 
-    const port = this.app.get('port')
-
     // Set up our services (see `services/index.js`)
     this.app.configure(services)
     // Configure middleware (see `middleware/index.js`) - always has to be last
@@ -44,6 +46,19 @@ export class Server {
     this.app.hooks(appHooks)
 
     // Last lauch server
-    await this.app.listen(port)
+    const httpsConfig = this.app.get('https')
+    if (httpsConfig) {
+      const port = httpsConfig.port
+      let server = https.createServer({
+        key: fs.readFileSync(httpsConfig.key),
+        cert: fs.readFileSync(httpsConfig.cert)
+      }, this.app)
+      logger.info('Configuring HTTPS server at port ' + port.toString())
+      await server.listen(port)
+    } else {
+      const port = this.app.get('port')
+      logger.info('Configuring HTTP server at port ' + port.toString())
+      await this.app.listen(port)
+    }
   }
 }

@@ -4,6 +4,7 @@
 <script>
 import { Toast, Dialog } from 'quasar'
 import api from 'src/api'
+import config from 'config'
 
 // import { API } from 'src/api'
 
@@ -33,8 +34,54 @@ export default {
     }
   },
   mounted () {
+    const title = this.isRegistration() ? 'Register' : 'Sign In'
+    // Local auth is always here
+    let buttons = [
+      {
+        label: 'Ok',
+        handler: (data) => {
+          if (this.isRegistration()) {
+            this.register(data.email, data.password)
+            .then(() => {
+              return this.login(data.email, data.password)
+            })
+            .then(_ => {
+              Toast.create.positive('You are now logged in')
+              this.$router.push({ name: 'home' })
+            })
+            .catch(_ => {
+              Toast.create.negative('Cannot register, please check your e-mail or password')
+              this.$router.push({ name: 'home' })
+            })
+          }
+          else {
+            this.login(data.email, data.password)
+            .then(_ => {
+              Toast.create.positive('You are now logged in')
+              this.$router.push({ name: 'home' })
+            })
+            .catch(_ => {
+              Toast.create.negative('Cannot sign in, please check your e-mail or password')
+              this.$router.push({ name: 'home' })
+            })
+          }
+        }
+      }
+    ]
+    // Then add auth providers if any
+    if (config.login && config.login.providers) {
+      config.login.providers.forEach(provider => {
+        buttons.push({
+          label: provider,
+          handler: (data) => {
+            location.href = '/auth/' + provider.toLowerCase()
+          }
+        })
+      })
+    }
+
     Dialog.create({
-      title: this.isRegistration() ? 'Register' : 'Sign In',
+      title,
       noBackdropDismiss: true,
       noEscDismiss: true,
       form: {
@@ -49,38 +96,7 @@ export default {
           model: ''
         }
       },
-      buttons: [
-        {
-          label: 'Ok',
-          handler: (data) => {
-            if (this.isRegistration()) {
-              this.register(data.email, data.password)
-              .then(() => {
-                return this.login(data.email, data.password)
-              })
-              .then(_ => {
-                Toast.create.positive('You are now logged in')
-                this.$router.push({ name: 'home' })
-              })
-              .catch(_ => {
-                Toast.create.negative('Cannot register, please check your e-mail or password')
-                this.$router.push({ name: 'home' })
-              })
-            }
-            else {
-              this.login(data.email, data.password)
-              .then(_ => {
-                Toast.create.positive('You are now logged in')
-                this.$router.push({ name: 'home' })
-              })
-              .catch(_ => {
-                Toast.create.negative('Cannot sign in, please check your e-mail or password')
-                this.$router.push({ name: 'home' })
-              })
-            }
-          }
-        }
-      ]
+      buttons
     })
   },
   beforeDestroy () {

@@ -146,8 +146,8 @@ export default {
     api.on('authenticated', response => {
       this.getUser(response.accessToken)
       .then(user => {
-        // If no route
-        if (!this.$route.name) {
+        // If no route, otherwise keep it so that links work out-of-the-box
+        if (this.$route.path === '/') {
           this.$router.push({ name: 'home' })
         }
         // Configure available forecast models

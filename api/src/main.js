@@ -13,5 +13,5 @@ process.on('unhandledRejection', (reason, p) =>
 )
 
 server.run().then(_ => {
-  logger.info(' Server listen at ' + server.app.get('port').toString())
+  logger.info('Server started listening')
 })

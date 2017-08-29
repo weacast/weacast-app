@@ -5,6 +5,9 @@ module.exports = {
   logs: {
     level: (process.env.NODE_ENV === 'development' ? 'debug' : 'info')
   },
+  login: {
+    providers: ['google', 'github', 'oidc']
+  },
   map: {
     seeker: 'WindSeeker',
     mixins: [ 'base', 'baseLayers', 'forecastLayers', 'geojsonLayers', 'fileLayers', 'fullscreen', 'measure', 'scalebar' ],

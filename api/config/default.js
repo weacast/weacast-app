@@ -12,11 +12,18 @@ module.exports = {
   // https://github.com/chimurai/http-proxy-middleware
   proxyTable: {},
 
+  host: 'localhost',
   port: process.env.PORT || 8081,
+  /* To enable HTTPS
+  https: {
+    key: path.join(__dirname, 'server.key'),
+    cert: path.join(__dirname, 'server.crt'),
+    port: process.env.HTTPS_PORT || 8083
+  },
+  */
 
   apiPath: API_PREFIX,
 
-  host: 'localhost',
   paginate: {
     default: 10,
     max: 50
@@ -34,7 +41,38 @@ module.exports = {
         email: 'weacast@weacast.xyz',
         password: 'weacast'
       }
-    ]
+    ],
+    github: {
+      clientID: '20da06587907b8048edb',
+      clientSecret: '22029773f71829af8eaba6c0d6599843026cbf15',
+      callbackURL: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/auth/github/callback' : '/auth/github/callback'),
+      successRedirect: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/' : '/')
+    },
+    google: {
+      clientID: '879164794322-ed4nl0j3sdsr00bjbrsqdcskon1k7go4.apps.googleusercontent.com',
+      clientSecret: 'mZZejuVZ4_oG9WpoGPXTJKFe',
+      callbackURL: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/auth/google/callback' : '/auth/google/callback'),
+      successRedirect: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/' : '/'),
+      scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
+    },
+    oidc: {
+      clientID: '530a6700-49dc-0135-0632-028103aadde737394',
+      clientSecret: '530a6700-49dc-0135-0632-028103aadde737394',
+      callbackURL: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/auth/oidc/callback' : '/auth/oidc/callback'),
+      successRedirect: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/' : '/'),
+      issuer: 'https://airbusstaging.onelogin.com',
+      authorizationURL: 'https://airbusstaging.onelogin.com/oidc/auth',
+      tokenURL: 'https://airbusstaging.onelogin.com/oidc/token',
+      state: false,
+      scope: ['email', 'profile']
+    },
+    // Required for OAuth2 to work correctly
+    cookie: {
+      enabled: true,
+      name: 'feathers-jwt',
+      httpOnly: false,
+      secure: false
+    }
   },
   logs: {
     Console: {
@@ -118,7 +156,7 @@ module.exports = {
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
       upperLimit: 240 * 3600,         // Up to T0+240
-      updateInterval: 15 * 60,        // Check for update every 15 minutes
+      updateInterval: 0 * 60,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -190,7 +228,7 @@ module.exports = {
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
       upperLimit: 102 * 3600,         // Up to T0+102
-      updateInterval: 15 * 60,        // Check for update every 15 minutes
+      updateInterval: 0 * 60,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -235,7 +273,7 @@ module.exports = {
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
       upperLimit: 102 * 3600,           // Up to T0+102
-      updateInterval: 15 * 60,          // Check for update every 15 minutes
+      updateInterval: 0 * 60,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -285,7 +323,7 @@ module.exports = {
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
       upperLimit: 42 * 3600,            // Up to T0+42
-      updateInterval: 15 * 60,          // Check for update every 15 minutes
+      updateInterval: 0 * 60,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
