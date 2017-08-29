@@ -18,7 +18,7 @@ module.exports = {
   https: {
     key: path.join(__dirname, 'server.key'),
     cert: path.join(__dirname, 'server.crt'),
-    port: process.env.HTTPS_PORT || 8083
+    port: process.env.HTTPS_PORT || 8084
   },
   */
 
