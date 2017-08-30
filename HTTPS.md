@@ -23,4 +23,4 @@ Certificate information:
 * A challenge password []:
 * An optional company name []:
 
-Then follow [Feathers guide](https://docs.feathersjs.com/api/express.html#https).
+The weacast app follows [Feathers guide to enable HTTPS](https://docs.feathersjs.com/api/express.html#https) and also similarly manages HTTPS on the client side when using Webpack in development.

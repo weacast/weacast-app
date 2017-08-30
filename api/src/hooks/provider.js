@@ -1,27 +1,40 @@
-export function github () {
-  return function (hook) {
-    if (hook.data.github && hook.data.github.profile) {
-      const profile = hook.data.github.profile
+// Helper function used to extract profile infos
+function processProfile(provider, user) {
+  // A key is created for each provider in the user object
+  if (user[provider] && user[provider].profile) {
+      let profile = user[provider].profile
+      // Some providers exposes a crude JSON obejct
+      if (profile._json) profile = profile._json
       if (profile.emails && profile.emails.length > 0) {
-        hook.data.email = profile.emails[0].value
+        user.email = profile.emails[0].value
       }
-      if (profile.displayName) {
-        hook.data.name = profile.displayName
+     if (profile.email) {
+        user.email = profile.email
+      }
+       if (profile.displayName) {
+        user.name = profile.displayName
+      }
+      if (profile.name) {
+        user.name = profile.displayName
       }
     }
+}
+
+export function github () {
+  return function (hook) {
+    processProfile('github', hook.data)
   }
 }
 
 export function google () {
   return function (hook) {
-    if (hook.data.google && hook.data.google.profile) {
-      const profile = hook.data.google.profile
-      if (profile.emails && profile.emails.length > 0) {
-        hook.data.email = profile.emails[0].value
-      }
-      if (profile.displayName) {
-        hook.data.name = profile.displayName
-      }
-    }
+    processProfile('google', hook.data)
   }
 }
+
+export function oidc () {
+  return function (hook) {
+    processProfile('oidc', hook.data)
+  }
+}
+
