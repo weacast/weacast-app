@@ -55,17 +55,6 @@ module.exports = {
       successRedirect: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/' : '/'),
       scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
     },
-    oidc: {
-      clientID: '530a6700-49dc-0135-0632-028103aadde737394',
-      clientSecret: '530a6700-49dc-0135-0632-028103aadde737394',
-      callbackURL: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/auth/oidc/callback' : '/auth/oidc/callback'),
-      successRedirect: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/' : '/'),
-      issuer: 'https://airbusstaging.onelogin.com',
-      authorizationURL: 'https://airbusstaging.onelogin.com/oidc/auth',
-      tokenURL: 'https://airbusstaging.onelogin.com/oidc/token',
-      state: false,
-      scope: ['email', 'profile']
-    },
     // Required for OAuth2 to work correctly
     cookie: {
       enabled: true,
@@ -156,7 +145,7 @@ module.exports = {
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
       upperLimit: 240 * 3600,         // Up to T0+240
-      updateInterval: 0 * 60,        // Check for update every 15 minutes
+      updateInterval: 15 * 60,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -228,7 +217,7 @@ module.exports = {
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
       upperLimit: 102 * 3600,         // Up to T0+102
-      updateInterval: 0 * 60,        // Check for update every 15 minutes
+      updateInterval: 15 * 60,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -273,7 +262,7 @@ module.exports = {
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
       upperLimit: 102 * 3600,           // Up to T0+102
-      updateInterval: 0 * 60,          // Check for update every 15 minutes
+      updateInterval: 15 * 60,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -323,7 +312,7 @@ module.exports = {
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
       upperLimit: 42 * 3600,            // Up to T0+42
-      updateInterval: 0 * 60,          // Check for update every 15 minutes
+      updateInterval: 15 * 60,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',

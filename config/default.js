@@ -6,7 +6,7 @@ module.exports = {
     level: (process.env.NODE_ENV === 'development' ? 'debug' : 'info')
   },
   login: {
-    providers: ['google', 'github', 'oidc']
+    providers: ['google', 'github']
   },
   map: {
     seeker: 'WindSeeker',
