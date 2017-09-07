@@ -35,7 +35,10 @@ export default {
   },
   mounted () {
     EventBus.$on('errorHook', hook => {
-      Toast.create.negative(hook.error.message)
+      Toast.create.negative({
+        html: hook.error.message,
+        timeout: 10000
+      })
       this.nbCompletedRequests++
       this.stopProgress()
     })
