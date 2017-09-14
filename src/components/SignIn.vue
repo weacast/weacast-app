@@ -82,8 +82,6 @@ export default {
 
     Dialog.create({
       title,
-      noBackdropDismiss: true,
-      noEscDismiss: true,
       form: {
         email: {
           type: 'textbox',
@@ -95,6 +93,9 @@ export default {
           label: 'Password',
           model: ''
         }
+      },
+      onDismiss: () => {
+        this.$router.push({ name: 'home' })
       },
       buttons
     })
