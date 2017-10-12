@@ -71,7 +71,8 @@ module.exports = {
     DailyRotateFile: {
       dirname: path.join(__dirname, '..', 'logs'),
       filename: 'weacast-',
-      datePattern: 'yyyy-MM-dd.log'
+      datePattern: 'yyyy-MM-dd.log',
+      maxDays: 5
       /* Possible in next version of the logger : see https://github.com/winstonjs/winston-daily-rotate-file/pull/45
       filename: path.join(__dirname, '..', 'logs'),
       datePattern: '/yyyy/MM/dd.log',

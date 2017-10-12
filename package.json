@@ -43,7 +43,7 @@
     "jquery": "^3.2.1",
     "leaflet": "^1.0.3",
     "leaflet-basemaps": "^0.2.0",
-    "leaflet-canvaslayer-field": "^1.2.1",
+    "leaflet-canvaslayer-field": "^1.3.3",
     "leaflet-filelayer": "^0.6.0",
     "leaflet-fullscreen": "^1.0.2",
     "leaflet-heatmap": "^1.0.0",
