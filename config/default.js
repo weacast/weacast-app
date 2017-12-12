@@ -10,7 +10,7 @@ module.exports = {
   },
   map: {
     seeker: 'WindSeeker',
-    mixins: [ 'base', 'baseLayers', 'forecastLayers', 'geojsonLayers', 'fileLayers', 'fullscreen', 'measure', 'scalebar' ],
+    mixins: [ 'base', 'baseLayers', 'forecastLayers', 'geojsonLayers', 'fileLayers', 'fullscreen', 'measure', 'scalebar', 'legend' ],
     baseLayers: [
       {
         type: 'tileLayer',

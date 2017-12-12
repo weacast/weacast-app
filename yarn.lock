@@ -3730,6 +3730,12 @@ leaflet-heatmap@^1.0.0:
     heatmap.js "*"
     leaflet "*"
 
+leaflet-legend@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/leaflet-legend/-/leaflet-legend-1.0.2.tgz#f200413d6d08393bd765b6d18f752fd1f1f45548"
+  dependencies:
+    leaflet "^0.7.7"
+
 leaflet-measure@^2.1.7:
   version "2.1.7"
   resolved "https://registry.yarnpkg.com/leaflet-measure/-/leaflet-measure-2.1.7.tgz#01cde74ca717f51888cc9d7ddd8334f7e773eaf6"

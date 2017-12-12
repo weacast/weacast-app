@@ -47,6 +47,7 @@
     "leaflet-filelayer": "^0.6.0",
     "leaflet-fullscreen": "^1.0.2",
     "leaflet-heatmap": "^1.0.0",
+    "leaflet-legend": "^1.0.2",
     "leaflet-measure": "^2.1.7",
     "leaflet-timedimension": "^1.0.6",
     "leaflet-velocity": "^1.2.2",
