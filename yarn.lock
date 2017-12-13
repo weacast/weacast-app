@@ -1261,10 +1261,6 @@ chownr@~1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.0.1.tgz#e2a75042a9551908bebd25b8523d5f9769d79181"
 
-chroma-js@1.3.3:
-  version "1.3.3"
-  resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-1.3.3.tgz#91b3a2b3856c18443ebd8c9719faea108b56263b"
-
 chroma-js@1.3.4, chroma-js@^1.3.4:
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/chroma-js/-/chroma-js-1.3.4.tgz#93a7c19f287960285cc3fdebb205b8ea1a0f04f9"
@@ -3692,16 +3688,6 @@ leaflet-basemaps@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/leaflet-basemaps/-/leaflet-basemaps-0.2.0.tgz#29b851a8963ed6d7784c38eebd7df9468aad4c1a"
 
-leaflet-canvaslayer-field@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/leaflet-canvaslayer-field/-/leaflet-canvaslayer-field-1.0.2.tgz#1a4ff9317f22d3364a8a1c612666c5223616c946"
-  dependencies:
-    chroma-js "1.3.3"
-    d3 "4.9.1"
-    geotiff "0.4.1"
-    leaflet "1.0.3"
-    npm "^3.10.7"
-
 leaflet-canvaslayer-field@^1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/leaflet-canvaslayer-field/-/leaflet-canvaslayer-field-1.3.3.tgz#651bfae0ca067d1cb7f607b1993832479a4e5a88"
@@ -3763,7 +3749,7 @@ leaflet.markercluster@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/leaflet.markercluster/-/leaflet.markercluster-1.0.5.tgz#12fde61630f4eb3146d92b56a36fdff903d1e023"
 
-leaflet@*, leaflet@1.0.3, leaflet@>=1.0.3, leaflet@^1.0.3, "leaflet@~0.7.4 || ~1.0.0":
+leaflet@*, leaflet@>=1.0.3, leaflet@^1.0.3, "leaflet@~0.7.4 || ~1.0.0":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/leaflet/-/leaflet-1.0.3.tgz#1f401b98b45c8192134c6c8d69686253805007c8"
 
@@ -5518,7 +5504,7 @@ socket.io-adapter@0.5.0:
     debug "2.3.3"
     socket.io-parser "2.3.1"
 
-socket.io-client@1.7.4, socket.io-client@^1.7.3:
+socket.io-client@1.7.4:
   version "1.7.4"
   resolved "https://registry.yarnpkg.com/socket.io-client/-/socket.io-client-1.7.4.tgz#ec9f820356ed99ef6d357f0756d648717bdd4281"
   dependencies:
@@ -6189,9 +6175,9 @@ wcwidth@^1.0.0:
   dependencies:
     defaults "^1.0.3"
 
-weacast-client@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/weacast-client/-/weacast-client-0.3.0.tgz#8f7c91ac2bcb5b46e76f9d0960dece85217826e2"
+weacast-client@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/weacast-client/-/weacast-client-0.4.0.tgz#a7b4dfbe8fcc0115b5abea9d1eb9c9e3b0c79a7a"
   dependencies:
     chroma-js "^1.3.4"
     config "^1.26.1"
@@ -6202,16 +6188,17 @@ weacast-client@^0.3.0:
     jquery "^3.2.1"
     leaflet "^1.0.3"
     leaflet-basemaps "^0.2.0"
-    leaflet-canvaslayer-field "^1.0.2"
+    leaflet-canvaslayer-field "^1.3.3"
     leaflet-filelayer "^0.6.0"
     leaflet-fullscreen "^1.0.2"
     leaflet-heatmap "^1.0.0"
+    leaflet-legend "^1.0.2"
     leaflet-measure "^2.1.7"
     leaflet-timedimension "^1.0.6"
     leaflet-velocity "^1.2.2"
     leaflet.markercluster "^1.0.5"
     loglevel "^1.4.1"
-    socket.io-client "^1.7.3"
+    socket.io-client "^2.0.4"
     vue "^2.3.3"
 
 webpack-dev-middleware@^1.8.4:
