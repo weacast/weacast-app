@@ -48,6 +48,36 @@ module.exports = {
         ]
       }
     ],
+    overlayLayers: [
+      {
+        type: 'timeDimension.layer.wms',
+        name: 'ARPEGE isobaric - 0.5°',
+        arguments: [
+          'http://mapproxy.kalisio.xyz/service?',
+          {
+            version: '1.3.0',
+            format: 'image/png',
+            transparent: true,
+            layers: 'MF-ARPEGE_05_WIND_SPEED__ISOBARIC_SURFACE',
+            attribution: '<a href="http://www.meteofrance.com">Météo-France</a>'
+          }
+        ]
+      },
+      {
+        type: 'timeDimension.layer.wms',
+        name: 'ARPEGE isobaric - 0.1°',
+        arguments: [
+          'http://mapproxy.kalisio.xyz/service?',
+          {
+            version: '1.3.0',
+            format: 'image/png',
+            transparent: true,
+            layers: 'MF-ARPEGE_01_WIND_SPEED__ISOBARIC_SURFACE',
+            attribution: '<a href="http://www.meteofrance.com">Météo-France</a>'
+          }
+        ]
+      }
+    ],
     forecastLayers: [
       {
         type: 'FlowLayer',
