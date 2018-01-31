@@ -12,6 +12,8 @@ services:
     networks:
       - weacast
     environment:
+      - VIRTUAL_HOST=demo.weacast.xyz
+      - VIRTUAL_PORT=8081
       - DB_URL=mongodb://mongodb:27017/weacast
   mongodb-weacast:
     container_name: mongodb-weacast
