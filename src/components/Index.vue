@@ -139,8 +139,12 @@ export default {
     .then(user => {
       Toast.create.positive('Restoring previous session')
     })
-    .catch(_ => {
+    .catch(error => {
+      // This ensure an old token cannot be kept
+      api.logout()
       this.$router.push({ name: 'home' })
+      // Rethrow for caller to handle
+      throw error
     })
     // On successfull login
     api.on('authenticated', response => {
