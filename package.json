@@ -1,7 +1,7 @@
 {
   "name": "weacast-app",
   "description": "Weacast Web App and Services",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "homepage": "https://github.com/weacast/weacast",
   "keywords": [
     "weacast"
