@@ -65,11 +65,11 @@
     "http-proxy-middleware": "^0.17.4",
     "moment": "^2.18.1",
     "request": "^2.81.0",
-    "weacast-arome": "^0.3.0",
-    "weacast-arpege": "^0.3.0",
+    "weacast-arome": "^0.4.0",
+    "weacast-arpege": "^0.4.0",
     "weacast-core": "^0.6.0",
-    "weacast-gfs": "^0.3.0",
-    "weacast-probe": "^0.3.0",
+    "weacast-gfs": "^0.4.0",
+    "weacast-probe": "^0.4.0",
     "winston": "^2.3.1"
   }
 }
