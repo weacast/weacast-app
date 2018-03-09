@@ -245,6 +245,7 @@ module.exports = {
         }
       ]
     },
+    /*
     {
       name: 'arpege-europe',
       isDefault: true,
@@ -286,17 +287,17 @@ module.exports = {
             height: 10
           }
         }
-        /*,
-        {
-          name: 'temperature',
-          coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
-          subsets: {
-            height: 2
-          }
-        }
-        */
+        // {
+        //   name: 'temperature',
+        //   coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+        //   subsets: {
+        //     height: 2
+        //   }
+        // }
       ]
     },
+    */
+    /*
     {
       name: 'arome-france',
       label: 'AROME - 0.025°',
@@ -336,17 +337,16 @@ module.exports = {
             height: 10
           }
         }
-        /*,
-        {
-          name: 'temperature',
-          coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
-          subsets: {
-            height: 2
-          }
-        }
-        */
+        // {
+        //   name: 'temperature',
+        //   coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+        //   subsets: {
+        //     height: 2
+        //   }
+        // }
       ]
     }
+    */
     // This model generates too much data to be stored in MongoDB documents (limited to 16 MB)
     // It requires the use of the 'gridfs' data store
     /*

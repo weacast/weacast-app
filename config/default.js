@@ -62,7 +62,7 @@ module.exports = {
             attribution: '<a href="http://www.meteofrance.com">Météo-France</a>'
           }
         ]
-      },
+      }/*,
       {
         type: 'timeDimension.layer.wms',
         name: 'ARPEGE isobaric - 0.1°',
@@ -76,7 +76,7 @@ module.exports = {
             attribution: '<a href="http://www.meteofrance.com">Météo-France</a>'
           }
         ]
-      }
+      }*/
     ],
     forecastLayers: [
       {
