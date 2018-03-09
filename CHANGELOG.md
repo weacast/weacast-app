@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.3.1](https://github.com/weacast/weacast/tree/v0.3.1) (2018-03-09)
+
+[Full Changelog](https://github.com/weacast/weacast/compare/v0.3.0...v0.3.1)
+
+**Implemented enhancements:**
+
+- Update docker file/image [\#3](https://github.com/weacast/weacast/issues/3)
+
 ## [v0.3.0](https://github.com/weacast/weacast/tree/v0.3.0) (2018-01-30)
 
 [Full Changelog](https://github.com/weacast/weacast/compare/v0.2.2...v0.3.0)
