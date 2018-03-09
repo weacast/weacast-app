@@ -14,9 +14,8 @@ RUN $JAVA_HOME/bin/java -version
 WORKDIR /opt/app
 COPY . /opt/app
 
-RUN npm install -g quasar-cli
 RUN yarn install
-RUN quasar build
+RUN npm run build
 
 WORKDIR /opt/app/api
 
