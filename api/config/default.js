@@ -130,6 +130,7 @@ module.exports = {
       ]
     },
     */
+    
     {
       name: 'gfs-world',
       label: 'GFS - 0.5°',
@@ -165,6 +166,7 @@ module.exports = {
         }
       ]
     },
+    
     /*
     {
       name: 'gfs-world-high',
@@ -202,6 +204,7 @@ module.exports = {
       ]
     },
     */
+    
     {
       name: 'arpege-world',
       label: 'ARPEGE - 0.5°',
@@ -226,25 +229,32 @@ module.exports = {
           //dataStore: 'fs',
           coverageid: 'U_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
-            height: 10
+            height: 10,
+            long: [-180, 180],
+            lat: [-90, 90]
           }
         },
         {
           name: 'v-wind',
           coverageid: 'V_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
-            height: 10
+            height: 10,
+            long: [-180, 180],
+            lat: [-90, 90]
           }
         },
         {
           name: 'gust',
           coverageid: 'WIND_SPEED_GUST__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
-            height: 10
+            height: 10,
+            long: [-180, 180],
+            lat: [-90, 90]
           }
         }
       ]
     },
+    
     /*
     {
       name: 'arpege-europe',
@@ -270,21 +280,27 @@ module.exports = {
           name: 'u-wind',
           coverageid: 'U_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
-            height: 10
+            height: 10,
+            long: [-32, 42],
+            lat: [20, 72]
           }
         },
         {
           name: 'v-wind',
           coverageid: 'V_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
-            height: 10
+            height: 10,
+            long: [-32, 42],
+            lat: [20, 72]
           }
         },
         {
           name: 'gust',
           coverageid: 'WIND_SPEED_GUST__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
-            height: 10
+            height: 10,
+            long: [-32, 42],
+            lat: [20, 72]
           }
         }
         // {
@@ -296,8 +312,6 @@ module.exports = {
         // }
       ]
     },
-    */
-    /*
     {
       name: 'arome-france',
       label: 'AROME - 0.025°',
@@ -320,21 +334,27 @@ module.exports = {
           name: 'u-wind',
           coverageid: 'U_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
-            height: 10
+            height: 10,
+            long: [-8, 12],
+            lat: [38, 53]
           }
         },
         {
           name: 'v-wind',
           coverageid: 'V_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
-            height: 10
+            height: 10,
+            long: [-8, 12],
+            lat: [38, 53]
           }
         },
         {
           name: 'gust',
           coverageid: 'WIND_SPEED_GUST__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
-            height: 10
+            height: 10,
+            long: [-8, 12],
+            lat: [38, 53]
           }
         }
         // {
@@ -374,7 +394,9 @@ module.exports = {
           dataStore: 'gridfs',
           coverageid: 'U_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
-            height: 10
+            height: 10,
+            long: [-12, 16],
+            lat: [37.5, 55.4]
           }
         },
         {
@@ -382,7 +404,9 @@ module.exports = {
           dataStore: 'gridfs',
           coverageid: 'V_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
-            height: 10
+            height: 10,
+            long: [-12, 16],
+            lat: [37.5, 55.4]
           }
         }
       ]
