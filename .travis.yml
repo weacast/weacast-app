@@ -8,17 +8,14 @@ addons:
     repo_token: '1dfca95f75f16185220d799289afce9e9dbfe6012484cdca0dbe5edc8c4fba74'
 notifications:
   email: false
-before_install:
-  - npm install -g quasar-cli
 install:
   - npm install
-  - quasar build
+  - npm run build
   - cd api
   - npm install
   - npm run build
 before_script:
   - npm install -g codeclimate-test-reporter
-  - npm install -g quasar-cli
 after_script:
   - codeclimate-test-reporter < api/coverage/lcov.info
 
