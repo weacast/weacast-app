@@ -9,10 +9,10 @@ addons:
 notifications:
   email: false
 install:
-  - npm install
+  - yarn install
   - npm run build
   - cd api
-  - npm install
+  - yarn install
   - npm run build
 before_script:
   - npm install -g codeclimate-test-reporter
