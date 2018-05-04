@@ -10,6 +10,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/weacast/weacast/badge.svg)](https://snyk.io/test/github/weacast/weacast)
 [![Docker Pulls](https://img.shields.io/docker/pulls/weacast/weacast.svg?style=plastic)](https://hub.docker.com/r/weacast/weacast/)
 [![Join the chat at https://gitter.im/weacast/Lobby](https://badges.gitter.im/weacast/Lobby.svg)](https://gitter.im/weacast/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fweacast%2Fweacast.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fweacast%2Fweacast?ref=badge_shield)
 
 ### Under Development
 
@@ -35,3 +36,7 @@ The [Weacast docs](https://weacast.gitbooks.io/weacast-docs/) are loaded with aw
 Take also a look at the [roadmap](https://github.com/weacast/weacast/projects/1).
 
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fweacast%2Fweacast.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fweacast%2Fweacast?ref=badge_large)
