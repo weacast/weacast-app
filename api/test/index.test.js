@@ -46,7 +46,7 @@ describe('weacast', () => {
 
   // Cleanup
   after(() => {
-    //fs.emptyDirSync(path.join(__dirname, 'logs'))
+    fs.emptyDirSync(path.join(__dirname, 'logs'))
     server.app.db._db.dropDatabase()
   })
 })
