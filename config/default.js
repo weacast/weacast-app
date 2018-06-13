@@ -112,7 +112,8 @@ module.exports = {
         options: {
           elements: ['gust'],
           attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
-          visible: false
+          visible: false,
+          radius: 1.8
         }
       }
     ],
