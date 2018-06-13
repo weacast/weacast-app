@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  weacast:
+    build: .
+    image: weacast/weacast-dev
+    environment:
+      - DEBUG=${DEBUG}
+

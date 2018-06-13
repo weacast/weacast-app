@@ -1,0 +1,46 @@
+FROM  node:7
+
+MAINTAINER Luc Claustres <luc.claustres@orange.fr>
+
+# We need Java for the GFS plugin
+RUN echo deb http://http.debian.net/debian jessie-backports main >> /etc/apt/sources.list
+RUN apt-get update
+RUN apt install -y -t jessie-backports openjdk-8-jre-headless ca-certificates-java
+RUN rm /etc/apt/sources.list
+RUN apt-get clean
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+RUN $JAVA_HOME/bin/java -version
+
+WORKDIR /opt/app
+COPY . /opt/app
+
+WORKDIR /opt/app/modules
+RUN git clone https://github.com/weacast/weacast-gtiff2json.git -b master --single-branch && cd weacast-gtiff2json && yarn install && yarn link && cd ..
+RUN git clone https://github.com/weacast/weacast-grib2json.git -b master --single-branch && cd weacast-grib2json && yarn install && yarn link && cd ..
+RUN git clone https://github.com/weacast/weacast-core.git -b master --single-branch && cd weacast-core && yarn install && yarn link && cd ..
+RUN git clone https://github.com/weacast/weacast-probe.git -b master --single-branch && cd weacast-probe && yarn install && yarn link weacast-core && yarn link && cd ..
+RUN git clone https://github.com/weacast/weacast-arpege.git -b master --single-branch && cd weacast-arpege && yarn install && yarn link weacast-gtiff2json && yarn link weacast-core && yarn link && cd ..
+RUN git clone https://github.com/weacast/weacast-arome.git -b master --single-branch && cd weacast-arome && yarn install && yarn link weacast-arpege && yarn link weacast-core && yarn link && cd ..
+RUN git clone https://github.com/weacast/weacast-gfs.git -b master --single-branch && cd weacast-gfs && yarn install && yarn link weacast-grib2json && yarn link weacast-core && yarn link && cd ..
+
+RUN git clone https://github.com/weacast/weacast-client.git -b master --single-branch && cd weacast-client && yarn install && yarn link && cd ..
+
+WORKDIR /opt/app
+
+RUN yarn install
+RUN yarn link weacast-client
+RUN npm run build
+
+WORKDIR /opt/app/api
+
+RUN yarn install
+RUN yarn link weacast-core
+RUN yarn link weacast-probe
+RUN yarn link weacast-arpege
+RUN yarn link weacast-arome
+RUN yarn link weacast-gfs
+RUN npm run build
+
+EXPOSE 8081
+
+CMD [ "npm", "run", "prod" ]

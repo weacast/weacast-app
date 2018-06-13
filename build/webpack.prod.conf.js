@@ -18,13 +18,6 @@ var webpackConfig = merge(baseWebpackConfig, {
   },
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: config.build.productionSourceMap,
-      minimize: true,
-      compress: {
-        warnings: false
-      }
-    }),
     // extract css into its own file
     new ExtractTextPlugin({
       filename: '[name].[contenthash].css'
@@ -65,6 +58,18 @@ var webpackConfig = merge(baseWebpackConfig, {
     })
   ]
 })
+
+if (!process.env.DEBUG) {
+  webpackConfig.plugins.unshift(
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: config.build.productionSourceMap,
+      minimize: true,
+      compress: {
+        warnings: false
+      }
+    })
+  )
+}
 
 if (config.build.productionGzip) {
   var CompressionWebpackPlugin = require('compression-webpack-plugin')
