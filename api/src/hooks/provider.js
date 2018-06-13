@@ -38,3 +38,9 @@ export function oidc () {
   }
 }
 
+export function cognito () {
+  return function (hook) {
+    processProfile('cognito', hook.data)
+  }
+}
+

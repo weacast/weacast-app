@@ -3,6 +3,20 @@ var containerized = require('containerized')()
 var clientConfig = require('../../config')
 
 var API_PREFIX = '/api'
+var serverPort = process.env.PORT || 8081
+// Required to know webpack port so that in dev we can build correct URLs
+var clientPort = process.env.CLIENT_PORT || clientConfig.dev.port
+let domain
+// If we build a specific staging instance
+if (process.env.VIRTUAL_HOST) {
+  domain = process.env.VIRTUAL_HOST
+} else {
+  if (process.env.NODE_ENV === 'development') {
+    domain = 'http://localhost:' + clientPort
+  } else {
+    domain = 'http://localhost:' + serverPort
+  }
+}
 
 module.exports = {
   client: clientConfig,
@@ -11,9 +25,9 @@ module.exports = {
   // Also see /build/script.dev.js and search for "proxy api requests"
   // https://github.com/chimurai/http-proxy-middleware
   proxyTable: {},
-
+  domain,
   host: 'localhost',
-  port: process.env.PORT || 8081,
+  port: serverPort,
   /* To enable HTTPS
   https: {
     key: path.join(__dirname, 'server.key'),
@@ -21,9 +35,7 @@ module.exports = {
     port: process.env.HTTPS_PORT || 8084
   },
   */
-
   apiPath: API_PREFIX,
-
   paginate: {
     default: 10,
     max: 50
@@ -45,15 +57,23 @@ module.exports = {
     github: {
       clientID: '20da06587907b8048edb',
       clientSecret: '22029773f71829af8eaba6c0d6599843026cbf15',
-      callbackURL: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/auth/github/callback' : '/auth/github/callback'),
-      successRedirect: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/' : '/')
+      callbackURL: domain + '/auth/github/callback',
+      successRedirect: domain + '/'
     },
     google: {
       clientID: '879164794322-ed4nl0j3sdsr00bjbrsqdcskon1k7go4.apps.googleusercontent.com',
       clientSecret: 'mZZejuVZ4_oG9WpoGPXTJKFe',
-      callbackURL: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/auth/google/callback' : '/auth/google/callback'),
-      successRedirect: (process.env.NODE_ENV === 'development' ? 'http://localhost:' + clientConfig.dev.port + '/' : '/'),
+      callbackURL: domain + '/auth/google/callback',
+      successRedirect: domain + '/',
       scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
+    },
+    cognito: {
+      clientID: '1vmieaua4phmqr4tt0v664aqq5',
+      clientSecret: 'kp5v6511tsn1tss6mka3chnekaifs6aemt9un2sg3m2ja2veuoa',
+      clientDomain: 'https://weacast.auth.eu-west-1.amazoncognito.com',
+      callbackURL: domain + '/auth/cognito/callback',
+      successRedirect: domain + '/',
+      region: 'eu-west-1'
     },
     // Required for OAuth2 to work correctly
     cookie: {
