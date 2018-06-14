@@ -9,7 +9,7 @@ var clientPort = process.env.CLIENT_PORT || clientConfig.dev.port
 let domain
 // If we build a specific staging instance
 if (process.env.VIRTUAL_HOST) {
-  domain = process.env.VIRTUAL_HOST
+  domain = 'http://' + process.env.VIRTUAL_HOST
 } else {
   if (process.env.NODE_ENV === 'development') {
     domain = 'http://localhost:' + clientPort
