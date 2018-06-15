@@ -15,7 +15,7 @@ function processProfile(provider, user) {
         user.name = profile.displayName
       }
       if (profile.name) {
-        user.name = profile.displayName
+        user.name = profile.name
       }
     }
 }
