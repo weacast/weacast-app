@@ -253,6 +253,20 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
+aws-sdk@^2.203.0:
+  version "2.265.1"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.265.1.tgz#a3b742954a074ebfc1148e8c48bfe73d2f57c2ee"
+  dependencies:
+    buffer "4.9.1"
+    events "1.1.1"
+    ieee754 "1.1.8"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.1.0"
+    xml2js "0.4.17"
+
 aws-sign2@~0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/aws-sign2/-/aws-sign2-0.6.0.tgz#14342dd38dbcc94d0e5b87d763cd63612c0e794f"
@@ -778,6 +792,10 @@ base64-arraybuffer@0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/base64-arraybuffer/-/base64-arraybuffer-0.1.5.tgz#73926771923b5a19747ad666aa5cd4bf9c6e9ce8"
 
+base64-js@^1.0.2:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.3.0.tgz#cab1e6118f051095e58b5281aea8c1cd22bfc0e3"
+
 base64id@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/base64id/-/base64id-1.0.0.tgz#47688cb99bb6804f0e06d3e763b1c32e57d8e6b6"
@@ -895,6 +913,14 @@ buffer-equal-constant-time@1.0.1:
 buffer-shims@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/buffer-shims/-/buffer-shims-1.0.0.tgz#9978ce317388c649ad8793028c3477ef044a8b51"
+
+buffer@4.9.1:
+  version "4.9.1"
+  resolved "https://registry.yarnpkg.com/buffer/-/buffer-4.9.1.tgz#6d1bb601b07a4efced97094132093027c95bc298"
+  dependencies:
+    base64-js "^1.0.2"
+    ieee754 "^1.1.4"
+    isarray "^1.0.0"
 
 bytes@3.0.0:
   version "3.0.0"
@@ -1589,7 +1615,7 @@ eventemitter3@1.x.x:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-1.2.0.tgz#1c86991d816ad1e504750e73874224ecf3bec508"
 
-events@^1.1.1:
+events@1.1.1, events@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/events/-/events-1.1.1.tgz#9ebdb7635ad099c70dcc4c2a1f5004288e8bd924"
 
@@ -2332,6 +2358,14 @@ iconv-lite@0.4.19:
   version "0.4.19"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.19.tgz#f7468f60135f5e5dad3399c0a81be9a1603a082b"
 
+ieee754@1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.8.tgz#be33d40ac10ef1926701f6f08a2d86fbfd1ad3e4"
+
+ieee754@^1.1.4:
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/ieee754/-/ieee754-1.1.12.tgz#50bf24e5b9c8bb98af4964c941cdb0918da7b60b"
+
 ienoopen@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/ienoopen/-/ienoopen-1.0.0.tgz#346a428f474aac8f50cf3784ea2d0f16f62bda6b"
@@ -2584,6 +2618,10 @@ istanbul@^0.4.5:
     supports-color "^3.1.0"
     which "^1.1.1"
     wordwrap "^1.0.0"
+
+jmespath@0.15.0:
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
 
 jodid25519@^1.0.0:
   version "1.0.2"
@@ -3407,7 +3445,15 @@ passport-local@^1.0.0:
   dependencies:
     passport-strategy "1.x.x"
 
-passport-oauth2@1.x.x:
+passport-oauth2-cognito@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/passport-oauth2-cognito/-/passport-oauth2-cognito-0.1.0.tgz#ad51ab97cc55f3b22548d8eff995223ccec4533a"
+  dependencies:
+    aws-sdk "^2.203.0"
+    passport-oauth2 "^1.4.0"
+    util "^0.10.3"
+
+passport-oauth2@1.x.x, passport-oauth2@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/passport-oauth2/-/passport-oauth2-1.4.0.tgz#f62f81583cbe12609be7ce6f160b9395a27b86ad"
   dependencies:
@@ -3416,9 +3462,9 @@ passport-oauth2@1.x.x:
     uid2 "0.0.x"
     utils-merge "1.x.x"
 
-"passport-openidconnect@https://github.com/kalisio/passport-openidconnect":
+"passport-openidconnect@git+https://github.com/kalisio/passport-openidconnect.git":
   version "0.0.2"
-  resolved "https://github.com/kalisio/passport-openidconnect#097bb510587b841833352b766a7a17dff58e9c93"
+  resolved "git+https://github.com/kalisio/passport-openidconnect.git#82d9f0653334a0538b2c3dc2a8119eefc2eca237"
   dependencies:
     oauth "0.9.x"
     passport-strategy "1.x.x"
@@ -3587,6 +3633,10 @@ pump@^2.0.1:
     end-of-stream "^1.1.0"
     once "^1.3.1"
 
+punycode@1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.3.2.tgz#9653a036fb7c1ee42342f2325cceefea3926c48d"
+
 punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
@@ -3599,7 +3649,7 @@ qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
-querystring@^0.2.0:
+querystring@0.2.0, querystring@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/querystring/-/querystring-0.2.0.tgz#b209849203bb25df820da756e747005878521620"
 
@@ -3904,7 +3954,11 @@ safe-buffer@5.1.1, safe-buffer@^5.0.1, safe-buffer@^5.1.1, safe-buffer@~5.1.0, s
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
-sax@>=0.1.1:
+sax@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.1.tgz#7b8e656190b228e81a66aea748480d828cd2d37a"
+
+sax@>=0.1.1, sax@>=0.6.0:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
 
@@ -4429,6 +4483,13 @@ update-notifier@0.5.0:
     semver-diff "^2.0.0"
     string-length "^1.0.0"
 
+url@0.10.3:
+  version "0.10.3"
+  resolved "https://registry.yarnpkg.com/url/-/url-0.10.3.tgz#021e4d9c7705f21bbf37d03ceb58767402774c64"
+  dependencies:
+    punycode "1.3.2"
+    querystring "0.2.0"
+
 user-home@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/user-home/-/user-home-1.1.1.tgz#2b5be23a32b63a7c9deb8d0f28d485724a3df190"
@@ -4443,9 +4504,19 @@ util-deprecate@~1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/util-deprecate/-/util-deprecate-1.0.2.tgz#450d4dc9fa70de732762fbd2d4a28981419a0ccf"
 
+util@^0.10.3:
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/util/-/util-0.10.4.tgz#3aa0125bfe668a4672de58857d3ace27ecb76901"
+  dependencies:
+    inherits "2.0.3"
+
 utils-merge@1.0.1, utils-merge@1.x.x:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
+
+uuid@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.1.0.tgz#3dd3d3e790abc24d7b0d3a034ffababe28ebbc04"
 
 uuid@^2.0.1:
   version "2.0.3"
@@ -4479,9 +4550,9 @@ verror@1.3.6:
   dependencies:
     extsprintf "1.0.2"
 
-weacast-arome@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/weacast-arome/-/weacast-arome-0.4.0.tgz#90d958b1cf6bb1a2bd4be9acec7823ee471585d5"
+weacast-arome@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/weacast-arome/-/weacast-arome-0.5.0.tgz#d02c2b4a9b082602729d1c01512bbc4b0080802c"
   dependencies:
     debug "^3.1.0"
     feathers-authentication "^1.2.2"
@@ -4496,13 +4567,13 @@ weacast-arome@^0.4.0:
     mongodb "^2.2.26"
     request "^2.81.0"
     uberproto "^1.2.0"
-    weacast-arpege "^0.4.0"
-    weacast-core "^0.6.0"
+    weacast-arpege "^0.5.0"
+    weacast-core "^0.7.1"
     winston "^2.3.1"
 
-weacast-arpege@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/weacast-arpege/-/weacast-arpege-0.4.0.tgz#07a3e44730c84b764084d7add14c8e51d657c728"
+weacast-arpege@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/weacast-arpege/-/weacast-arpege-0.5.0.tgz#c73c7ca038f4e0e6b593c491da2432c804435a0a"
   dependencies:
     debug "^3.1.0"
     feathers-authentication "^1.2.2"
@@ -4517,13 +4588,13 @@ weacast-arpege@^0.4.0:
     mongodb "^2.2.26"
     request "^2.81.0"
     uberproto "^1.2.0"
-    weacast-core "^0.6.0"
+    weacast-core "^0.7.1"
     weacast-gtiff2json "^0.2.0"
     winston "^2.3.1"
 
-weacast-core@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/weacast-core/-/weacast-core-0.6.0.tgz#01f522d7de33f80716002bff4b3b14269dcd791f"
+weacast-core@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/weacast-core/-/weacast-core-0.7.1.tgz#6f3ce1206d1faa2894a48be0510776e829a05f6f"
   dependencies:
     body-parser "^1.17.1"
     compression "^1.6.2"
@@ -4552,6 +4623,7 @@ weacast-core@^0.6.0:
     nedb "^1.8.0"
     passport-github "^1.1.0"
     passport-google-oauth20 "^1.0.0"
+    passport-oauth2-cognito "^0.1.0"
     passport-openidconnect "https://github.com/kalisio/passport-openidconnect"
     request "^2.81.0"
     sublevelup "^4.0.0"
@@ -4559,9 +4631,9 @@ weacast-core@^0.6.0:
     winston "^2.3.1"
     winston-daily-rotate-file "^1.7.2"
 
-weacast-gfs@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/weacast-gfs/-/weacast-gfs-0.4.0.tgz#4fa4597508cb51f45a7b9353696420c58e6f2ca9"
+weacast-gfs@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/weacast-gfs/-/weacast-gfs-0.5.0.tgz#1758f2d538a6a9b207dddefbc43f33b2c8b89c97"
   dependencies:
     debug "^3.1.0"
     feathers-authentication "^1.2.2"
@@ -4576,7 +4648,7 @@ weacast-gfs@^0.4.0:
     mongodb "^2.2.26"
     request "^2.81.0"
     uberproto "^1.2.0"
-    weacast-core "^0.6.0"
+    weacast-core "^0.7.1"
     weacast-grib2json "^0.2.2"
     winston "^2.3.1"
 
@@ -4594,9 +4666,9 @@ weacast-gtiff2json@^0.2.0:
     commander "^2.9.0"
     geo-pixel-stream "^0.4.0"
 
-weacast-probe@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/weacast-probe/-/weacast-probe-0.4.0.tgz#3a9ed45b6d23cd9de894f0b21814176640410bed"
+weacast-probe@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/weacast-probe/-/weacast-probe-0.5.0.tgz#6ea79ad819ed35854c1ad87da54bed43769e4780"
   dependencies:
     chai-spies "^0.7.1"
     debug "^3.1.0"
@@ -4613,7 +4685,7 @@ weacast-probe@^0.4.0:
     mongodb "^2.2.26"
     request "^2.81.0"
     uberproto "^1.2.0"
-    weacast-core "^0.6.0"
+    weacast-core "^0.7.1"
     winston "^2.3.1"
 
 webfinger@0.4.x:
@@ -4713,6 +4785,19 @@ xml2js@0.1.x:
   resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.1.14.tgz#5274e67f5a64c5f92974cd85139e0332adc6b90c"
   dependencies:
     sax ">=0.1.1"
+
+xml2js@0.4.17:
+  version "0.4.17"
+  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.4.17.tgz#17be93eaae3f3b779359c795b419705a8817e868"
+  dependencies:
+    sax ">=0.6.0"
+    xmlbuilder "^4.1.0"
+
+xmlbuilder@^4.1.0:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-4.2.1.tgz#aa58a3041a066f90eaa16c2f5389ff19f3f461a5"
+  dependencies:
+    lodash "^4.0.0"
 
 xmlhttprequest-ssl@~1.5.4:
   version "1.5.5"

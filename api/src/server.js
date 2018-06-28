@@ -55,7 +55,8 @@ export class Server {
       }, this.app)
       logger.info('Configuring HTTPS server at port ' + port.toString())
       await server.listen(port)
-    } else {
+    }
+    else {
       const port = this.app.get('port')
       logger.info('Configuring HTTP server at port ' + port.toString())
       await this.app.listen(port)
