@@ -39,10 +39,10 @@ describe('weacast', () => {
         expect(content.includes(log)).to.equal(true)
         done()
       })
-    }, 10000)
+    }, 2500)
   })
   // Let enough time to process
-  .timeout(15000)
+  .timeout(5000)
 
   // Cleanup
   after(() => {
