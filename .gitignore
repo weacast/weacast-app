@@ -1,6 +1,8 @@
 .DS_Store
 node_modules/
 dist/
+api/logs
+config/client-config.json
 npm-debug.log
 npm-debug.log.*
 selenium-debug.log
