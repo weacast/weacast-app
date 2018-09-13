@@ -99,7 +99,16 @@ module.exports = {
       },
       {
         type: 'ColorLayer',
-        name: 'Gust (color map)',
+        name: 'Gust (interpolated)',
+        options: {
+          elements: ['gust'],
+          attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
+          visible: false
+        }
+      },
+      {
+        type: 'ScalarLayer',
+        name: 'Gust (raw)',
         options: {
           elements: ['gust'],
           attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
