@@ -61,6 +61,7 @@
     "pixi.js": "^4.8.2",
     "quasar-framework": "^0.13.10",
     "roboto-fontface": "^0.7.0",
+    "pixi.js": "^4.8.2",
     "socket.io-client": "^2.0.4",
     "turf-distance": "^3.0.12",
     "vue": "^2.2.2",
