@@ -6,4 +6,8 @@ services:
     image: weacast/weacast-dev
     environment:
       - DEBUG=${DEBUG}
+  mongodb-weacast:
+    ports:
+      - 27017:27017
+
 
