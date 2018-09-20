@@ -1,0 +1,51 @@
+version: '2'
+
+services:
+  weacast-arpege-world:
+    build:
+      context: https://github.com/weacast/weacast-loader.git
+      dockerfile: dockerfile.arpege-world
+    container_name: weacast-arpege-world
+    image: weacast/weacast-arpege-world
+    links:
+      - mongodb-weacast:mongodb
+    networks:
+      - weacast
+    environment:
+      - DB_URL=mongodb://mongodb:27017/weacast
+  weacast-arpege-europe:
+    build:
+      context: https://github.com/weacast/weacast-loader.git
+      dockerfile: dockerfile.arpege-europe
+    container_name: weacast-arpege-europe
+    image: weacast/weacast-arpege-europe
+    links:
+      - mongodb-weacast:mongodb
+    networks:
+      - weacast
+    environment:
+      - DB_URL=mongodb://mongodb:27017/weacast
+  weacast-arome-france:
+    build:
+      context: https://github.com/weacast/weacast-loader.git
+      dockerfile: dockerfile.arome-france
+    container_name: weacast-arome-france
+    image: weacast/weacast-arome-france
+    links:
+      - mongodb-weacast:mongodb
+    networks:
+      - weacast
+    environment:
+      - DB_URL=mongodb://mongodb:27017/weacast
+  weacast-gfs-world:
+    build:
+      context: https://github.com/weacast/weacast-loader.git
+      dockerfile: dockerfile.gfs-world
+    container_name: weacast-gfs-world
+    image: weacast/weacast-gfs-world
+    links:
+      - mongodb-weacast:mongodb
+    networks:
+      - weacast
+    environment:
+      - DB_URL=mongodb://mongodb:27017/weacast
