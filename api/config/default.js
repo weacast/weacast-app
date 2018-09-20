@@ -105,6 +105,7 @@ module.exports = {
     path: path.join(__dirname, '..', 'db-data'),
     url: process.env.DB_URL || (containerized ? 'mongodb://mongodb:27017/weacast' : 'mongodb://127.0.0.1:27017/weacast')
   },
+  sync: process.env.USE_LOADER ? true : false,
   probePath: path.join(__dirname, '..', 'probe-data'),
   defaultProbes: [
     {
@@ -130,7 +131,7 @@ module.exports = {
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
       upperLimit: 240 * 3600,         // Up to T0+240
-      updateInterval: 15 * 60,        // Check for update every 15 minutes
+      updateInterval: process.env.USE_LOADER ? -1 : 15 * 60,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -167,7 +168,7 @@ module.exports = {
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
       upperLimit: 240 * 3600,         // Up to T0+240
-      updateInterval: 15 * 60,        // Check for update every 15 minutes
+      updateInterval: process.env.USE_LOADER ? -1 : 15 * 60,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -204,7 +205,7 @@ module.exports = {
       interval: 1 * 3600,             // Steps of 1h
       lowerLimit: 0,                  // From T0
       upperLimit: 16 * 3600,          // Up to T0+16
-      updateInterval: 15 * 60,        // Check for update every 15 minutes
+      updateInterval: process.env.USE_LOADER ? -1 : 15 * 60,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -241,7 +242,7 @@ module.exports = {
       interval: 3 * 3600,             // Steps of 3h
       lowerLimit: 0,                  // From T0
       upperLimit: 102 * 3600,         // Up to T0+102
-      updateInterval: 15 * 60,        // Check for update every 15 minutes
+      updateInterval: process.env.USE_LOADER ? -1 : 15 * 60,        // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -275,7 +276,7 @@ module.exports = {
       ]
     },
     
-    /*
+    
     {
       name: 'arpege-europe',
       isDefault: true,
@@ -294,7 +295,7 @@ module.exports = {
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
       upperLimit: 102 * 3600,           // Up to T0+102
-      updateInterval: 15 * 60,          // Check for update every 15 minutes
+      updateInterval: process.env.USE_LOADER ? -1 : 15 * 60,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -348,7 +349,7 @@ module.exports = {
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
       upperLimit: 42 * 3600,            // Up to T0+42
-      updateInterval: 15 * 60,          // Check for update every 15 minutes
+      updateInterval: process.env.USE_LOADER ? -1 : 15 * 60,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',
@@ -386,7 +387,7 @@ module.exports = {
         // }
       ]
     }
-    */
+    
     // This model generates too much data to be stored in MongoDB documents (limited to 16 MB)
     // It requires the use of the 'gridfs' data store
     /*
@@ -407,7 +408,7 @@ module.exports = {
       interval: 1 * 3600,               // Steps of 1h
       lowerLimit: 0,                    // From T0
       upperLimit: 42 * 3600,            // Up to T0+42
-      updateInterval: 15 * 60,          // Check for update every 15 minutes
+      updateInterval: process.env.USE_LOADER ? -1 : 15 * 60,          // Check for update every 15 minutes
       elements: [
         {
           name: 'u-wind',

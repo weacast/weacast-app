@@ -1,22 +1,37 @@
 import path from 'path'
 import fs from 'fs-extra'
 import logger from 'winston'
-import core from 'weacast-core'
-import arpege from 'weacast-arpege'
-import arome from 'weacast-arome'
-import gfs from 'weacast-gfs'
+import core, { initializeElements } from 'weacast-core'
 import probe from 'weacast-probe'
+// Setup if we use plugins
+let arpege, arome, gfs
+if (!process.env.USE_LOADER) {
+  arpege = require('weacast-arpege')
+  arome = require('weacast-arome')
+  gfs = require('weacast-gfs')
+}
 
 module.exports = function () {
   const app = this
   // Setup app services
-  let usersService = app.createService('users', path.join(__dirname, '..', 'models'), path.join(__dirname, '..', 'services'))
-  // Set up our plugin services
+  let usersService = app.createService('users',
+    path.join(__dirname, '..', 'models'),
+    path.join(__dirname, '..', 'services'))
+  // Set up our plugins/elements services
   try {
     app.configure(core)
-    app.configure(arpege)
-    app.configure(arome)
-    app.configure(gfs)
+    // Setup if we use loader
+    if (process.env.USE_LOADER) {
+      const forecasts = app.get('forecasts')
+      // Iterate over configured forecast models
+      for (let forecast of forecasts) {
+        initializeElements(app, forecast)
+      }
+    } else { // Setup if we use plugins
+      app.configure(arpege)
+      app.configure(arome)
+      app.configure(gfs) 
+    }
     app.configure(probe)
   }
   catch (error) {
