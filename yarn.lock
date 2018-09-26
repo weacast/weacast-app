@@ -3900,6 +3900,13 @@ leaflet-timedimension@^1.0.6:
     jquery "1.x || 2.x"
     leaflet "~0.7.4 || ~1.0.0"
 
+leaflet-timedimension@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/leaflet-timedimension/-/leaflet-timedimension-1.1.0.tgz#9eecbdf9266a2ef14ace8282db1d1bfd5b151006"
+  dependencies:
+    iso8601-js-period "0.2.0"
+    leaflet "~0.7.4 || ~1.0.0"
+
 leaflet-velocity@^1.2.2:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/leaflet-velocity/-/leaflet-velocity-1.2.4.tgz#c431e4027b632aee37454bd03429afa436e3b28d"
