@@ -85,7 +85,7 @@ module.exports = {
         options: {
           elements: ['u-wind', 'v-wind'],
           attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
-          lineWidth: 2,
+          lineWidth: 3,
           frameRate: 20,
           particleMultiplier: 1 / 900,
           displayOptions: {
