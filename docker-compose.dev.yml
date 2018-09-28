@@ -5,7 +5,7 @@ services:
     build: .
     image: weacast/weacast-dev
     environment:
-      - DEBUG=${DEBUG}
+      - LOG_LEVEL=verbose
   mongodb-weacast:
     ports:
       - 27017:27017

@@ -86,7 +86,7 @@ module.exports = {
   logs: {
     Console: {
       colorize: true,
-      level: (process.env.NODE_ENV === 'development' ? 'verbose' : 'info')
+      level: process.env.LOG_LEVEL ? process.env.LOG_LEVEL : (process.env.NODE_ENV === 'development' ? 'verbose' : 'info')
     },
     DailyRotateFile: {
       dirname: path.join(__dirname, '..', 'logs'),
@@ -105,7 +105,7 @@ module.exports = {
     path: path.join(__dirname, '..', 'db-data'),
     url: process.env.DB_URL || (containerized ? 'mongodb://mongodb:27017/weacast' : 'mongodb://127.0.0.1:27017/weacast')
   },
-  sync: process.env.USE_LOADER ? true : false,
+  sync: process.env.USE_LOADER ? {} : false,
   probePath: path.join(__dirname, '..', 'probe-data'),
   defaultProbes: [
     {
