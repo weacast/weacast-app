@@ -1,4 +1,3 @@
-const { authenticate } = require('feathers-authentication').hooks
 const { hashPassword } = require('feathers-authentication-local').hooks
 const commonHooks = require('feathers-hooks-common')
 const gravatar = require('../../hooks/gravatar')
@@ -7,12 +6,12 @@ import { github, google, oidc, cognito } from '../../hooks/provider'
 module.exports = {
   before: {
     all: [],
-    find: [ authenticate('jwt') ],
-    get: [ authenticate('jwt') ],
+    find: [],
+    get: [],
     create: [ github(), google(), oidc(), cognito(), hashPassword(), gravatar() ],
-    update: [ authenticate('jwt') ],
-    patch: [ authenticate('jwt') ],
-    remove: [ authenticate('jwt') ]
+    update: [],
+    patch: [],
+    remove: []
   },
 
   after: {

@@ -41,23 +41,26 @@ module.exports = function () {
   let probesService = app.getService('probes')
 
   // Create default users if not already done
-  let defaultUsers = app.get('authentication').defaultUsers
-  if (defaultUsers) {
-    usersService.find({
-      paginate: false
-    })
-    .then(users => {
-      defaultUsers.forEach(defaultUser => {
-        let createdUser = users.find(user => user.email === defaultUser.email)
-        if (!createdUser) {
-          logger.info('Initializing default user (email = ' + defaultUser.email + ', password = ' + defaultUser.password + ')')
-          usersService.create({
-            email: defaultUser.email,
-            password: defaultUser.password
-          })
-        }
+  const config = app.get('authentication')
+  if (config) {
+    let defaultUsers = config.defaultUsers
+    if (defaultUsers) {
+      usersService.find({
+        paginate: false
       })
-    })
+      .then(users => {
+        defaultUsers.forEach(defaultUser => {
+          let createdUser = users.find(user => user.email === defaultUser.email)
+          if (!createdUser) {
+            logger.info('Initializing default user (email = ' + defaultUser.email + ', password = ' + defaultUser.password + ')')
+            usersService.create({
+              email: defaultUser.email,
+              password: defaultUser.password
+            })
+          }
+        })
+      })
+    }
   }
   // Create a default probe if not already done
   let defaultProbes = app.get('defaultProbes')
