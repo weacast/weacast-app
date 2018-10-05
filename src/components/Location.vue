@@ -1,18 +1,24 @@
 <template>
   <!-- root node required -->
   <div>
-    <q-modal ref="locationModal" :content-css="{padding: '20px', minWidth: '50vw', maxWidth: '50vw'}">
+    <q-modal ref="locationModal" :content-css="{padding: '20px', minWidth: '75vw', maxWidth: '75vw'}">
       <h5 class="text-center">Wind speed</h5>
       <canvas id="chart" height="200" width="600"></canvas>
       <h5 class="text-center">Wind direction</h5>
       <div class="text-center" v-if="feature">
         <span v-for="(direction, i) in feature.properties.windDirection">
-          <span style="font-size: 1.3em;">
-            <i :style="`transform: rotateZ(${direction}deg);`">arrow_downward</i>
-            <q-tooltip anchor="bottom middle" self="top middle">{{ formatDateTime(feature.forecastTime[i]) }}</q-tooltip>
-          </span>
+            <span style="font-size: 0.5em;">
+              <span class="vertical-text">{{ formatDateTime(feature.forecastTime[i]) }}</span>
+            </span>
+            <span style="font-size: 1.5em;">
+              <i :style="`transform: rotateZ(${direction}deg);`">arrow_downward</i>
+              <q-tooltip anchor="bottom middle" self="top middle">{{ feature.properties.windDirection[i] }}</q-tooltip>
+            </span>
         </span>
       </div>
+      </br>
+      </br>
+      </br>
       <div class="row float-right">
         <button class="orange clear" @click="$refs.locationModal.close()">Close</button>
       </div>
@@ -98,4 +104,9 @@ export default {
 </script>
 
 <style>
+.vertical-text {
+    writing-mode: vertical-rl;
+    transform: rotate(-120deg);
+    transform-origin: 150% 110%;
+}
 </style>

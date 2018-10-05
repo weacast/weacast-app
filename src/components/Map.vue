@@ -9,6 +9,7 @@
 
 <script>
 import L from 'leaflet'
+import _ from 'lodash'
 import { Toast } from 'quasar'
 import { MixinStore, WindBarbIcon } from 'weacast-client'
 
@@ -132,12 +133,9 @@ export default {
       }, { query })
       .then(response => {
         locationMarker.remove()
-        this.location = (response.features.length > 0 ? response.features[0] : null)
+        this.location = response.features[0]
         // Then create location layer
-        this.locationLayer = this.addGeoJson({
-          type: 'FeatureCollection',
-          features: response.features
-        }, 'Probed location')
+        this.locationLayer = this.addGeoJson(this.getLocationAtCurrentTime(), 'Probed location')
       })
     },
     getValueAtCurrentTime (times, values) {
@@ -151,13 +149,24 @@ export default {
         return values
       }
     },
+    getLocationAtCurrentTime () {
+      // Create new geojson from raw response containing all times
+      let feature = _.cloneDeep(this.location)
+      // Then check for the right value at time
+      _.forOwn(feature.properties, (value, key) => {
+        if (Array.isArray(value)) {
+          feature.properties[key] = this.getValueAtCurrentTime(feature.forecastTime, value)
+        }
+      })
+      return feature
+    },
     getPointMarker (feature, latlng) {
       const properties = feature.properties
       // Use wind barbs on probed features
       if (properties && properties.windDirection && properties.windSpeed) {
         let icon = new WindBarbIcon({
-          deg: this.getValueAtCurrentTime(feature.forecastTime, properties.windDirection),
-          speed: this.getValueAtCurrentTime(feature.forecastTime, properties.windSpeed) / 0.514, // Expressed as knots
+          deg: properties.windDirection,
+          speed: properties.windSpeed / 0.514, // Expressed as knots
           pointRadius: 10,
           pointColor: '#2B85C7',
           pointStroke: '#111',
@@ -193,9 +202,8 @@ export default {
       }
       if (this.locationLayer) {
         // Reset styling to display according to new time
-        const geojson = this.locationLayer.toGeoJSON()
         this.removeLayer(this.locationLayer)
-        this.locationLayer = this.addGeoJson(geojson, 'Probed location')
+        this.locationLayer = this.addGeoJson(this.getLocationAtCurrentTime(), 'Probed location')
       }
     })
     this.$on('fileLayerLoaded', (fileLayer, filename) => {
