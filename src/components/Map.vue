@@ -2,6 +2,7 @@
   <!-- root node required -->
   <div>
     <div id="map"></div>
+    <component is="location" :feature="location"></component>
     <component is="seeker" v-if="probe" :probe="probe" :current-time="currentTime" :forecastModel="forecastModel"></component>
   </div>
 </template>
@@ -20,13 +21,15 @@ export default {
   props: ['forecastModel'],
   // Make the seeker component available to Vue dynamically
   components: {
+    location: loadComponent(config.map ? config.map.location : 'Location'),
     seeker: loadComponent(config.map ? config.map.seeker : 'WindSeeker')
   },
   // Jump from mixin names to mixin objects
   mixins: config.map.mixins.map(mixinName => MixinStore.get(mixinName)),
   data () {
     return {
-      probe: null
+      probe: null,
+      location: null
     }
   },
   watch: {
@@ -48,7 +51,8 @@ export default {
       if (this.defaultProbe) {
         Toast.create.positive('Forecast data has been probed you can now search matching conditions')
         // Update content to get features
-        this.defaultProbe = await api.probes.get(this.defaultProbe._id, { query: { $select: ['elements', 'forecast', 'features'] } })
+        this.defaultProbe = await api.probes.get(this.defaultProbe._id,
+          { query: { $select: ['elements', 'forecast', 'features'] } })
         this.probe = this.defaultProbe
         this.probeLayer = this.addGeoJsonCluster({
           type: 'FeatureCollection',
@@ -59,18 +63,17 @@ export default {
         Toast.create.negative('Forecast data has not been probed you cannot search matching weather conditions')
       }
     },
-    performProbing (geojson) {
-      console.log(geojson)
+    performProbing () {
       // Not yet ready
       if (!this.forecastModel) return
 
       // Set forecast elements to probe
-      Object.assign(geojson, {
+      Object.assign(this.geojson, {
         forecast: this.forecastModel.name,
         elements: this.forecastModel.elements.map(element => element.name)
       })
       return api.probes
-      .create(geojson, {
+      .create(this.geojson, {
         query: {
           forecastTime: this.currentTime.format()
         }
@@ -90,12 +93,71 @@ export default {
         Toast.create.positive('Forecast data has been probed for your layer you can now search matching conditions')
       })
     },
+    probeLocation (event) {
+      // Not yet ready
+      if (!this.forecastModel) return
+      // From now to last available time
+      const times = this.map.timeDimension.getAvailableTimes()
+      const geometry = {
+        type: 'Point',
+        coordinates: [ event.latlng.lng, event.latlng.lat ]
+      }
+      const query = {
+        forecastTime: {
+          $gte: this.currentTime.format(),
+          $lte: new Date(times[times.length - 1]).toISOString()
+        },
+        geometry: {
+          $geoIntersects: {
+            $geometry: geometry
+          }
+        }
+      }
+      // Remove previous location layer if any
+      this.removeLayer(this.locationLayer)
+      let locationMarker = L.marker(event.latlng).addTo(this.map)
+      .bindTooltip('Please wait while probing location')
+      .openTooltip()
+
+      return api.probes
+      .create({
+        type: 'FeatureCollection',
+        forecast: this.forecastModel.name,
+        elements: this.forecastModel.elements.map(element => element.name),
+        features: [{
+          type: 'Feature',
+          properties: {},
+          geometry
+        }]
+      }, { query })
+      .then(response => {
+        locationMarker.remove()
+        this.location = (response.features.length > 0 ? response.features[0] : null)
+        // Then create location layer
+        this.locationLayer = this.addGeoJson({
+          type: 'FeatureCollection',
+          features: response.features
+        }, 'Probed location')
+      })
+    },
+    getValueAtCurrentTime (times, values) {
+      // Check for the right value at time
+      if (Array.isArray(times) && Array.isArray(values)) {
+        const currentTime = this.currentTime.valueOf()
+        const index = times.findIndex(time => new Date(time).getTime() === currentTime)
+        return values[index]
+      } // Constant value
+      else {
+        return values
+      }
+    },
     getPointMarker (feature, latlng) {
+      const properties = feature.properties
       // Use wind barbs on probed features
-      if (feature.properties && feature.properties.windDirection && feature.properties.windSpeed) {
+      if (properties && properties.windDirection && properties.windSpeed) {
         let icon = new WindBarbIcon({
-          deg: feature.properties.windDirection,
-          speed: feature.properties.windSpeed / 0.514, // Expressed as knots
+          deg: this.getValueAtCurrentTime(feature.forecastTime, properties.windDirection),
+          speed: this.getValueAtCurrentTime(feature.forecastTime, properties.windSpeed) / 0.514, // Expressed as knots
           pointRadius: 10,
           pointColor: '#2B85C7',
           pointStroke: '#111',
@@ -122,16 +184,24 @@ export default {
   },
   mounted () {
     this.$emit('mapReady')
+    this.map.on('click', this.probeLocation)
     this.setupDefaultProbe()
     this.$on('currentTimeChanged', currentTime => {
       if (this.userProbe) {
         // Perform new on-demand probe for new time
-        this.performProbing(this.userProbe)
+        this.performProbing()
+      }
+      if (this.locationLayer) {
+        // Reset styling to display according to new time
+        const geojson = this.locationLayer.toGeoJSON()
+        this.removeLayer(this.locationLayer)
+        this.locationLayer = this.addGeoJson(geojson, 'Probed location')
       }
     })
     this.$on('fileLayerLoaded', (fileLayer, filename) => {
+      this.geojson = fileLayer.toGeoJSON()
       // Perform probing
-      this.performProbing(fileLayer.toGeoJSON())
+      this.performProbing()
     })
   }
 }
