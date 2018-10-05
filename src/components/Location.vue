@@ -1,9 +1,18 @@
 <template>
   <!-- root node required -->
   <div>
-    <q-modal ref="locationModal" :content-css="{padding: '20px', minWidth: '50vw'}">
-      <h5>Location conditions</h5>
-      <canvas id="chart" width="600" height="400"></canvas>
+    <q-modal ref="locationModal" :content-css="{padding: '20px', minWidth: '50vw', maxWidth: '50vw'}">
+      <h5 class="text-center">Wind speed</h5>
+      <canvas id="chart" height="200" width="600"></canvas>
+      <h5 class="text-center">Wind direction</h5>
+      <div class="text-center" v-if="feature">
+        <span v-for="(direction, i) in feature.properties.windDirection">
+          <span style="font-size: 1.3em;">
+            <i :style="`transform: rotateZ(${direction}deg);`">arrow_downward</i>
+            <q-tooltip anchor="bottom middle" self="top middle">{{ formatDateTime(feature.forecastTime[i]) }}</q-tooltip>
+          </span>
+        </span>
+      </div>
       <div class="row float-right">
         <button class="orange clear" @click="$refs.locationModal.close()">Close</button>
       </div>
@@ -16,6 +25,7 @@
 
 <script>
 
+import moment from 'moment'
 import Chart from 'chart.js'
 
 export default {
@@ -29,6 +39,9 @@ export default {
     }
   },
   methods: {
+    formatDateTime (time) {
+      return moment.utc(time).format('MM/DD HH:mm')
+    },
     setupGraph () {
       const color = Chart.helpers.color
       const config = {

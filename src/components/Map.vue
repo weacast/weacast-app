@@ -116,7 +116,7 @@ export default {
       // Remove previous location layer if any
       this.removeLayer(this.locationLayer)
       let locationMarker = L.marker(event.latlng).addTo(this.map)
-      .bindTooltip('Please wait while probing location')
+      .bindTooltip('Please wait while probing location', { permanent: true })
       .openTooltip()
 
       return api.probes
