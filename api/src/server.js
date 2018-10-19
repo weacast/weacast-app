@@ -16,11 +16,10 @@ export class Server {
     this.app = weacast()
     // Serve pure static assets
     if (process.env.NODE_ENV === 'production') {
-      this.app.use(this.app.get('client').build.publicPath, feathers.static('../dist'))
+      this.app.use('/', feathers.static('../dist'))
     }
     else {
-      const staticsPath = path.posix.join(this.app.get('client').dev.publicPath, 'statics/')
-      this.app.use(staticsPath, feathers.static('../dist/statics'))
+      this.app.use('/statics/', feathers.static('../dist/statics'))
     }
 
     // Define HTTP proxies to your custom API backend. See /config/index.js -> proxyTable

@@ -4,6 +4,9 @@
     <div id="map"></div>
     <component is="location" :feature="location"></component>
     <component is="seeker" v-if="probe" :probe="probe" :current-time="currentTime" :forecastModel="forecastModel"></component>
+    <span v-if="forecastModel" class="chip label bg-white absolute-bottom-right" style="margin-bottom: 1.6em; margin-right: 30em">
+      {{forecastModel.label}} - {{forecastModel.description}}
+    </span>
   </div>
 </template>
 
@@ -35,11 +38,11 @@ export default {
   },
   watch: {
     forecastModel: function (model) {
-      this.setupDefaultProbe()
+      this.setupDefaultProbes()
     }
   },
   methods: {
-    async setupDefaultProbe () {
+    async setupDefaultProbes () {
       // Not yet ready
       if (!this.forecastModel) return
       // Remove previous layer if any
@@ -50,7 +53,7 @@ export default {
       // Find the right one for current model
       this.defaultProbe = probes.find(probe => probe.forecast === this.forecastModel.name)
       if (this.defaultProbe) {
-        Toast.create.positive('Forecast data has been probed you can now search matching conditions')
+        Toast.create.positive('Forecast data has associated probes so you can search matching conditions')
         // Update content to get features
         this.defaultProbe = await api.probes.get(this.defaultProbe._id,
           { query: { $select: ['elements', 'forecast', 'features'] } })
@@ -58,10 +61,10 @@ export default {
         this.probeLayer = this.addGeoJsonCluster({
           type: 'FeatureCollection',
           features: this.probe.features
-        }, 'Probe')
+        }, 'Default probes')
       }
       else {
-        Toast.create.negative('Forecast data has not been probed you cannot search matching weather conditions')
+        Toast.create.negative('Forecast data has no associated probes so you cannot search matching weather conditions')
       }
     },
     performProbing () {
@@ -88,10 +91,10 @@ export default {
         this.probeLayer = this.addGeoJsonCluster({
           type: 'FeatureCollection',
           features: response.features
-        }, 'Probe')
+        }, 'Default probes')
         this.userProbe = response
         this.probe = this.userProbe
-        Toast.create.positive('Forecast data has been probed for your layer you can now search matching conditions')
+        Toast.create.positive('Forecast data has been probed for your layer so you can now search matching conditions')
       })
     },
     probeLocation (event) {
@@ -137,6 +140,9 @@ export default {
         // Then create location layer
         this.locationLayer = this.addGeoJson(this.getLocationAtCurrentTime(), 'Probed location')
       })
+      .catch(_ => {
+        locationMarker.remove()
+      })
     },
     getValueAtCurrentTime (times, values) {
       // Check for the right value at time
@@ -180,7 +186,27 @@ export default {
         return L.marker(latlng, { icon })
       }
       else {
-        return this.createMarkerFromStyle(latlng, this.configuration.pointStyle)
+        let marker = this.createMarkerFromStyle(latlng, this.configuration.pointStyle)
+        marker.on('click', async event => {
+          // Check if probe is streamed so we need to retrieve results first
+          if (this.probe._id) {
+            const times = this.map.timeDimension.getAvailableTimes()
+            let results = await api.probeResults.find({
+              query: {
+                probeId: this.probe._id,
+                forecastTime: {
+                  $gte: this.currentTime.format(),
+                  $lte: new Date(times[times.length - 1]).toISOString()
+                },
+                'properties.iata_code': properties.iata_code,
+                $groupBy: 'properties.iata_code',
+                $aggregate: ['windDirection', 'windSpeed', 'gust']
+              }
+            })
+            if (results.length > 0) this.location = results[0]
+          }
+        })
+        return marker
       }
     }
   },
@@ -193,8 +219,8 @@ export default {
   },
   mounted () {
     this.$emit('mapReady')
-    this.map.on('click', this.probeLocation)
-    this.setupDefaultProbe()
+    this.map.on('dblclick', this.probeLocation)
+    this.setupDefaultProbes()
     this.$on('currentTimeChanged', currentTime => {
       if (this.userProbe) {
         // Perform new on-demand probe for new time

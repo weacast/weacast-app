@@ -1,11 +1,10 @@
 var path = require('path')
 var containerized = require('containerized')()
-var clientConfig = require('../../config')
 
 var API_PREFIX = '/api'
-var serverPort = process.env.PORT || 8081
+const serverPort = process.env.PORT || process.env.HTTPS_PORT || 8081
 // Required to know webpack port so that in dev we can build correct URLs
-var clientPort = process.env.CLIENT_PORT || clientConfig.dev.port
+const clientPort = process.env.CLIENT_PORT || process.env.HTTPS_CLIENT_PORT || 8080
 let domain
 // If we build a specific staging instance
 if (process.env.VIRTUAL_HOST) {
@@ -19,8 +18,6 @@ if (process.env.VIRTUAL_HOST) {
 }
 
 module.exports = {
-  client: clientConfig,
-
   // Proxy your API if using any.
   // Also see /build/script.dev.js and search for "proxy api requests"
   // https://github.com/chimurai/http-proxy-middleware
@@ -151,7 +148,7 @@ module.exports = {
       ]
     },
     */
-    
+
     {
       name: 'gfs-world',
       label: 'GFS - 0.5°',
@@ -163,6 +160,8 @@ module.exports = {
       origin: [0, 90],
       size: [720, 361],
       resolution: [0.5, 0.5],
+      tileResolution: [20, 20],
+      timeseries: false,
       runInterval: 6 * 3600,          // Produced every 6h
       oldestRunInterval: 24 * 3600,   // Don't go back in time older than 1 day
       interval: 3 * 3600,             // Steps of 3h
@@ -187,7 +186,7 @@ module.exports = {
         }
       ]
     },
-    
+
     /*
     {
       name: 'gfs-world-high',
@@ -238,6 +237,7 @@ module.exports = {
       size: [720, 361],
       resolution: [0.5, 0.5],
       tileResolution: [20, 20],
+      timeseries: false,
       runInterval: 6 * 3600,          // Produced every 6h
       oldestRunInterval: 24 * 3600,   // Don't go back in time older than 1 day
       interval: 3 * 3600,             // Steps of 3h
@@ -277,7 +277,7 @@ module.exports = {
       ]
     },
     
-    
+    /*
     {
       name: 'arpege-europe',
       isDefault: true,
@@ -388,7 +388,7 @@ module.exports = {
         // }
       ]
     }
-    
+    */
     // This model generates too much data to be stored in MongoDB documents (limited to 16 MB)
     // It requires the use of the 'gridfs' data store
     /*

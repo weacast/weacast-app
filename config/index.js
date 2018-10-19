@@ -1,5 +1,9 @@
 var path = require('path')
 
+const serverPort = process.env.PORT || process.env.HTTPS_PORT || 8081
+// Required to know webpack port so that in dev we can build correct URLs
+const clientPort = process.env.CLIENT_PORT || process.env.HTTPS_CLIENT_PORT || 8080
+
 module.exports = {
   // Webpack aliases
   aliases: {
@@ -35,13 +39,13 @@ module.exports = {
     // auto open browser or not
     openBrowser: true,
     publicPath: '/',
-    port: process.env.PORT || 8080,
+    port: clientPort,
     // To enable HTTPS
     /*
     https: {
       key: path.join(__dirname, 'server.key'),
       cert: path.join(__dirname, 'server.crt'),
-      port: process.env.HTTPS_PORT || 8083
+      port: clientPort
     },
     */
     
@@ -59,19 +63,19 @@ module.exports = {
     // Does not work well to manage API path with feathers, notably on WS
     proxyTable: {
       '/api': {
-        target: 'http://localhost:8081',
+        target: 'http://localhost:' + serverPort,
         changeOrigin: true,
         logLevel: 'debug'
       },
       '/apiws': {
-        target: 'http://localhost:8081',
+        target: 'http://localhost:' + serverPort,
         changeOrigin: true,
         ws: true,
         logLevel: 'debug'
       },
       // The auth endpoints are not easy to prefix so we manage it manually
       '/auth': {
-        target: 'http://localhost:8081',
+        target: 'http://localhost:' + serverPort,
         changeOrigin: true,
         logLevel: 'debug'
       }

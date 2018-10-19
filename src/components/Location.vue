@@ -49,6 +49,8 @@ export default {
       return moment.utc(time).format('MM/DD HH:mm')
     },
     setupGraph () {
+      // Destroy previous graph if any
+      if (this.chart) this.chart.destroy()
       const color = Chart.helpers.color
       const config = {
         type: 'line',
