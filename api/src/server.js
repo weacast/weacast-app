@@ -1,4 +1,3 @@
-const path = require('path')
 const fs = require('fs-extra')
 const https = require('https')
 const proxyMiddleware = require('http-proxy-middleware')
