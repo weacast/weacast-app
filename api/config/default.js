@@ -232,8 +232,8 @@ module.exports = {
       model: 'arpege',
       token: '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
       wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-GLOBAL-ARPEGE-05-GLOBE-WCS?SERVICE=WCS&version=2.0.1',
-      bounds: [-180, -90, 180, 90],
-      origin: [-180, 90],
+      bounds: [0, -90, 360, 90],
+      origin: [0, 90],
       size: [720, 361],
       resolution: [0.5, 0.5],
       tileResolution: [20, 20],
@@ -252,7 +252,7 @@ module.exports = {
           coverageid: 'U_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
             height: 10,
-            long: [-180, 180],
+            long: [0, 360],
             lat: [-90, 90]
           }
         },
@@ -261,7 +261,7 @@ module.exports = {
           coverageid: 'V_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
             height: 10,
-            long: [-180, 180],
+            long: [0, 360],
             lat: [-90, 90]
           }
         },
@@ -270,7 +270,7 @@ module.exports = {
           coverageid: 'WIND_SPEED_GUST__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
           subsets: {
             height: 10,
-            long: [-180, 180],
+            long: [0, 360],
             lat: [-90, 90]
           }
         }
