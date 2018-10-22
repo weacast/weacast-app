@@ -117,6 +117,7 @@ export default {
       }
       // Remove previous location layer if any
       this.removeLayer(this.locationLayer)
+      this.locationLayer = null
       let locationMarker = L.marker([lat, long]).addTo(this.map)
       .bindTooltip('Please wait while probing location', { permanent: true })
       .openTooltip()
@@ -140,7 +141,6 @@ export default {
       }
       catch (error) {
         console.log(error)
-        this.locationLayer = null
         locationMarker.remove()
       }
     },
@@ -149,6 +149,7 @@ export default {
       if (!this.probe._id) return
       // Remove previous location layer if any
       this.removeLayer(this.locationLayer)
+      this.locationLayer = null
       const times = this.map.timeDimension.getAvailableTimes()
       try {
         let results = await api.probeResults.find({
@@ -170,7 +171,6 @@ export default {
       }
       catch (error) {
         console.log(error)
-        this.locationLayer = null
       }
     },
     getValueAtCurrentTime (times, values) {
