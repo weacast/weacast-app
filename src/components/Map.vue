@@ -67,7 +67,7 @@ export default {
         Toast.create.negative('Forecast data has no associated probes so you cannot search matching weather conditions')
       }
     },
-    performProbing () {
+    async performProbing () {
       // Not yet ready
       if (!this.forecastModel) return
 
@@ -76,39 +76,37 @@ export default {
         forecast: this.forecastModel.name,
         elements: this.forecastModel.elements.map(element => element.name)
       })
-      return api.probes
+      let response = await api.probes
       .create(this.geojson, {
         query: {
           forecastTime: this.currentTime.format()
         }
       })
-      .then(response => {
-        // Remove original file layer
-        this.removeLayer(this.fileLayer)
-        // Remove previous probed layer if any
-        this.removeLayer(this.probeLayer)
-        // Then create probed layer
-        this.probeLayer = this.addGeoJsonCluster({
-          type: 'FeatureCollection',
-          features: response.features
-        }, 'Default probes')
-        this.userProbe = response
-        this.probe = this.userProbe
-        Toast.create.positive('Forecast data has been probed for your layer so you can now search matching conditions')
-      })
+      // Remove original file layer
+      this.removeLayer(this.fileLayer)
+      // Remove previous probed layer if any
+      this.removeLayer(this.probeLayer)
+      // Then create probed layer
+      this.probeLayer = this.addGeoJsonCluster({
+        type: 'FeatureCollection',
+        features: response.features
+      }, 'Default probes')
+      this.userProbe = response
+      this.probe = this.userProbe
+      Toast.create.positive('Forecast data has been probed for your layer so you can now search matching conditions')
     },
-    probeLocation (event) {
+    async probeDynamicLocation (long, lat) {
       // Not yet ready
       if (!this.forecastModel) return
       // From now to last available time
       const times = this.map.timeDimension.getAvailableTimes()
       const geometry = {
         type: 'Point',
-        coordinates: [ event.latlng.lng, event.latlng.lat ]
+        coordinates: [ long, lat ]
       }
       const query = {
         forecastTime: {
-          $gte: this.currentTime.format(),
+          $gte: new Date(times[0]).toISOString(),
           $lte: new Date(times[times.length - 1]).toISOString()
         },
         geometry: {
@@ -119,30 +117,61 @@ export default {
       }
       // Remove previous location layer if any
       this.removeLayer(this.locationLayer)
-      let locationMarker = L.marker(event.latlng).addTo(this.map)
+      let locationMarker = L.marker([lat, long]).addTo(this.map)
       .bindTooltip('Please wait while probing location', { permanent: true })
       .openTooltip()
 
-      return api.probes
-      .create({
-        type: 'FeatureCollection',
-        forecast: this.forecastModel.name,
-        elements: this.forecastModel.elements.map(element => element.name),
-        features: [{
-          type: 'Feature',
-          properties: {},
-          geometry
-        }]
-      }, { query })
-      .then(response => {
+      try {
+        let response = await api.probes
+        .create({
+          type: 'FeatureCollection',
+          forecast: this.forecastModel.name,
+          elements: this.forecastModel.elements.map(element => element.name),
+          features: [{
+            type: 'Feature',
+            properties: {},
+            geometry
+          }]
+        }, { query })
         locationMarker.remove()
         this.location = response.features[0]
         // Then create location layer
         this.locationLayer = this.addGeoJson(this.getLocationAtCurrentTime(), 'Probed location')
-      })
-      .catch(_ => {
+      }
+      catch (error) {
+        console.log(error)
+        this.locationLayer = null
         locationMarker.remove()
-      })
+      }
+    },
+    async probeStaticLocation (featureId) {
+      // Check if probe is streamed so we need to retrieve results first
+      if (!this.probe._id) return
+      // Remove previous location layer if any
+      this.removeLayer(this.locationLayer)
+      const times = this.map.timeDimension.getAvailableTimes()
+      try {
+        let results = await api.probeResults.find({
+          query: {
+            probeId: this.probe._id,
+            forecastTime: {
+              $gte: new Date(times[0]).toISOString(),
+              $lte: new Date(times[times.length - 1]).toISOString()
+            },
+            'properties.iata_code': featureId,
+            $groupBy: 'properties.iata_code',
+            $aggregate: ['windDirection', 'windSpeed', 'gust']
+          }
+        })
+        if (results.length > 0) this.location = results[0]
+        this.location.type = 'Feature'
+        // Then create location layer
+        this.locationLayer = this.addGeoJson(this.getLocationAtCurrentTime(), 'Probed location')
+      }
+      catch (error) {
+        console.log(error)
+        this.locationLayer = null
+      }
     },
     getValueAtCurrentTime (times, values) {
       // Check for the right value at time
@@ -187,26 +216,39 @@ export default {
       }
       else {
         let marker = this.createMarkerFromStyle(latlng, this.configuration.pointStyle)
-        marker.on('click', async event => {
-          // Check if probe is streamed so we need to retrieve results first
-          if (this.probe._id) {
-            const times = this.map.timeDimension.getAvailableTimes()
-            let results = await api.probeResults.find({
-              query: {
-                probeId: this.probe._id,
-                forecastTime: {
-                  $gte: this.currentTime.format(),
-                  $lte: new Date(times[times.length - 1]).toISOString()
-                },
-                'properties.iata_code': properties.iata_code,
-                $groupBy: 'properties.iata_code',
-                $aggregate: ['windDirection', 'windSpeed', 'gust']
-              }
-            })
-            if (results.length > 0) this.location = results[0]
-          }
-        })
+        marker.on('click', event => this.probeStaticLocation(properties.iata_code))
         return marker
+      }
+    },
+    onProbeLocation (event) {
+      this.probeDynamicLocation(event.latlng.lng, event.latlng.lat)
+    },
+    onUserProbeLoaded (fileLayer, filename) {
+      this.geojson = fileLayer.toGeoJSON()
+      // Perform probing
+      this.performProbing()
+    },
+    onTimeChanged (currentTime) {
+      if (this.userProbe) {
+        // Perform new on-demand probe for new time
+        this.performProbing()
+      }
+      if (this.locationLayer) {
+        // Reset styling to display according to new time
+        this.removeLayer(this.locationLayer)
+        this.locationLayer = this.addGeoJson(this.getLocationAtCurrentTime(), 'Probed location')
+      }
+    },
+    onAvailableTimesChanged (availableTimes, currentTime) {
+      if (this.locationLayer) {
+        // Static location => update results
+        if (_.has(this.location, 'properties.iata_code')) {
+          this.probeStaticLocation(_.get(this.location, 'properties.iata_code'))
+        }
+        else { // Dynamic location selected => probe again
+          const location = _.get(this.location, 'geometry.coordinates')
+          this.probeDynamicLocation(location[0], location[1])
+        }
       }
     }
   },
@@ -219,24 +261,20 @@ export default {
   },
   mounted () {
     this.$emit('mapReady')
-    this.map.on('dblclick', this.probeLocation)
+    this.map.on('dblclick', this.onProbeLocation)
+    this.map.timeDimension.on('availabletimeschanged', this.onAvailableTimesChanged)
     this.setupDefaultProbes()
-    this.$on('currentTimeChanged', currentTime => {
-      if (this.userProbe) {
-        // Perform new on-demand probe for new time
-        this.performProbing()
-      }
-      if (this.locationLayer) {
-        // Reset styling to display according to new time
-        this.removeLayer(this.locationLayer)
-        this.locationLayer = this.addGeoJson(this.getLocationAtCurrentTime(), 'Probed location')
-      }
-    })
-    this.$on('fileLayerLoaded', (fileLayer, filename) => {
-      this.geojson = fileLayer.toGeoJSON()
-      // Perform probing
-      this.performProbing()
-    })
+    this.$on('currentTimeChanged', this.onTimeChanged)
+    this.$on('fileLayerLoaded', this.onUserProbeLoaded)
+  },
+  beforeDestroy () {
+    this.map.off('dblclick', this.onProbeLocation)
+    this.map.timeDimension.off('availabletimeschanged', this.onAvailableTimesChanged)
+    this.$off('currentTimeChanged', this.onTimeChanged)
+    this.$off('fileLayerLoaded', this.onUserProbeLoaded)
+    // Remove layers if any
+    this.removeLayer(this.probeLayer)
+    this.removeLayer(this.locationLayer)
   }
 }
 </script>

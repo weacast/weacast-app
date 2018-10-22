@@ -106,7 +106,8 @@ module.exports = {
   probePath: path.join(__dirname, '..', 'probe-data'),
   defaultProbes: [
     {
-      fileName: 'ne_10m_airports.geojson'
+      fileName: 'ne_10m_airports.geojson',
+      featureId: 'properties.iata_code'
     }
   ],
   forecastPath: path.join(__dirname, '..', 'forecast-data'),

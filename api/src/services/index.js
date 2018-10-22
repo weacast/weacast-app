@@ -83,7 +83,8 @@ module.exports = function () {
             let options = Object.assign({
               name: probeName,
               forecast: forecast.name,
-              elements: forecast.elements.map(element => element.name)
+              elements: forecast.elements.map(element => element.name),
+              featureId: defaultProbe.featureId
             }, defaultProbe.options)
             Object.assign(geojson, options)
             probesService.create(geojson)

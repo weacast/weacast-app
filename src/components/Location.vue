@@ -83,7 +83,8 @@ export default {
                 displayFormats: {
                   hour: 'MM/DD HH:mm'
                 },
-                tooltipFormat: 'MM/DD HH:mm'
+                tooltipFormat: 'MM/DD HH:mm',
+                parser: (date) => moment.utc(typeof date === 'number' ? date : date.toISOString())
               },
               scaleLabel: {
                 display: false,
