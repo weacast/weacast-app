@@ -173,17 +173,27 @@ module.exports = {
         {
           name: 'u-wind',
           variable: 'var_UGRD',
-          levels: ['lev_10_m_above_ground']
+          levels: ['lev_10_m_above_ground'],
+          bucket: 0
         },
         {
           name: 'v-wind',
           variable: 'var_VGRD',
-          levels: ['lev_10_m_above_ground']
+          levels: ['lev_10_m_above_ground'],
+          bucket: 1
         },
         {
           name: 'gust',
           variable: 'var_GUST',
-          levels: ['surface']
+          levels: ['surface'],
+          bucket: 0
+        },
+        {
+          name: 'precipitations',
+          variable: 'var_APCP',
+          levels: ['surface'],
+          bucket: 1,
+          accumulationPeriod: 3 * 3600 // Accumulation from T to T-3H
         }
       ]
     },
@@ -255,7 +265,8 @@ module.exports = {
             height: 10,
             long: [0, 360],
             lat: [-90, 90]
-          }
+          },
+          bucket: 0
         },
         {
           name: 'v-wind',
@@ -264,7 +275,8 @@ module.exports = {
             height: 10,
             long: [0, 360],
             lat: [-90, 90]
-          }
+          },
+          bucket: 1
         },
         {
           name: 'gust',
@@ -273,7 +285,18 @@ module.exports = {
             height: 10,
             long: [0, 360],
             lat: [-90, 90]
-          }
+          },
+          bucket: 0
+        },
+        {
+          name: 'precipitations',
+          coverageid: 'TOTAL_PRECIPITATION__GROUND_OR_WATER_SURFACE',
+          subsets: {
+            long: [0, 360],
+            lat: [-90, 90]
+          },
+          bucket: 1,
+          accumulationPeriod: 3 * 3600 // Accumulation from T to T-3H
         }
       ]
     },

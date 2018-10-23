@@ -125,14 +125,8 @@ export default {
       try {
         let response = await api.probes
         .create({
-          type: 'FeatureCollection',
           forecast: this.forecastModel.name,
-          elements: this.forecastModel.elements.map(element => element.name),
-          features: [{
-            type: 'Feature',
-            properties: {},
-            geometry
-          }]
+          elements: this.forecastModel.elements.map(element => element.name)
         }, { query })
         locationMarker.remove()
         this.location = response.features[0]
@@ -190,7 +184,7 @@ export default {
       // Then check for the right value at time
       _.forOwn(feature.properties, (value, key) => {
         if (Array.isArray(value)) {
-          feature.properties[key] = this.getValueAtCurrentTime(feature.forecastTime, value)
+          feature.properties[key] = this.getValueAtCurrentTime(feature.forecastTime[key], value)
         }
       })
       return feature

@@ -27,9 +27,10 @@ RUN git clone https://github.com/weacast/weacast-client.git -b master --single-b
 
 WORKDIR /opt/app
 
-RUN yarn install
 RUN yarn link weacast-client
-RUN npm run build
+RUN yarn install
+# Install already performs build
+# RUN npm run build
 
 WORKDIR /opt/app/api
 

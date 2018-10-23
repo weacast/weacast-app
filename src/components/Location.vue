@@ -8,7 +8,7 @@
       <div class="text-center" v-if="feature">
         <span v-for="(direction, i) in feature.properties.windDirection">
             <span style="font-size: 0.5em;">
-              <span class="vertical-text">{{ formatDateTime(feature.forecastTime[i]) }}</span>
+              <span class="vertical-text">{{ formatDateTime(feature.forecastTime.windDirection[i]) }}</span>
             </span>
             <span style="font-size: 1.5em;">
               <i :style="`transform: rotateZ(${direction}deg);`">arrow_downward</i>
@@ -55,7 +55,7 @@ export default {
       const config = {
         type: 'line',
         data: {
-          labels: this.feature.forecastTime.map(time => new Date(time)),
+          labels: this.feature.forecastTime.gust.map(time => new Date(time)),
           datasets: [{
             label: 'Wind gust',
             backgroundColor: color('rgb(255, 99, 132)').alpha(0.5).rgbString(),

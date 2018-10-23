@@ -15,7 +15,8 @@ WORKDIR /opt/app
 COPY . /opt/app
 
 RUN yarn install
-RUN npm run build
+# Install already performs build
+# RUN npm run build
 
 WORKDIR /opt/app/api
 

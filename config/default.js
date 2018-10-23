@@ -85,7 +85,7 @@ module.exports = {
         name: 'Wind',
         options: {
           elements: ['u-wind', 'v-wind'],
-          attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
+          attribution: 'Data from <a href="http://www.meteofrance.com">Météo-France</a>, <a href="http://www.ncep.noaa.gov/">NCEP</a>',
           lineWidth: 3,
           frameRate: 20,
           particleMultiplier: 1 / 900,
@@ -103,7 +103,7 @@ module.exports = {
         name: 'Gust (interpolated)',
         options: {
           elements: ['gust'],
-          attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
+          attribution: 'Data from <a href="http://www.meteofrance.com">Météo-France</a>, <a href="http://www.ncep.noaa.gov/">NCEP</a>',
           visible: false,
           mesh: true
         }
@@ -113,7 +113,7 @@ module.exports = {
         name: 'Gust (raw)',
         options: {
           elements: ['gust'],
-          attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
+          attribution: 'Data from <a href="http://www.meteofrance.com">Météo-France</a>, <a href="http://www.ncep.noaa.gov/">NCEP</a>',
           visible: false,
           mesh: false
         }
@@ -123,9 +123,20 @@ module.exports = {
         name: 'Gust (heat map)',
         options: {
           elements: ['gust'],
-          attribution: 'Forecast data from <a href="http://www.meteofrance.com">Météo-France</a>',
+          attribution: 'Data from <a href="http://www.meteofrance.com">Météo-France</a>, <a href="http://www.ncep.noaa.gov/">NCEP</a>',
           visible: false,
           radius: 1.8
+        }
+      },
+      {
+        type: 'ScalarLayer',
+        name: 'Precipitations',
+        options: {
+          elements: ['precipitations'],
+          attribution: 'Data from <a href="http://www.meteofrance.com">Météo-France</a>, <a href="http://www.ncep.noaa.gov/">NCEP</a>',
+          visible: false,
+          mesh: true,
+          colorDomain: [0, 1, 2, 4, 10, 25, 50, 100, 300]
         }
       }
     ],
