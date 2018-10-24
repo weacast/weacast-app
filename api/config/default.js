@@ -193,7 +193,7 @@ module.exports = {
           variable: 'var_APCP',
           levels: ['surface'],
           bucket: 1,
-          accumulationPeriod: 3 * 3600 // Accumulation from T to T-3H
+          lowerLimit: 3 * 3600 // Accumulation from T to T-3H
         }
       ]
     },
@@ -296,7 +296,7 @@ module.exports = {
             lat: [-90, 90]
           },
           bucket: 1,
-          accumulationPeriod: 3 * 3600 // Accumulation from T to T-3H
+          lowerLimit: 3 * 3600 // Accumulation from T to T-3H
         }
       ]
     },
