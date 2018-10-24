@@ -155,7 +155,7 @@ export default {
             },
             'properties.iata_code': featureId,
             $groupBy: 'properties.iata_code',
-            $aggregate: ['windDirection', 'windSpeed', 'gust']
+            $aggregate: ['windDirection', 'windSpeed', 'gust', 'precipitations']
           }
         })
         if (results.length > 0) this.location = results[0]
