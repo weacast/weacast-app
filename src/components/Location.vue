@@ -61,13 +61,22 @@ export default {
             backgroundColor: color('rgb(255, 99, 132)').alpha(0.5).rgbString(),
             borderColor: 'rgb(255, 99, 132)',
             fill: false,
-            data: this.feature.properties.gust
+            data: this.feature.properties.gust,
+            yAxisID: 'speed'
           }, {
             label: 'Wind speed',
             backgroundColor: color('rgb(255, 159, 64)').alpha(0.5).rgbString(),
             borderColor: 'rgb(255, 159, 64)',
             fill: false,
-            data: this.feature.properties.windSpeed
+            data: this.feature.properties.windSpeed,
+            yAxisID: 'speed'
+          }, {
+            label: 'Precipitations',
+            backgroundColor: color('rgb(54, 162, 235)').alpha(0.5).rgbString(),
+            borderColor: 'rgb(54, 162, 235)',
+            fill: false,
+            data: this.feature.properties.precipitations,
+            yAxisID: 'precipitations'
           }]
         },
         options: {
@@ -92,9 +101,18 @@ export default {
               }
             }],
             yAxes: [{
+              id: 'speed',
+              position: 'left',
               scaleLabel: {
                 display: true,
-                labelString: '(m/s)'
+                labelString: 'm/s'
+              }
+            }, {
+              id: 'precipitations',
+              position: 'right',
+              scaleLabel: {
+                display: true,
+                labelString: 'mm'
               }
             }]
           }

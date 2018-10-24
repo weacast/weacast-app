@@ -85,6 +85,7 @@ module.exports = {
         name: 'Wind',
         options: {
           elements: ['u-wind', 'v-wind'],
+          units: ['m/s', 'kt', 'km/h'],
           attribution: 'Data from <a href="http://www.meteofrance.com">Météo-France</a>, <a href="http://www.ncep.noaa.gov/">NCEP</a>',
           lineWidth: 3,
           frameRate: 20,
@@ -103,6 +104,7 @@ module.exports = {
         name: 'Gust (interpolated)',
         options: {
           elements: ['gust'],
+          units: ['m/s', 'kt', 'km/h'],
           attribution: 'Data from <a href="http://www.meteofrance.com">Météo-France</a>, <a href="http://www.ncep.noaa.gov/">NCEP</a>',
           visible: false,
           mesh: true
@@ -113,6 +115,7 @@ module.exports = {
         name: 'Gust (raw)',
         options: {
           elements: ['gust'],
+          units: ['m/s', 'kt', 'km/h'],
           attribution: 'Data from <a href="http://www.meteofrance.com">Météo-France</a>, <a href="http://www.ncep.noaa.gov/">NCEP</a>',
           visible: false,
           mesh: false
@@ -123,6 +126,7 @@ module.exports = {
         name: 'Gust (heat map)',
         options: {
           elements: ['gust'],
+          units: ['m/s', 'kt', 'km/h'],
           attribution: 'Data from <a href="http://www.meteofrance.com">Météo-France</a>, <a href="http://www.ncep.noaa.gov/">NCEP</a>',
           visible: false,
           radius: 1.8
@@ -133,10 +137,12 @@ module.exports = {
         name: 'Precipitations',
         options: {
           elements: ['precipitations'],
+          units: ['mm'],
           attribution: 'Data from <a href="http://www.meteofrance.com">Météo-France</a>, <a href="http://www.ncep.noaa.gov/">NCEP</a>',
           visible: false,
           mesh: true,
-          colorDomain: [0, 1, 2, 4, 10, 25, 50, 100, 300]
+          colorMap: 'BuPu',
+          colorClasses: [0, 1, 2, 4, 10, 25, 50, 100, 300]
         }
       }
     ],
