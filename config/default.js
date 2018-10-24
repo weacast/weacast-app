@@ -50,6 +50,7 @@ module.exports = {
       }
     ],
     overlayLayers: [
+      /*
       {
         type: 'timeDimension.layer.wms',
         name: 'ARPEGE isobaric - 0.5°',
@@ -63,7 +64,7 @@ module.exports = {
             attribution: '<a href="http://www.meteofrance.com">Météo-France</a>'
           }
         ]
-      }/*,
+      },
       {
         type: 'timeDimension.layer.wms',
         name: 'ARPEGE isobaric - 0.1°',
