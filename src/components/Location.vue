@@ -2,7 +2,7 @@
   <!-- root node required -->
   <div>
     <q-modal ref="locationModal" :content-css="{padding: '20px', minWidth: '75vw', maxWidth: '75vw'}">
-      <h5 class="text-center">Wind speed</h5>
+      <h5 class="text-center">Timeseries at {{location}}</h5>
       <canvas id="chart" height="200" width="600"></canvas>
       <h5 class="text-center">Wind direction</h5>
       <div class="text-center" v-if="feature">
@@ -42,6 +42,14 @@ export default {
   watch: {
     feature: function (feature) {
       this.setupGraph()
+    }
+  },
+  computed: {
+    location: function () {
+      if (!this.feature) return ''
+      else return this.feature.properties.iata_code ?
+        this.feature.properties.iata_code :
+        this.feature.geometry.coordinates[0].toFixed(2) + '°, ' + this.feature.geometry.coordinates[1].toFixed(2) + '°'
     }
   },
   methods: {
