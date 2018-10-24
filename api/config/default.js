@@ -296,7 +296,8 @@ module.exports = {
             lat: [-90, 90]
           },
           bucket: 1,
-          lowerLimit: 3 * 3600 // Accumulation from T to T-3H
+          lowerLimit: 3 * 3600, // Accumulation from T to T-3H
+          accumulationPeriod: 3 * 3600
         }
       ]
     },
