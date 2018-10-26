@@ -107,7 +107,27 @@ module.exports = {
   defaultProbes: [
     {
       fileName: 'ne_10m_airports.geojson',
-      featureId: 'properties.iata_code'
+      options: {
+        featureId: 'properties.iata_code'
+      }
+    }
+  ],
+  defaultAlerts: [
+    {
+      fileName: 'paris.geojson',
+      options: {
+        cron: '* 0 * * * *', // Every minute
+        expireAt: new Date(Date.now() + 99 * 365 * 24 * 60 * 60 * 1000).toISOString(), // 99 years validity
+        featureId: 'properties.iata_code',
+        period: {
+          start: { hours: 0 },
+          end: { hours: 24 }
+        },
+        elements: [ 'windSpeed' ],
+        conditions: {
+          windSpeed: { $gte: 0 } // Set a large range so that we are sure it will trigger
+        }
+      }
     }
   ],
   forecastPath: path.join(__dirname, '..', 'forecast-data'),
@@ -134,17 +154,27 @@ module.exports = {
         {
           name: 'u-wind',
           variable: 'var_UGRD',
-          levels: ['lev_10_m_above_ground']
+          levels: ['lev_10_m_above_ground'],
+          bucket: 0
         },
         {
           name: 'v-wind',
           variable: 'var_VGRD',
-          levels: ['lev_10_m_above_ground']
+          levels: ['lev_10_m_above_ground'],
+          bucket: 1
         },
         {
           name: 'gust',
           variable: 'var_GUST',
-          levels: ['surface']
+          levels: ['surface'],
+          bucket: 0
+        },
+        {
+          name: 'precipitations',
+          variable: 'var_APCP',
+          levels: ['surface'],
+          bucket: 1,
+          lowerLimit: 3 * 3600 // Accumulation from T to T-3H
         }
       ]
     },
@@ -210,6 +240,7 @@ module.exports = {
       origin: [0, 90],
       size: [1440, 721],
       resolution: [0.25, 0.25],
+      tileResolution: [10, 10],
       runInterval: 6 * 3600,          // Produced every 6h
       oldestRunInterval: 24 * 3600,   // Don't go back in time older than 1 day
       interval: 1 * 3600,             // Steps of 1h
@@ -220,22 +251,32 @@ module.exports = {
         {
           name: 'u-wind',
           variable: 'var_UGRD',
-          levels: ['lev_10_m_above_ground']
+          levels: ['lev_10_m_above_ground'],
+          bucket: 0
         },
         {
           name: 'v-wind',
           variable: 'var_VGRD',
-          levels: ['lev_10_m_above_ground']
+          levels: ['lev_10_m_above_ground'],
+          bucket: 1
         },
         {
           name: 'gust',
           variable: 'var_GUST',
-          levels: ['surface']
+          levels: ['surface'],
+          bucket: 0
+        },
+        {
+          name: 'precipitations',
+          variable: 'var_APCP',
+          levels: ['surface'],
+          bucket: 1,
+          lowerLimit: 3 * 3600 // Accumulation from T to T-3H
         }
       ]
     },
     */
-    
+
     {
       name: 'arpege-world',
       label: 'ARPEGE - 0.5°',
@@ -301,7 +342,7 @@ module.exports = {
         }
       ]
     },
-    
+
     /*
     {
       name: 'arpege-europe',
@@ -316,6 +357,7 @@ module.exports = {
       origin: [-32, 72],
       size: [741, 521],
       resolution: [0.1, 0.1],
+      tileResolution: [4, 4],
       runInterval: 6 * 3600,            // Produced every 6h
       oldestRunInterval: 24 * 3600,     // Don't go back in time older than 1 day
       interval: 1 * 3600,               // Steps of 1h
@@ -330,7 +372,8 @@ module.exports = {
             height: 10,
             long: [-32, 42],
             lat: [20, 72]
-          }
+          },
+          bucket: 0
         },
         {
           name: 'v-wind',
@@ -339,7 +382,8 @@ module.exports = {
             height: 10,
             long: [-32, 42],
             lat: [20, 72]
-          }
+          },
+          bucket: 1
         },
         {
           name: 'gust',
@@ -348,17 +392,24 @@ module.exports = {
             height: 10,
             long: [-32, 42],
             lat: [20, 72]
-          }
+          },
+          bucket: 0
+        },
+        {
+          name: 'precipitations',
+          coverageid: 'TOTAL_PRECIPITATION__GROUND_OR_WATER_SURFACE',
+          subsets: {
+            long: [-32, 42],
+            lat: [20, 72]
+          },
+          bucket: 1,
+          lowerLimit: 3 * 3600, // Accumulation from T to T-3H
+          accumulationPeriod: 3 * 3600
         }
-        // {
-        //   name: 'temperature',
-        //   coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
-        //   subsets: {
-        //     height: 2
-        //   }
-        // }
       ]
     },
+    */
+    /*
     {
       name: 'arome-france',
       label: 'AROME - 0.025°',
@@ -370,6 +421,7 @@ module.exports = {
       origin: [-8, 53],
       size: [801, 601],
       resolution: [0.025, 0.025],
+      tileResolution: [1, 1],
       runInterval: 3 * 3600,            // Produced every 3h
       oldestRunInterval: 24 * 3600,     // Don't go back in time older than 1 day
       interval: 1 * 3600,               // Steps of 1h
@@ -384,7 +436,8 @@ module.exports = {
             height: 10,
             long: [-8, 12],
             lat: [38, 53]
-          }
+          },
+          bucket: 0
         },
         {
           name: 'v-wind',
@@ -393,7 +446,8 @@ module.exports = {
             height: 10,
             long: [-8, 12],
             lat: [38, 53]
-          }
+          },
+          bucket: 1
         },
         {
           name: 'gust',
@@ -402,22 +456,26 @@ module.exports = {
             height: 10,
             long: [-8, 12],
             lat: [38, 53]
-          }
+          },
+          bucket: 0
+        },
+        {
+          name: 'precipitations',
+          coverageid: 'TOTAL_PRECIPITATION__GROUND_OR_WATER_SURFACE',
+          subsets: {
+            long: [-8, 12],
+            lat: [38, 53]
+          },
+          bucket: 1,
+          lowerLimit: 3 * 3600, // Accumulation from T to T-3H
+          accumulationPeriod: 3 * 3600
         }
-        // {
-        //   name: 'temperature',
-        //   coverageid: 'TEMPERATURE__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
-        //   subsets: {
-        //     height: 2
-        //   }
-        // }
       ]
     }
     */
     // This model generates too much data to be stored in MongoDB documents (limited to 16 MB)
     // It requires the use of the 'gridfs' data store
     /*
-    ,
     {
       name: 'arome-france-high',
       label: 'AROME - 0.01°',
@@ -428,7 +486,8 @@ module.exports = {
       bounds: [-12, 37.5, 16, 55.4],
       origin: [-12, 55.4],
       size: [2801, 1791],
-      resolution: 0.01,
+      resolution: [0.01, 0.01],
+      tileResolution: [0.5, 0.5],
       runInterval: 3 * 3600,            // Produced every 3h
       oldestRunInterval: 24 * 3600,     // Don't go back in time older than 1 day
       interval: 1 * 3600,               // Steps of 1h

@@ -244,6 +244,23 @@ export default {
           this.probeDynamicLocation(location[0], location[1])
         }
       }
+    },
+    onAlert (event) {
+      const { alert, triggers } = event
+      if (!this.defaultProbe || (this.defaultProbe._id !== alert.probeId)) return
+      if (!this.map.hasLayer(this.alertLayer)) return
+      const isActive = _.get(alert, 'status.active')
+      if (isActive) {
+        const maxSpeed = Math.max(...triggers.map(trigger => Math.max(...trigger.properties.windSpeed)))
+        this.alertLayer
+        .bindTooltip('Alert triggered on ' + triggers.map(trigger => trigger._id) +
+          ' with max wind speed of ' + maxSpeed.toFixed(2) + ' m/s', { permanent: true })
+        .openTooltip()
+        setTimeout(() => this.alertLayer.unbindTooltip(), 5000)
+      }
+      else {
+        this.alertLayer.unbindTooltip()
+      }
     }
   },
   beforeCreate () {
@@ -253,13 +270,17 @@ export default {
     // Ibid for API
     this.api = api
   },
-  mounted () {
+  async mounted () {
     this.$emit('mapReady')
     this.map.on('dblclick', this.onProbeLocation)
     this.map.timeDimension.on('availabletimeschanged', this.onAvailableTimesChanged)
     this.setupDefaultProbes()
     this.$on('currentTimeChanged', this.onTimeChanged)
     this.$on('fileLayerLoaded', this.onUserProbeLoaded)
+    api.alerts.on('alerts', this.onAlert)
+    const response = await window.fetch('/statics/paris.geojson')
+    let geojson = await response.json()
+    this.alertLayer = this.addGeoJson(geojson, 'Alerting zone', { visible: false })
   },
   beforeDestroy () {
     this.map.off('dblclick', this.onProbeLocation)
@@ -269,6 +290,8 @@ export default {
     // Remove layers if any
     this.removeLayer(this.probeLayer)
     this.removeLayer(this.locationLayer)
+    this.removeLayer(this.alertLayer)
+    api.alerts.off('alerts', this.onAlert)
   }
 }
 </script>
