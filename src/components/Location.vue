@@ -134,7 +134,7 @@ export default {
               position: 'right',
               scaleLabel: {
                 display: true,
-                labelString: 'mm'
+                labelString: 'mm (last 3h)'
               }
             }]
           }
