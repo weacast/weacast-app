@@ -104,10 +104,9 @@ module.exports = {
     url: process.env.DB_URL || (containerized ? 'mongodb://mongodb:27017/weacast' : 'mongodb://127.0.0.1:27017/weacast')
   },
   sync: process.env.USE_LOADER ? {} : false,
-  probePath: path.join(__dirname, '..', 'probe-data'),
   defaultProbes: [
     {
-      fileName: 'ne_10m_airports.geojson',
+      fileName: path.join(__dirname, '..', 'probe-data', 'ne_10m_airports.geojson'),
       options: {
         featureId: 'properties.iata_code'
       }
@@ -115,7 +114,7 @@ module.exports = {
   ],
   defaultAlerts: [
     {
-      fileName: 'paris.geojson',
+      fileName: path.join(__dirname, '..', 'probe-data', 'paris.geojson'),
       options: {
         cron: '0 */1 * * * *', // Every minute
         expireAt: new Date(Date.now() + 99 * 365 * 24 * 60 * 60 * 1000).toISOString(), // 99 years validity
@@ -132,7 +131,7 @@ module.exports = {
     }
   ],
   forecastPath: path.join(__dirname, '..', 'forecast-data'),
-  forecasts: [ forecasts.gfs05, forecasts.arpege05 ]
+  forecasts: [ forecasts.gfs05 ]
 }
 
 /*

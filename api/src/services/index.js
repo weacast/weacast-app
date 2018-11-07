@@ -69,7 +69,7 @@ module.exports = async function () {
         // One probe for each forecast model and elements
         for (let forecast of app.get('forecasts')) {
           logger.info('Initializing default probe ' + defaultProbe.fileName + ' for forecast model ' + forecast.name)
-          let geojson = fs.readJsonSync(path.join(app.get('probePath'), defaultProbe.fileName))
+          let geojson = fs.readJsonSync(defaultProbe.fileName)
           let options = Object.assign({
             name: probeName,
             forecast: forecast.name,
@@ -93,7 +93,7 @@ module.exports = async function () {
           // One alert for each probe
           for (let probe of probes) {
             logger.info('Initializing default alert ' + defaultAlert.fileName + ' for probe ' + probe._id)
-            let geojson = fs.readJsonSync(path.join(app.get('probePath'), defaultAlert.fileName))
+            let geojson = fs.readJsonSync(defaultAlert.fileName)
             let options = Object.assign({
               name: alertName,
               probeId: probe._id

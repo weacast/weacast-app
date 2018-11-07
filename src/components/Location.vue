@@ -12,7 +12,7 @@
             </span>
             <span style="font-size: 1.5em;">
               <i :style="`transform: rotateZ(${direction}deg);`">arrow_downward</i>
-              <q-tooltip anchor="bottom middle" self="top middle">{{ feature.properties.windDirection[i] }}</q-tooltip>
+              <q-tooltip anchor="bottom middle" self="top middle">{{ feature.properties.windDirection[i].toFixed(2) }}°</q-tooltip>
             </span>
         </span>
       </div>
