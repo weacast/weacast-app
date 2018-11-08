@@ -47,12 +47,9 @@ export default {
   },
   computed: {
     location: function () {
-      if (!this.feature) return ''
-      else {
-        return this.feature.properties.iata_code
-        ? this.feature.properties.iata_code
-        : this.feature.geometry.coordinates[0].toFixed(2) + '°, ' + this.feature.geometry.coordinates[1].toFixed(2) + '°'
-      }
+      return (this.feature
+        ? this.feature.geometry.coordinates[0].toFixed(2) + '°, ' + this.feature.geometry.coordinates[1].toFixed(2) + '°'
+        : '')
     }
   },
   methods: {

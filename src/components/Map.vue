@@ -56,7 +56,7 @@ export default {
         Toast.create.positive('Forecast data has associated probes so you can search matching conditions')
         // Update content to get features
         this.defaultProbe = await api.probes.get(this.defaultProbe._id,
-          { query: { $select: ['elements', 'forecast', 'features'] } })
+          { query: { $select: ['elements', 'forecast', 'featureId', 'features'] } })
         this.probe = this.defaultProbe
         this.probeLayer = this.addGeoJsonCluster({
           type: 'FeatureCollection',
@@ -153,8 +153,8 @@ export default {
               $gte: new Date(times[0]).toISOString(),
               $lte: new Date(times[times.length - 1]).toISOString()
             },
-            'properties.iata_code': featureId,
-            $groupBy: 'properties.iata_code',
+            [this.probe.featureId]: featureId,
+            $groupBy: this.probe.featureId,
             $aggregate: ['windDirection', 'windSpeed', 'gust', 'precipitations']
           }
         })
@@ -210,7 +210,7 @@ export default {
       }
       else {
         let marker = this.createMarkerFromStyle(latlng, this.configuration.pointStyle)
-        marker.on('click', event => this.probeStaticLocation(properties.iata_code))
+        marker.on('click', event => this.probeStaticLocation(_.get(feature, this.probe.featureId)))
         return marker
       }
     },
@@ -236,8 +236,8 @@ export default {
     onAvailableTimesChanged (availableTimes, currentTime) {
       if (this.locationLayer) {
         // Static location => update results
-        if (_.has(this.location, 'properties.iata_code')) {
-          this.probeStaticLocation(_.get(this.location, 'properties.iata_code'))
+        if (_.has(this.location, this.probe.featureId)) {
+          this.probeStaticLocation(_.get(this.location, this.probe.featureId))
         }
         else { // Dynamic location selected => probe again
           const location = _.get(this.location, 'geometry.coordinates')
