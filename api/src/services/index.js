@@ -99,7 +99,7 @@ module.exports = async function () {
               probeId: probe._id
             }, defaultAlert.options)
             Object.assign(options.conditions, { geometry: { $geoWithin: { $geometry: geojson.geometry } } })
-            const alert = await alertsService.create(options)
+            await alertsService.create(options)
             logger.info('Initialized default alert ' + defaultAlert.fileName + ' for probe ' + probe._id)
           }
         }
