@@ -24,7 +24,7 @@ module.exports = {
   // https://github.com/chimurai/http-proxy-middleware
   proxyTable: {},
   domain,
-  host: 'localhost',
+  host: process.env.HOSTNAME || 'localhost',
   port: serverPort,
   /* To enable HTTPS
   https: {
@@ -34,12 +34,13 @@ module.exports = {
   },
   */
   apiPath: API_PREFIX,
+  apiOnly: process.env.API_ONLY,
   paginate: {
     default: 10,
     max: 50
   },
   authentication: {
-    secret: 'b5KqXTye4fVxhGFpwMVZRO3R56wS5LNoJHifwgGOFkB5GfMWvIdrWyQxEJXswhAC',
+    secret: process.env.APP_SECRET || 'b5KqXTye4fVxhGFpwMVZRO3R56wS5LNoJHifwgGOFkB5GfMWvIdrWyQxEJXswhAC',
     strategies: [
       'jwt',
       'local'
@@ -53,14 +54,14 @@ module.exports = {
       }
     ],
     github: {
-      clientID: '20da06587907b8048edb',
-      clientSecret: '22029773f71829af8eaba6c0d6599843026cbf15',
+      clientID: process.env.GITHUB_CLIENT_ID || '20da06587907b8048edb',
+      clientSecret: process.env.GITHUB_CLIENT_SECRET || '22029773f71829af8eaba6c0d6599843026cbf15',
       callbackURL: domain + '/auth/github/callback',
       successRedirect: domain + '/'
     },
     google: {
-      clientID: '879164794322-ed4nl0j3sdsr00bjbrsqdcskon1k7go4.apps.googleusercontent.com',
-      clientSecret: 'mZZejuVZ4_oG9WpoGPXTJKFe',
+      clientID: process.env.GOOGLE_CLIENT_ID || '879164794322-ed4nl0j3sdsr00bjbrsqdcskon1k7go4.apps.googleusercontent.com',
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'mZZejuVZ4_oG9WpoGPXTJKFe',
       callbackURL: domain + '/auth/google/callback',
       successRedirect: domain + '/',
       scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
@@ -76,9 +77,9 @@ module.exports = {
     // Required for OAuth2 to work correctly
     cookie: {
       enabled: true,
-      name: 'feathers-jwt',
+      name: 'weacast-jwt',
       httpOnly: false,
-      secure: false
+      secure: (process.env.NODE_ENV === 'development' ? false : true)
     }
   },
   logs: {

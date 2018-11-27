@@ -13,17 +13,21 @@ import { weacast } from 'weacast-core'
 export class Server {
   constructor () {
     this.app = weacast()
-    // Serve pure static assets
-    if (process.env.NODE_ENV === 'production') {
-      this.app.use('/', feathers.static('../dist'))
-    }
-    else {
-      this.app.use('/statics/', feathers.static('../dist/statics'))
+    // Server API only or also client app ?
+    const apiOnly = this.app.get('apiOnly')
+    if (!apiOnly) {
+      // Serve pure static assets
+      if (process.env.NODE_ENV === 'production') {
+        this.app.use('/', feathers.static('../dist'))
+      }
+      else {
+        this.app.use('/statics/', feathers.static('../dist/statics'))
+      }
     }
 
     // Define HTTP proxies to your custom API backend. See /config/index.js -> proxyTable
     // https://github.com/chimurai/http-proxy-middleware
-    const proxyTable = this.app.get('proxyTable')
+    const proxyTable = this.app.get('proxyTable') || {}
     Object.keys(proxyTable).forEach(context => {
       let options = proxyTable[context]
       if (typeof options === 'string') {
