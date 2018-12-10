@@ -1,5 +1,5 @@
 #!/bin/bash
-source travis.env.sh
+source .travis.env.sh
 
 # Build docker with version number only on release
 if [[ -z "$TRAVIS_TAG" ]]

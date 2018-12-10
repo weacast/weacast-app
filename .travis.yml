@@ -1,13 +1,3 @@
-language: node_js
-node_js:
-- '8'
-sudo: required
-services:
-- docker
-- mongodb
-addons:
-  code_climate:
-    repo_token: 1dfca95f75f16185220d799289afce9e9dbfe6012484cdca0dbe5edc8c4fba74
 notifications:
   email: false
   slack:
@@ -15,30 +5,37 @@ notifications:
       secure: GD8FMxoNeKGHqaBJmdkrN9d0cHa7JXCq2AG+g78ea4LJLv1Vv79cRDOs3Ivqo1S3SSqqsNz8rC+dzhESeP20uoUuJH4VbMiI8WwVBFn/1pOoXSke1qUJe9k7bADJQypMWQnrjOfiBJC6f+x2WpC0TZmyiPDrNhnZJy6Dfj9r+uax+ydJv8v8AHFIQS6DU6Q90C63gUqYOhSRAWqVfIw6ZgtV/8JTgwLo0uEEbLPffVIkZN5jY6RSj2ZywjtTKiKJVXO9lE2fzVtPB2XLx6JZLuozbNBNSw3I3aLMAyBzSv5Hxf7ZjcHzh7ylSN2cKYRU/sdODog7tNURF3s+vDp702zTpvuM6z1PprPT2dv7H/MTPC2jCtwdWKKvSmhgausrMnSHdRna84r6weTuig8qRZo6Z12ztPbuTQiM8IQ6nSrnht5EKzLL/GVysLCtswpX+3DeDPt/pELPMRmvsjmzj0OFm4bUD0olm/yJKCvSWhqe8oRiOapjwIhZAljimKUvUkz6fGpzQhMGX2SJGtp7Zwdm9CYt8rjlTk8cmGeEaCpfkiaERUvj1WY/n9lJJ6N4KnMWxdBLGGxm8s81sCSlaLfy/LykCsbsA2qC/mkeiA8dCxp4op1jPMbg2wkd/a6hkkfuXc9R/UTgwfpApbept67PpE88n+ZOMQZ4OTRfppk=
     on_success: always
     on_failure: always
-install:
-- git clone https://github.com/weacast/weacast-core.git -b master --single-branch && cd weacast-core && yarn install && yarn link && cd ..
-- git clone https://github.com/weacast/weacast-probe.git -b master --single-branch && cd weacast-probe && yarn install && yarn link weacast-core && yarn link && cd ..
-- git clone https://github.com/weacast/weacast-alert.git -b master --single-branch && cd weacast-alert && yarn install && yarn link weacast-core && yarn link weacast-probe && yarn link && cd ..
-- git clone https://github.com/weacast/weacast-arpege.git -b master --single-branch && cd weacast-arpege && yarn install && yarn link weacast-core && yarn link && cd ..
-- git clone https://github.com/weacast/weacast-arome.git -b master --single-branch && cd weacast-arome && yarn install && yarn link weacast-arpege && yarn link weacast-core && yarn link && cd ..
-- git clone https://github.com/weacast/weacast-gfs.git -b master --single-branch && cd weacast-gfs && yarn install && yarn link weacast-core && yarn link && cd ..
-- git clone https://github.com/weacast/weacast-client.git -b master --single-branch && cd weacast-client && yarn install && yarn link && cd ..
-- yarn link weacast-client
-- yarn install
-# Install already performs build
-# - npm run build
-- cd api
-- yarn install
-- yarn link weacast-core
-- yarn link weacast-probe
-- yarn link weacast-alert
-- yarn link weacast-arpege
-- yarn link weacast-arome
-- yarn link weacast-gfs
-- npm run build
-before_script:
-- npm install -g codeclimate-test-reporter
-after_script:
-- codeclimate-test-reporter < api/coverage/lcov.info
-- cd ..
-- bash travis.build.sh
+
+stages:
+- name: TEST
+- name: BUILD
+
+jobs:
+  include: 
+
+  - stage: TEST
+    language: node_js
+    node_js:
+    - '8'
+    sudo: required
+    services:
+    - mongodb
+    addons:
+      code_climate:
+         repo_token: 1dfca95f75f16185220d799289afce9e9dbfe6012484cdca0dbe5edc8c4fba74
+    install:
+    - npm install -g codeclimate-test-reporter
+    script:
+    - bash .travis.test.sh
+    after_script:
+    - codeclimate-test-reporter < api/coverage/lcov.info
+
+  - stage: BUILD
+    language: node_js
+    node_js:
+    - '8'
+    sudo: required
+    services:
+    - docker
+    script: 
+    - bash .travis.build.sh
