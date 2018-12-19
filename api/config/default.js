@@ -104,7 +104,7 @@ module.exports = {
     path: path.join(__dirname, '..', 'db-data'),
     url: process.env.DB_URL || (containerized ? 'mongodb://mongodb:27017/weacast' : 'mongodb://127.0.0.1:27017/weacast')
   },
-  sync: process.env.USE_LOADER ? {} : false,
+  sync: process.env.USE_LOADER ? { url: process.env.SYNC_DB_URL || process.env.DB_URL } : false,
   defaultProbes: [
     {
       fileName: path.join(__dirname, '..', 'probe-data', 'ne_10m_airports.geojson'),
