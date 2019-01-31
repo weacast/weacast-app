@@ -1,4 +1,4 @@
-<img src="https://github.com/weacast/weacast-docs/blob/master/images/weacast-logo.png" width="256">
+<img src="https://github.com/weacast/weacast-docs/blob/master/docs/assets/weacast-logo.png" width="256">
 
 ## Open Source gathering and usage of weather forecast data
 
