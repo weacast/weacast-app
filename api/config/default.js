@@ -17,6 +17,10 @@ if (process.env.VIRTUAL_HOST) {
     domain = 'http://localhost:' + serverPort
   }
 }
+// Override defaults if env provided
+if (process.env.SUBDOMAIN) {
+  domain = 'https://weacast.' + process.env.SUBDOMAIN
+}
 
 module.exports = {
   // Proxy your API if using any.
@@ -47,6 +51,13 @@ module.exports = {
     ],
     path: API_PREFIX + '/authentication',
     service: API_PREFIX + '/users',
+    jwt: {
+      header: { typ: 'access' }, // See https://tools.ietf.org/html/rfc7519#section-5.1
+      audience: process.env.SUBDOMAIN || 'kalisio', // The resource server where the token is processed
+      issuer: 'kalisio', // The issuing server, application or resource
+      algorithm: 'HS256', // See https://github.com/auth0/node-jsonwebtoken#jwtsignpayload-secretorprivatekey-options-callback
+      expiresIn: '1d'
+    },
     defaultUsers: [
       {
         email: 'weacast@weacast.xyz',
