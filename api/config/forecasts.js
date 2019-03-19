@@ -349,11 +349,11 @@ module.exports = {
     model: 'arome',
     token: process.env.METEO_FRANCE_TOKEN || '__qEMDoIC2ogPRlSoRQLGUBOomaxJyxdEd__',
     wcsBaseUrl: 'https://geoservices.meteofrance.fr/services/MF-NWP-HIGHRES-AROME-001-FRANCE-WCS?SERVICE=WCS&version=2.0.1',
-    bounds: [-12, 37.5, 16, 55.4],
-    origin: [-12, 55.4],
-    size: [2801, 1791],
+    bounds: [-8, 38, 12, 53],
+    origin: [-8, 53],
+    size: [2001, 1501],
     resolution: [0.01, 0.01],
-    tileResolution: [0.5, 0.5],
+    tileResolution: [1, 1],
     runInterval: 3 * 3600,            // Produced every 3h
     oldestRunInterval: 24 * 3600,     // Don't go back in time older than 1 day
     interval: 1 * 3600,               // Steps of 1h
@@ -367,9 +367,10 @@ module.exports = {
         coverageid: 'U_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
         subsets: {
           height: 10,
-          long: [-12, 16],
-          lat: [37.5, 55.4]
-        }
+          long: [-8, 12],
+          lat: [38, 53]
+        },
+        bucket: 0
       },
       {
         name: 'v-wind',
@@ -377,9 +378,33 @@ module.exports = {
         coverageid: 'V_COMPONENT_OF_WIND__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
         subsets: {
           height: 10,
-          long: [-12, 16],
-          lat: [37.5, 55.4]
-        }
+          long: [-8, 12],
+          lat: [38, 53]
+        },
+        bucket: 1
+      },
+      {
+        name: 'gust',
+        dataStore: 'gridfs',
+        coverageid: 'WIND_SPEED_GUST__SPECIFIC_HEIGHT_LEVEL_ABOVE_GROUND',
+        subsets: {
+          height: 10,
+          long: [-8, 12],
+          lat: [38, 53]
+        },
+        bucket: 0
+      },
+      {
+        name: 'precipitations',
+        dataStore: 'gridfs',
+        coverageid: 'TOTAL_PRECIPITATION__GROUND_OR_WATER_SURFACE',
+        subsets: {
+          long: [-8, 12],
+          lat: [38, 53]
+        },
+        bucket: 1,
+        lowerLimit: 3 * 3600, // Accumulation from T to T-3H
+        accumulationPeriod: 3 * 3600
       }
     ]
   }
