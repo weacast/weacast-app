@@ -1,9 +1,9 @@
-FROM  node:7
+FROM  node:8
 
 MAINTAINER Luc Claustres <luc.claustres@orange.fr>
 
 # We need Java for the GFS plugin
-RUN echo deb http://http.debian.net/debian jessie-backports main >> /etc/apt/sources.list
+RUN echo deb http://http.debian.net/debian/ jessie-backports main >> /etc/apt/sources.list
 RUN apt-get update
 RUN apt install -y -t jessie-backports openjdk-8-jre-headless ca-certificates-java
 RUN rm /etc/apt/sources.list
