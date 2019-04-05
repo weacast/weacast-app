@@ -75,7 +75,7 @@ module.exports = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'mZZejuVZ4_oG9WpoGPXTJKFe',
       callbackURL: domain + '/auth/google/callback',
       successRedirect: domain + '/',
-      scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
+      scope: ['profile', 'email']
     },
     cognito: {
       clientID: '1vmieaua4phmqr4tt0v664aqq5',
