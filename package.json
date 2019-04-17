@@ -24,7 +24,7 @@
     "publish": "git push origin --tags && npm run changelog && git push origin",
     "release:patch": "cd api && npm run release:patch && cd .. && npm version --force patch && npm run publish",
     "release:minor": "cd api && npm run release:minor && cd .. && npm version --force minor && npm run publish",
-    "release:major": "cd api && run release:major && cd .. && npm version --force major && npm run publish",
+    "release:major": "cd api && npm run release:major && cd .. && npm version --force major && npm run publish",
     "changelog": "github_changelog_generator -u weacast -p weacast && git add CHANGELOG.md && git commit -am \"Updating changelog\"",
     "clean": "node build/script.clean.js",
     "dev": "node build/script.dev.js",
