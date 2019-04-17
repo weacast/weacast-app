@@ -13,14 +13,12 @@ WORKDIR /opt/app
 COPY . /opt/app
 
 WORKDIR /opt/app/modules
-RUN git clone https://github.com/weacast/weacast-gtiff2json.git -b master --single-branch && cd weacast-gtiff2json && yarn install && yarn link && cd ..
-RUN git clone https://github.com/weacast/weacast-grib2json.git -b master --single-branch && cd weacast-grib2json && yarn install && yarn link && cd ..
 RUN git clone https://github.com/weacast/weacast-core.git -b master --single-branch && cd weacast-core && yarn install && yarn link && cd ..
 RUN git clone https://github.com/weacast/weacast-probe.git -b master --single-branch && cd weacast-probe && yarn install && yarn link weacast-core && yarn link && cd ..
 RUN git clone https://github.com/weacast/weacast-alert.git -b master --single-branch && cd weacast-alert && yarn install && yarn link weacast-core && yarn link weacast-probe && yarn link && cd ..
-RUN git clone https://github.com/weacast/weacast-arpege.git -b master --single-branch && cd weacast-arpege && yarn install && yarn link weacast-gtiff2json && yarn link weacast-core && yarn link && cd ..
+RUN git clone https://github.com/weacast/weacast-arpege.git -b master --single-branch && cd weacast-arpege && yarn install && yarn link weacast-core && yarn link && cd ..
 RUN git clone https://github.com/weacast/weacast-arome.git -b master --single-branch && cd weacast-arome && yarn install && yarn link weacast-arpege && yarn link weacast-core && yarn link && cd ..
-RUN git clone https://github.com/weacast/weacast-gfs.git -b master --single-branch && cd weacast-gfs && yarn install && yarn link weacast-grib2json && yarn link weacast-core && yarn link && cd ..
+RUN git clone https://github.com/weacast/weacast-gfs.git -b master --single-branch && cd weacast-gfs && yarn install && yarn link weacast-core && yarn link && cd ..
 
 RUN git clone https://github.com/weacast/weacast-client.git -b master --single-branch && cd weacast-client && yarn install && yarn link && cd ..
 
