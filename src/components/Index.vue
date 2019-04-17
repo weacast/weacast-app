@@ -56,7 +56,7 @@
 
       <q-collapsible icon="info" label="About">
         <p style="padding: 25px;" class="text-grey-7">
-          Please read the <a href="https://weacast.gitbooks.io/weacast-docs/">Weacast Book</a>
+          Please read the <a href="https://weacast.github.io/weacast-docs/">Weacast docs</a>
         </p>
       </q-collapsible>
     </q-drawer>
