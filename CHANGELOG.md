@@ -1,5 +1,44 @@
 # Changelog
 
+## [v1.0.0](https://github.com/weacast/weacast/tree/v1.0.0) (2019-04-17)
+
+[Full Changelog](https://github.com/weacast/weacast/compare/v0.4.0...v1.0.0)
+
+**Implemented enhancements:**
+
+- Update Travis CI/CD to use stages [\#35](https://github.com/weacast/weacast/issues/35)
+- Allow to only run the API [\#33](https://github.com/weacast/weacast/issues/33)
+- Manage accumulated element values [\#29](https://github.com/weacast/weacast/issues/29)
+- Forecast data tiling [\#27](https://github.com/weacast/weacast/issues/27)
+- Automated initialization of services when using data loaders [\#24](https://github.com/weacast/weacast/issues/24)
+- Make authentication optionnal [\#23](https://github.com/weacast/weacast/issues/23)
+- Initiate an alerting module [\#22](https://github.com/weacast/weacast/issues/22)
+- Migrate to Feathers V3 [\#21](https://github.com/weacast/weacast/issues/21)
+- Make download process distributed [\#20](https://github.com/weacast/weacast/issues/20)
+- Integrate Cognito as a SSO provider [\#19](https://github.com/weacast/weacast/issues/19)
+- Support Node versions \> 7 [\#16](https://github.com/weacast/weacast/issues/16)
+- Develop a color layer for scalar values \(eg temperature\) [\#12](https://github.com/weacast/weacast/issues/12)
+- Add a dialog to display server-side errors on the client side [\#10](https://github.com/weacast/weacast/issues/10)
+- Configure rotating file logs on the server-side [\#9](https://github.com/weacast/weacast/issues/9)
+- Manage file cleanup for the 'fs'/'gridfs' data store [\#8](https://github.com/weacast/weacast/issues/8)
+- Add a GridFS data store to manage large datasets \(e.g. AROME 0.01°\) [\#7](https://github.com/weacast/weacast/issues/7)
+- Develop the GFS plugin based on Wind [\#6](https://github.com/weacast/weacast/issues/6)
+- Integrate SSO authentication \(GitHub, Google, OneLogin\) [\#5](https://github.com/weacast/weacast/issues/5)
+
+**Fixed bugs:**
+
+- ARPEGE global \(ie worldwide\) model data are not correct anymore [\#28](https://github.com/weacast/weacast/issues/28)
+- Support ARPEGE/AROME spatial domain update [\#17](https://github.com/weacast/weacast/issues/17)
+- Leaflet-velocity direction in control does not use meteo/bearing convention [\#11](https://github.com/weacast/weacast/issues/11)
+
+**Closed issues:**
+
+- Project failed to install dependencies under Quesar 0.15.9 and Node.js v8.9.3 [\#4](https://github.com/weacast/weacast/issues/4)
+
+**Merged pull requests:**
+
+- Add license scan report and status [\#18](https://github.com/weacast/weacast/pull/18) ([fossabot](https://github.com/fossabot))
+
 ## [v0.4.0](https://github.com/weacast/weacast/tree/v0.4.0) (2018-03-09)
 
 [Full Changelog](https://github.com/weacast/weacast/compare/v0.3.1...v0.4.0)
