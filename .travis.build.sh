@@ -11,7 +11,6 @@ then
 else
 	docker build -f dockerfile -t weacast/weacast .
 	docker login -u="$DOCKER_USER" -p="$DOCKER_PASSWORD"
-	docker push weacast/weacast
 	docker tag weacast/weacast weacast/weacast:$VERSION
 	docker push weacast/weacast:$VERSION
 fi
