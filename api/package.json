@@ -37,9 +37,6 @@
     "coverage": "node node_modules/istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --opts mocha.opts",
     "test": "npm run build && npm run lint && npm run coverage"
   },
-  "directories": {
-    "lib": "src"
-  },
   "dependencies": {
     "@feathersjs/authentication": "^2.1.16",
     "@feathersjs/authentication-local": "^1.2.9",
