@@ -33,13 +33,12 @@
     "test": "cd api && npm run test && cd .. && npm run build && npm run lint"
   },
   "dependencies": {
+    "@feathersjs/client": "^3.7.8",
     "babel-polyfill": "^6.23.0",
     "babel-runtime": "^6.0.0",
     "chart.js": "^2.7.2",
     "chroma-js": "^1.3.4",
     "fastclick": "^1.0.6",
-    "feathers-client": "^2.2.0",
-    "feathers-hooks": "^2.0.1",
     "jquery": "^3.2.1",
     "leaflet": "^1.0.3",
     "leaflet-basemaps": "^0.2.0",

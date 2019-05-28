@@ -1,4 +1,4 @@
-const { hashPassword } = require('feathers-authentication-local').hooks
+const { hashPassword } = require('@feathersjs/authentication-local').hooks
 const commonHooks = require('feathers-hooks-common')
 const gravatar = require('../../hooks/gravatar')
 import { github, google, oidc, cognito } from '../../hooks/provider'

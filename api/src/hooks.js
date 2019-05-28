@@ -1,7 +1,7 @@
 // Application hooks that run for every service
 import { hooks } from 'weacast-core'
 import commonHooks from 'feathers-hooks-common'
-const { authenticate } = require('feathers-authentication').hooks
+const { authenticate } = require('@feathersjs/authentication').hooks
 
 module.exports = {
   before: {

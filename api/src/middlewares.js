@@ -1,5 +1,4 @@
-const handler = require('feathers-errors/handler')
-const notFound = require('feathers-errors/not-found')
+const express = require('@feathersjs/express')
 
 module.exports = function () {
   // Add your custom middleware here. Remember, that
@@ -7,6 +6,6 @@ module.exports = function () {
   // the error handler have to go last.
   const app = this
 
-  app.use(notFound())
-  app.use(handler())
+  app.use(express.notFound())
+  app.use(express.errorHandler())
 }
