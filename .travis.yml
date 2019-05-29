@@ -23,13 +23,9 @@ jobs:
     addons:
       code_climate:
          repo_token: 1dfca95f75f16185220d799289afce9e9dbfe6012484cdca0dbe5edc8c4fba74
-    install:
-    - npm install -g codeclimate-test-reporter
     script:
     - bash .travis.test.sh
-    after_script:
-    - codeclimate-test-reporter < api/coverage/lcov.info
-
+    
   - stage: BUILD
     language: node_js
     node_js:

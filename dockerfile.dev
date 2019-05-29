@@ -1,45 +1,13 @@
-FROM  node:8-stretch
+FROM  weacast-api:dev
 
-MAINTAINER Luc Claustres <luc.claustres@orange.fr>
-
-# We need Java for the GFS plugin
-RUN apt-get update -y
-RUN apt install -y openjdk-8-jre-headless ca-certificates-java
-RUN apt-get clean
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-RUN $JAVA_HOME/bin/java -version
-
-WORKDIR /opt/app
-COPY . /opt/app
-
-WORKDIR /opt/app/modules
-RUN git clone https://github.com/weacast/weacast-core.git -b master --single-branch && cd weacast-core && yarn install && yarn link && cd ..
-RUN git clone https://github.com/weacast/weacast-probe.git -b master --single-branch && cd weacast-probe && yarn install && yarn link weacast-core && yarn link && cd ..
-RUN git clone https://github.com/weacast/weacast-alert.git -b master --single-branch && cd weacast-alert && yarn install && yarn link weacast-core && yarn link weacast-probe && yarn link && cd ..
-RUN git clone https://github.com/weacast/weacast-arpege.git -b master --single-branch && cd weacast-arpege && yarn install && yarn link weacast-core && yarn link && cd ..
-RUN git clone https://github.com/weacast/weacast-arome.git -b master --single-branch && cd weacast-arome && yarn install && yarn link weacast-arpege && yarn link weacast-core && yarn link && cd ..
-RUN git clone https://github.com/weacast/weacast-gfs.git -b master --single-branch && cd weacast-gfs && yarn install && yarn link weacast-core && yarn link && cd ..
+WORKDIR /opt/weacast-app
+COPY . /opt/weacast-app
 
 RUN git clone https://github.com/weacast/weacast-client.git -b master --single-branch && cd weacast-client && yarn install && yarn link && cd ..
-
-WORKDIR /opt/app
 
 RUN yarn link weacast-client
 RUN yarn install
 # Install already performs build
 # RUN npm run build
 
-WORKDIR /opt/app/api
-
-RUN yarn install
-RUN yarn link weacast-core
-RUN yarn link weacast-probe
-RUN yarn link weacast-alert
-RUN yarn link weacast-arpege
-RUN yarn link weacast-arome
-RUN yarn link weacast-gfs
-RUN npm run build
-
-EXPOSE 8081
-
-CMD [ "npm", "run", "prod" ]
+RUN cp -R /opt/weacast-app/dist /opt/weacast-api

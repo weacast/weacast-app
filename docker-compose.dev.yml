@@ -3,10 +3,10 @@ version: '2'
 services:
   weacast:
     build: .
-    image: weacast/weacast-dev
+    image: weacast/weacast:dev
     environment:
       - LOG_LEVEL=verbose
-  mongodb-weacast:
+  weacast-mongodb:
     ports:
       - 27017:27017
 

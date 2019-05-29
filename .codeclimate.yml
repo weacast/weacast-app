@@ -1,5 +1,5 @@
 exclude_patterns:
-- "lib/"
+- "dist/"
 plugins:
   fixme:
     enabled: true

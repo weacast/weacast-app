@@ -6,7 +6,7 @@ services:
     container_name: weacast
     image: weacast/weacast
     links:
-      - mongodb-weacast:mongodb
+      - weacast-mongodb:mongodb
     ports:
       - 8081:8081
     networks:
@@ -17,17 +17,16 @@ services:
       - DB_URL=mongodb://mongodb:27017/weacast
       - LOG_LEVEL
       - DEBUG
-      - USE_LOADER
-  mongodb-weacast:
-    container_name: mongodb-weacast
+  weacast-mongodb:
+    container_name: weacast-mongodb
     image: mongo
     volumes:
-      - mongodb_weacast:/data/db
+      - weacast_mongodb:/data/db
     networks:
       - weacast
 
 volumes:
-  mongodb_weacast:
+  weacast_mongodb:
 
 networks:
   weacast:
