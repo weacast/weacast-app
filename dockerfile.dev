@@ -1,4 +1,4 @@
-FROM  weacast-api:dev
+FROM  weacast/weacast-api:dev
 
 WORKDIR /opt/weacast-app
 COPY . /opt/weacast-app
