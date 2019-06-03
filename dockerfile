@@ -11,5 +11,3 @@ RUN yarn install
 # RUN npm run build
 
 RUN cp -R /opt/weacast-app/dist /opt/weacast-api
-
-COPY local.js /opt/weacast-api/config/local.js
