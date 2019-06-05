@@ -169,7 +169,9 @@ export default {
           // Select default if any or first one
           this.selectedForecast = this.forecasts.find(forecast => forecast.isDefault)
           if (!this.selectedForecast) {
-            this.selectedForecast = this.forecasts.length > 0 ? this.forecasts[0] : null
+            this.selectedForecast = (this.forecasts.length > 0
+              ? (this.forecasts.find(forecast => forecast.isDefault) || this.forecasts[0])
+              : null)
           }
         })
       })
