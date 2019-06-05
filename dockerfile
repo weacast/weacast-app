@@ -11,3 +11,5 @@ RUN yarn install
 # RUN npm run build
 
 RUN cp -R /opt/weacast-app/dist /opt/weacast-api
+
+WORKDIR /opt/weacast-api
