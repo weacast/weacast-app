@@ -1,5 +1,15 @@
 # Changelog
 
+## [v1.1.0](https://github.com/weacast/weacast/tree/v1.1.0) (2019-06-14)
+
+[Full Changelog](https://github.com/weacast/weacast/compare/v1.0.0...v1.1.0)
+
+**Implemented enhancements:**
+
+- Create a weacast-api module [\#42](https://github.com/weacast/weacast/issues/42)
+- Increase scalability [\#31](https://github.com/weacast/weacast/issues/31)
+- Upgrade dependencies/tools [\#1](https://github.com/weacast/weacast/issues/1)
+
 ## [v1.0.0](https://github.com/weacast/weacast/tree/v1.0.0) (2019-04-17)
 
 [Full Changelog](https://github.com/weacast/weacast/compare/v0.4.0...v1.0.0)
