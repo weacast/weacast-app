@@ -253,10 +253,9 @@ export default {
       if (isActive) {
         const maxSpeed = Math.max(...triggers.map(trigger => Math.max(...trigger.properties.windSpeed)))
         this.alertLayer
-        .bindTooltip('Alert triggered on ' + triggers.map(trigger => trigger._id) +
-          ' with max wind speed of ' + maxSpeed.toFixed(2) + ' m/s', { permanent: true })
+        .bindTooltip('Alert triggered with max wind speed of ' + maxSpeed.toFixed(2) + ' m/s', { permanent: true })
         .openTooltip()
-        setTimeout(() => this.alertLayer.unbindTooltip(), 5000)
+        setTimeout(() => this.alertLayer.unbindTooltip(), 10000)
       }
       else {
         this.alertLayer.unbindTooltip()
