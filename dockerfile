@@ -1,6 +1,4 @@
 ARG API_VERSION
-ENV API_VERSION=$API_VERSION
-
 FROM  weacast/weacast-api:$API_VERSION
 
 WORKDIR /opt/weacast-app
