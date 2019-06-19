@@ -4,7 +4,6 @@
 
 [![Build Status](https://travis-ci.org/weacast/weacast.png?branch=master)](https://travis-ci.org/weacast/weacast)
 [![Code Climate](https://codeclimate.com/github/weacast/weacast/badges/gpa.svg)](https://codeclimate.com/github/weacast/weacast)
-[![Test Coverage](https://codeclimate.com/github/weacast/weacast/badges/coverage.svg)](https://codeclimate.com/github/weacast/weacast/coverage)
 [![Dependency Status](https://img.shields.io/david/weacast/weacast.svg?style=flat-square)](https://david-dm.org/weacast/weacast)
 [![Documentation](https://img.shields.io/badge/documentation-available-brightgreen.svg)](https://weacast.github.io/weacast-docs/)
 [![Known Vulnerabilities](https://snyk.io/test/github/weacast/weacast/badge.svg)](https://snyk.io/test/github/weacast/weacast)
