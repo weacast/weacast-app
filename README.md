@@ -13,8 +13,6 @@
 
 ### Have a look at our [showcase](https://weacast.github.io/weacast-docs/about/showcase.html) first
 
-A [live demo](http://demo.weacast.xyz) is usually running at [demo.weacast.xyz](http://demo.weacast.xyz).
-
 [![Weacast videos](https://github.com/weacast/weacast-docs/blob/master/docs/assets/weacast-wind.png)](https://weacast.github.io/weacast-docs/about/showcase.html)
 
 If you want some help or participate to the development of Weacast contact us on our [Slack channel](https://kalisio.slack.com/).
