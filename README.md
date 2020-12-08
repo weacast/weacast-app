@@ -2,7 +2,7 @@
 
 ## Open Source gathering and usage of weather forecast data
 
-[![Build Status](https://travis-ci.org/weacast/weacast.png?branch=master)](https://travis-ci.org/weacast/weacast)
+[![Build Status](https://travis-ci.com/weacast/weacast.png?branch=master)](https://travis-ci.com/weacast/weacast)
 [![Code Climate](https://codeclimate.com/github/weacast/weacast/badges/gpa.svg)](https://codeclimate.com/github/weacast/weacast)
 [![Dependency Status](https://img.shields.io/david/weacast/weacast.svg?style=flat-square)](https://david-dm.org/weacast/weacast)
 [![Documentation](https://img.shields.io/badge/documentation-available-brightgreen.svg)](https://weacast.github.io/weacast-docs/)
