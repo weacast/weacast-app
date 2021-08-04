@@ -36,7 +36,7 @@
     "@feathersjs/client": "^3.7.8",
     "babel-polyfill": "^6.23.0",
     "babel-runtime": "^6.0.0",
-    "chart.js": "^2.7.2",
+    "chart.js": "^2.9.4",
     "chroma-js": "^1.3.4",
     "fastclick": "^1.0.6",
     "jquery": "^3.2.1",
