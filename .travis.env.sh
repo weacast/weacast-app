@@ -7,5 +7,5 @@ then
 	export API_VERSION=dev
 else
 	export VERSION=$(node -p -e "require('./package.json').version")
-	export API_VERSION=v$(node -p -e "require('./package.json').peerDependencies['weacast-api']")
+	export API_VERSION=$(node -p -e "require('./package.json').peerDependencies['weacast-api']")
 fi
