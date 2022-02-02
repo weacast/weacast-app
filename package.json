@@ -113,6 +113,6 @@
     "webpack-merge": "^4.0.0"
   },
   "peerDependencies": {
-    "weacast-api": "1.5.0"
+    "weacast-api": "1.6.0"
   }
 }
