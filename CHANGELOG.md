@@ -1,17 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/weacast/weacast/tree/HEAD)
+## [v1.3.0](https://github.com/weacast/weacast/tree/v1.3.0) (2022-02-02)
 
-[Full Changelog](https://github.com/weacast/weacast/compare/v1.2.0...HEAD)
-
-**Merged pull requests:**
-
-- Bump path-parse from 1.0.5 to 1.0.7 [\#60](https://github.com/weacast/weacast/pull/60) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump tar from 2.2.1 to 2.2.2 [\#59](https://github.com/weacast/weacast/pull/59) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump lodash from 4.17.19 to 4.17.21 [\#56](https://github.com/weacast/weacast/pull/56) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump y18n from 3.2.1 to 3.2.2 [\#55](https://github.com/weacast/weacast/pull/55) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump ini from 1.3.4 to 1.3.7 [\#53](https://github.com/weacast/weacast/pull/53) ([dependabot[bot]](https://github.com/apps/dependabot))
-- Bump lodash from 4.17.4 to 4.17.19 [\#48](https://github.com/weacast/weacast/pull/48) ([dependabot[bot]](https://github.com/apps/dependabot))
+[Full Changelog](https://github.com/weacast/weacast/compare/v1.2.0...v1.3.0)
 
 ## [v1.2.0](https://github.com/weacast/weacast/tree/v1.2.0) (2021-10-18)
 
@@ -29,6 +20,15 @@
 **Fixed bugs:**
 
 - OAuth2 does not work anymore in demo application [\#43](https://github.com/weacast/weacast/issues/43)
+
+**Merged pull requests:**
+
+- Bump path-parse from 1.0.5 to 1.0.7 [\#60](https://github.com/weacast/weacast/pull/60) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump tar from 2.2.1 to 2.2.2 [\#59](https://github.com/weacast/weacast/pull/59) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump lodash from 4.17.19 to 4.17.21 [\#56](https://github.com/weacast/weacast/pull/56) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump y18n from 3.2.1 to 3.2.2 [\#55](https://github.com/weacast/weacast/pull/55) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump ini from 1.3.4 to 1.3.7 [\#53](https://github.com/weacast/weacast/pull/53) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump lodash from 4.17.4 to 4.17.19 [\#48](https://github.com/weacast/weacast/pull/48) ([dependabot[bot]](https://github.com/apps/dependabot))
 
 ## [v1.1.0](https://github.com/weacast/weacast/tree/v1.1.0) (2019-06-14)
 
