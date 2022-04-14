@@ -33,7 +33,7 @@
     "test": "npm run build && npm run lint"
   },
   "dependencies": {
-    "@feathersjs/client": "^3.7.8",
+    "@feathersjs/client": "^5.0.0-pre.16",
     "babel-polyfill": "^6.23.0",
     "babel-runtime": "^6.0.0",
     "chart.js": "^2.7.2",
@@ -61,7 +61,7 @@
     "pixi.js": "^4.8.2",
     "quasar-framework": "^0.13.10",
     "roboto-fontface": "^0.7.0",
-    "socket.io-client": "^2.0.4",
+    "socket.io-client": "^4.4.1",
     "turf-distance": "^3.0.12",
     "vue": "^2.2.2",
     "vue-router": "^2.0.0",
