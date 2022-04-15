@@ -53,8 +53,7 @@ export default {
               Toast.create.negative('Cannot register, please check your e-mail or password')
               this.$router.push({ name: 'home' })
             })
-          }
-          else {
+          } else {
             this.login(data.email, data.password)
             .then(_ => {
               Toast.create.positive('You are now logged in')

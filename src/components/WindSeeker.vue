@@ -97,8 +97,7 @@ export default {
               $paginate: false
             }
           })
-        }
-        else {
+        } else {
           locations = this.probe.features
         }
 
@@ -147,8 +146,7 @@ export default {
               }
             ]
           })
-        }
-        else {
+        } else {
           Dialog.create({
             title: 'Alert',
             message: 'No matching airport found for your input.'

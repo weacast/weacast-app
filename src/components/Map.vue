@@ -14,7 +14,8 @@
 import L from 'leaflet'
 import _ from 'lodash'
 import { Toast } from 'quasar'
-import { MixinStore, WindBarbIcon } from 'weacast-client'
+import { MixinStore } from '../mixins'
+import { WindBarbIcon } from '../layers'
 
 import config from 'config'
 import api from 'src/api'
@@ -62,8 +63,7 @@ export default {
           type: 'FeatureCollection',
           features: this.probe.features
         }, 'Default probes')
-      }
-      else {
+      } else {
         Toast.create.negative('Forecast data has no associated probes so you cannot search matching weather conditions')
       }
     },
@@ -132,8 +132,7 @@ export default {
         this.location = response.features[0]
         // Then create location layer
         this.locationLayer = this.addGeoJson(this.getLocationAtCurrentTime(), 'Probed location')
-      }
-      catch (error) {
+      } catch (error) {
         console.log(error)
         locationMarker.remove()
       }
@@ -162,8 +161,7 @@ export default {
         this.location.type = 'Feature'
         // Then create location layer
         this.locationLayer = this.addGeoJson(this.getLocationAtCurrentTime(), 'Probed location')
-      }
-      catch (error) {
+      } catch (error) {
         console.log(error)
       }
     },
@@ -173,8 +171,7 @@ export default {
         const currentTime = this.currentTime.valueOf()
         const index = times.findIndex(time => new Date(time).getTime() === currentTime)
         return values[index]
-      } // Constant value
-      else {
+      } else {
         return values
       }
     },
@@ -207,8 +204,7 @@ export default {
           forceDir: true
         })
         return L.marker(latlng, { icon })
-      }
-      else {
+      } else {
         let marker = this.createMarkerFromStyle(latlng, this.configuration.pointStyle)
         marker.on('click', event => this.probeStaticLocation(_.get(feature, this.probe.featureId)))
         return marker
@@ -238,8 +234,7 @@ export default {
         // Static location => update results
         if (_.has(this.location, this.probe.featureId)) {
           this.probeStaticLocation(_.get(this.location, this.probe.featureId))
-        }
-        else { // Dynamic location selected => probe again
+        } else { // Dynamic location selected => probe again
           const location = _.get(this.location, 'geometry.coordinates')
           this.probeDynamicLocation(location[0], location[1])
         }
@@ -256,8 +251,7 @@ export default {
         .bindTooltip('Alert triggered with max wind speed of ' + maxSpeed.toFixed(2) + ' m/s', { permanent: true })
         .openTooltip()
         setTimeout(() => this.alertLayer.unbindTooltip(), 10000)
-      }
-      else {
+      } else {
         this.alertLayer.unbindTooltip()
       }
     }

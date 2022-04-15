@@ -8,7 +8,7 @@
 
 <script>
 import { Toast } from 'quasar'
-import { EventBus } from 'weacast-client'
+import EventBus from './event-bus'
 
 /*
  * Root component

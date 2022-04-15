@@ -114,19 +114,6 @@ export default {
       .catch(_ => {
         Toast.create.negative('Cannot logout, please check again in a few minutes')
       })
-    },
-    getUser (accessToken) {
-      return api.passport.verifyJWT(accessToken)
-      .then(payload => {
-        return api.users.get(payload.userId)
-      })
-      .then(user => {
-        this.user = user
-        return user
-      })
-      .catch(_ => {
-        this.signout()
-      })
     }
   },
   created () {
@@ -148,8 +135,12 @@ export default {
     })
     // On successfull login
     api.on('authenticated', response => {
-      this.getUser(response.accessToken)
-      .then(user => {
+      if (response.users) {
+        this.user = response.users
+      } else {
+        this.signout()
+      }
+      if (this.user) {
         // If no route, otherwise keep it so that links work out-of-the-box
         if (this.$route.path === '/') {
           this.$router.push({ name: 'home' })
@@ -172,7 +163,7 @@ export default {
             this.selectedForecast = (this.forecasts.length > 0 ? this.forecasts[0] : null)
           }
         })
-      })
+      }
     })
     // On logout
     api.on('logout', () => {
