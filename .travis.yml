@@ -16,7 +16,7 @@ jobs:
   - stage: TEST
     language: node_js
     node_js:
-    - '12'
+    - '16'
     sudo: required
     services:
     - mongodb
