@@ -57,7 +57,7 @@
     "loglevel": "^1.4.1",
     "material-design-icons": "^3.0.1",
     "mathjs": "^5.2.2",
-    "moment": "^2.29.2",
+    "moment": "^2.29.4",
     "pixi.js": "^4.8.2",
     "quasar-framework": "^0.13.10",
     "roboto-fontface": "^0.7.0",
