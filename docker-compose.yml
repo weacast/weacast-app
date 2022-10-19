@@ -15,7 +15,7 @@ services:
       - VIRTUAL_HOST=demo.weacast.xyz
       - VIRTUAL_PORT=8081
       - DB_URL=mongodb://mongodb:27017/weacast
-      - LOADERS=arpege,arome,gfs
+      - LOADERS=gfs
       - LOG_LEVEL
       - DEBUG
   weacast-mongodb:
