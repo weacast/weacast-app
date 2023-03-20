@@ -19,7 +19,7 @@ export default new VueRouter({
 
   routes: [
     {
-      path: '/',
+      path: '/:token?',
       component: loadComponent('Index'),
       children: [
         {

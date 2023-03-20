@@ -73,7 +73,7 @@ export default {
         buttons.push({
           label: provider,
           handler: (data) => {
-            location.href = '/auth/' + provider.toLowerCase()
+            location.href = '/oauth/' + provider.toLowerCase()
           }
         })
       })
