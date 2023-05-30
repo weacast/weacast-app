@@ -8,7 +8,7 @@
 
 ### Have a look at our [showcase](https://weacast.github.io/weacast/about/showcase.html) first
 
-[![Weacast videos](https://github.com/weacast/weacast/blob/master/packages/docs/assets/weacast-wind.png)](https://weacast.github.io/weacast/about/showcase.html)
+[![Weacast videos](https://github.com/weacast/weacast/blob/master/docs/assets/weacast-wind.png)](https://weacast.github.io/weacast/about/showcase.html)
 
 If you want some help or participate to the development of Weacast contact us on our [Slack channel](https://kalisio.slack.com/).
 

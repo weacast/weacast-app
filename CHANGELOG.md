@@ -1,3 +1,5 @@
+This changelog was previously the changelog of the weacast project you can now find here: https://github.com/weacast/weacast.
+
 # Changelog
 
 ## [v1.3.0](https://github.com/weacast/weacast/tree/v1.3.0) (2022-02-02)

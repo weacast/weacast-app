@@ -21,11 +21,10 @@
   },
   "scripts": {
     "prepublish": "npm run build",
-    "publish": "git push origin --tags && npm run changelog && git push origin",
+    "publish": "git push origin --tags && git push origin",
     "release:patch": "npm version --force patch && npm run publish",
     "release:minor": "npm version --force minor && npm run publish",
     "release:major": "npm version --force major && npm run publish",
-    "changelog": "github_changelog_generator -u weacast -p weacast && git add CHANGELOG.md && git commit -am \"Updating changelog\"",
     "clean": "node build/script.clean.js",
     "dev": "node build/script.dev.js",
     "build": "node build/script.build.js",
@@ -112,6 +111,6 @@
     "webpack-merge": "^4.0.0"
   },
   "peerDependencies": {
-    "weacast-api": "2.0.3"
+    "weacast-api": "2.1.6"
   }
 }
