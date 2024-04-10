@@ -1,13 +1,11 @@
 ARG API_VERSION
-FROM  weacast/weacast-api:$API_VERSION
+FROM  node:16-bookworm AS Build
 
 WORKDIR /opt/weacast/weacast-app
 COPY . /opt/weacast/weacast-app
 
 RUN yarn install
-# Install already performs build
-# RUN npm run build
 
-RUN cp -R /opt/weacast/weacast-app/dist /opt/weacast/weacast-api
+FROM  weacast/weacast-api:$API_VERSION
 
-WORKDIR /opt/weacast/weacast-api
+COPY --from=Build --chown=node:node /opt/weacast/weacast-app/dist /opt/weacast/weacast/packages/api/dist
