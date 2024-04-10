@@ -1,12 +1,9 @@
+FROM  node:16-bookworm AS Build
+
+WORKDIR /opt/weacast
+
+RUN git clone https://github.com/weacast/weacast-app.git -b master --single-branch && cd weacast-app && yarn install && cd ..
+
 FROM  weacast/weacast-api:dev
 
-WORKDIR /opt/weacast/weacast-app
-COPY . /opt/weacast/weacast-app
-
-RUN yarn install
-# Install already performs build
-# RUN npm run build
-
-RUN cp -R /opt/weacast/weacast-app/dist /opt/weacast/weacast-api
-
-WORKDIR /opt/weacast/weacast-api
+COPY --from=Build --chown=node:node /opt/weacast/weacast-app/dist /opt/weacast/weacast/packages/api/dist

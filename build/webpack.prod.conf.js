@@ -58,7 +58,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     })
   ]
 })
-
+/* FIXME: Uglify return an error
 if (!process.env.DEBUG) {
   webpackConfig.plugins.unshift(
     new webpack.optimize.UglifyJsPlugin({
@@ -70,7 +70,7 @@ if (!process.env.DEBUG) {
     })
   )
 }
-
+*/
 if (config.build.productionGzip) {
   var CompressionWebpackPlugin = require('compression-webpack-plugin')
 
