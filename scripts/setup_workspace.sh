@@ -30,7 +30,7 @@ if [ "$CI" != true ]; then
     WORKSPACE_DIR="$1"
 
     # Clone project in the workspace
-    git_shallow_clone "$KALISIO_GITHUB_URL/weacast/weacast-app.git" "$WORKSPACE_DIR/weacast-app" "${WORKSPACE_TAG:-${WORKSPACE_BRANCH:-}}"
+    git_shallow_clone "$WEACAST_GITHUB_URL/weacast/weacast-app.git" "$WORKSPACE_DIR/weacast-app" "${WORKSPACE_TAG:-${WORKSPACE_BRANCH:-}}"
 fi
 
 setup_lib_workspace "$WORKSPACE_DIR" "$KALISIO_GITHUB_URL/kalisio/development.git"

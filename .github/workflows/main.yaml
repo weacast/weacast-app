@@ -21,6 +21,7 @@ jobs:
       - name: Setup workspace
         env:
           KALISIO_GITHUB_URL: ${{ secrets.KALISIO_GITHUB_URL }}
+          WEACAST_GITHUB_URL: ${{ secrets.WEACAST_GITHUB_URL }}
         run: bash ./scripts/setup_workspace.sh
       - name: Build app
         env:
