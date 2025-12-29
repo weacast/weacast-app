@@ -49,6 +49,7 @@ GIT_TAG=$(get_lib_tag)
 
 load_env_files "$WORKSPACE_DIR/development/common/kalisio_dockerhub.enc.env" "$WORKSPACE_DIR/development/common/SLACK_WEBHOOK_SERVICES.enc.env"
 load_value_files "$WORKSPACE_DIR/development/common/KALISIO_DOCKERHUB_PASSWORD.enc.value"
+. "$WORKSPACE_DIR/development/workspaces/apps/apps.sh" weacast-app
 
 ## Build container
 ##
@@ -93,3 +94,5 @@ fi
 docker logout
 
 end_group "Building container ..."
+
+cd "$ROOT_DIR" && sonar-scanner

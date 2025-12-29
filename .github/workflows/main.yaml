@@ -1,5 +1,13 @@
 name: CI
-on: [ push, workflow_dispatch ]
+on:
+  push:
+  workflow_dispatch:
+    inputs:
+      build_app:
+        description: "Build app"
+        default: false
+        required: false
+        type: boolean
 
 jobs:
   build_app:
